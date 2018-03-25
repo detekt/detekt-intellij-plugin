@@ -7,8 +7,8 @@ Build plugin:
 
 ```bash
 # linux
-./gradlew :detekt-intellij-plugin:buildPlugin
+./gradlew buildPlugin
 # windows
-gradlew :detekt-intellij-plugin:buildPlugin
+gradlew buildPlugin
 ```
 
