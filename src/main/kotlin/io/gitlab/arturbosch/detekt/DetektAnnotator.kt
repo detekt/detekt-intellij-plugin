@@ -13,6 +13,7 @@ import io.gitlab.arturbosch.detekt.config.DetektConfigStorage
 import io.gitlab.arturbosch.detekt.core.DetektFacade
 import io.gitlab.arturbosch.detekt.core.ProcessingSettings
 import java.nio.file.Paths
+import java.util.concurrent.ForkJoinPool
 
 /**
  * @author Dmytro Primshyts
@@ -62,12 +63,14 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
 								   configStorage: DetektConfigStorage): ProcessingSettings {
 		return if (configStorage.rulesPath.isEmpty()) {
 			ProcessingSettings(
-					project = Paths.get(virtualFile.path)
+					project = Paths.get(virtualFile.path),
+					executorService = ForkJoinPool.commonPool()
 			)
 		} else {
 			ProcessingSettings(
 					project = Paths.get(virtualFile.path),
-					config = YamlConfig.load(Paths.get(configStorage.rulesPath))
+					config = YamlConfig.load(Paths.get(configStorage.rulesPath)),
+					executorService = ForkJoinPool.commonPool()
 			)
 		}
 	}
