@@ -4,15 +4,12 @@ import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.maven
 import org.gradle.kotlin.dsl.repositories
 import org.jetbrains.intellij.IntelliJPluginExtension
-import org.jetbrains.intellij.tasks.RunIdeaTask
 
-val kotlinVersion: String by extra
 val detektVersion: String  by extra
-val junitPlatformVersion: String  by extra
-val usedDetektGradleVersion: String by extra
+val detektIntellijPluginVersion: String by extra
 
 project.group = "io.gitlab.arturbosch.detekt"
-project.version = detektVersion
+project.version = detektIntellijPluginVersion
 
 repositories {
 	jcenter()
@@ -20,13 +17,15 @@ repositories {
 }
 
 plugins {
-	id("org.jetbrains.intellij").version("0.2.18")
-	kotlin("jvm").version("1.2.30")
+	id("org.jetbrains.intellij").version("0.3.1")
+	id("com.github.ben-manes.versions") version "0.17.0"
+	kotlin("jvm").version("1.2.41")
+	id("org.sonarqube") version "2.6.2"
 }
 
 dependencies {
-	compile("io.gitlab.arturbosch.detekt:detekt-core:1.0.0.RC6-4")
-	compile("io.gitlab.arturbosch.detekt:detekt-rules:1.0.0.RC6-4")
+	compile("io.gitlab.arturbosch.detekt:detekt-core:$detektVersion")
+	compile("io.gitlab.arturbosch.detekt:detekt-rules:$detektVersion")
 }
 
 configure<IntelliJPluginExtension> {
@@ -34,11 +33,4 @@ configure<IntelliJPluginExtension> {
 	version = "2017.3.5"
 	updateSinceUntilBuild = false
 	setPlugins("IntelliLang", "Kotlin")
-}
-
-tasks.withType<RunIdeaTask> {
-	systemProperty(
-			"idea.ProcessCanceledException",
-			"disabled"
-	)
 }
