@@ -14,4 +14,3 @@ Build plugin:
 # windows
 gradlew buildPlugin
 ```
-
