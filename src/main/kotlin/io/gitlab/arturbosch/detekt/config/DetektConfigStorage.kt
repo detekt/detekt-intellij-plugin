@@ -24,7 +24,7 @@ class DetektConfigStorage : PersistentStateComponent<DetektConfigStorage> {
 	var checkTestFiles: Boolean = false
 
 	@Tag
-	var detektVersion: String = ""
+	var treatAsError: Boolean = false
 
 	@Tag
 	var rulesPath: String = ""
@@ -34,8 +34,8 @@ class DetektConfigStorage : PersistentStateComponent<DetektConfigStorage> {
 	override fun loadState(state: DetektConfigStorage) {
 		this.enableDetekt = state.enableDetekt
 		this.checkTestFiles = state.checkTestFiles
-		this.detektVersion = state.detektVersion
 		this.rulesPath = state.rulesPath
+		this.treatAsError = state.treatAsError
 	}
 
 	companion object {

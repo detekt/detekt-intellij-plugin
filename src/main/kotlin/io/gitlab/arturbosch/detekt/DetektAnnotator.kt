@@ -47,11 +47,16 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
 	override fun apply(file: PsiFile,
 					   annotationResult: List<Finding>,
 					   holder: AnnotationHolder) {
+
+		val configuration = DetektConfigStorage.instance(file.project)
 		annotationResult.forEach {
-			holder.createWarningAnnotation(
-					it.charPosition.toTextRange(),
-					it.id + ": " + it.messageOrDescription()
-			)
+			val textRange = it.charPosition.toTextRange()
+			val message = it.id + ": " + it.messageOrDescription()
+			if (configuration.treatAsError) {
+				holder.createErrorAnnotation(textRange, message)
+			} else {
+				holder.createWarningAnnotation(textRange, message)
+			}
 		}
 	}
 
