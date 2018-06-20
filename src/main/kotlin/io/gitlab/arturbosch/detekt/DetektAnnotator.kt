@@ -50,7 +50,7 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
 		annotationResult.forEach {
 			holder.createWarningAnnotation(
 					it.charPosition.toTextRange(),
-					it.messageOrDescription()
+					it.id + ": " + it.messageOrDescription()
 			)
 		}
 	}
