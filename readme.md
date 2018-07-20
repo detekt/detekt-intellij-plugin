@@ -9,7 +9,7 @@ is used.
 Build plugin:
 
 ```bash
-# linux
+# linux & macOS
 ./gradlew buildPlugin
 # windows
 gradlew buildPlugin
