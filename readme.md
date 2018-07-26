@@ -6,8 +6,7 @@
 
 Integrates _detekt_, a static code analysis tool for the Kotlin programming language, into IntelliJ.
 
-The plugin can be downloaded from the [Jetbrains plugin repository](https://plugins.jetbrains
-.com/plugin/10761-detekt-intellij-plugin).
+The plugin can be downloaded from the [Jetbrains plugin repository](https://plugins.jetbrains.com/plugin/10761-detekt-intellij-plugin).
 
 ## Build plugin
 
