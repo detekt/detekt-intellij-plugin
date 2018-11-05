@@ -21,6 +21,9 @@ class DetektConfigStorage : PersistentStateComponent<DetektConfigStorage> {
 	var enableDetekt: Boolean = false
 
 	@Tag
+	var enableFormatting: Boolean = false
+
+	@Tag
 	var checkTestFiles: Boolean = false
 
 	@Tag
@@ -33,6 +36,7 @@ class DetektConfigStorage : PersistentStateComponent<DetektConfigStorage> {
 
 	override fun loadState(state: DetektConfigStorage) {
 		this.enableDetekt = state.enableDetekt
+		this.enableFormatting = state.enableFormatting
 		this.checkTestFiles = state.checkTestFiles
 		this.rulesPath = state.rulesPath
 		this.treatAsError = state.treatAsError

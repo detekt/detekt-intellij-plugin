@@ -18,6 +18,7 @@ public class DetektConfigurationForm {
 	private TextFieldWithBrowseButton configurationFilePath;
 	private JPanel myMainPanel;
 	private JCheckBox treatAsErrors;
+	private JCheckBox enableFormatting;
 
 	private DetektConfigStorage detektConfigStorage;
 
@@ -48,6 +49,7 @@ public class DetektConfigurationForm {
 
 	public void apply() {
 		detektConfigStorage.setEnableDetekt(enableDetekt.isSelected());
+		detektConfigStorage.setEnableFormatting(enableFormatting.isSelected());
 		detektConfigStorage.setCheckTestFiles(checkTestSources.isSelected());
 		detektConfigStorage.setTreatAsError(treatAsErrors.isSelected());
 		detektConfigStorage.setRulesPath(configurationFilePath.getText());
@@ -55,6 +57,7 @@ public class DetektConfigurationForm {
 
 	public void reset() {
 		enableDetekt.setSelected(detektConfigStorage.getEnableDetekt());
+		enableFormatting.setSelected(detektConfigStorage.getEnableFormatting());
 		checkTestSources.setSelected(detektConfigStorage.getCheckTestFiles());
 		treatAsErrors.setSelected(detektConfigStorage.getTreatAsError());
 		configurationFilePath.setText(detektConfigStorage.getRulesPath());
@@ -62,6 +65,7 @@ public class DetektConfigurationForm {
 
 	public boolean isModified() {
 		return !Comparing.equal(detektConfigStorage.getEnableDetekt(), enableDetekt.isSelected())
+				|| !Comparing.equal(detektConfigStorage.getEnableFormatting(), enableFormatting.isSelected())
 				|| !Comparing.equal(detektConfigStorage.getCheckTestFiles(), checkTestSources.isSelected())
 				|| !Comparing.equal(detektConfigStorage.getTreatAsError(), treatAsErrors.isSelected())
 				|| !Comparing.equal(detektConfigStorage.getRulesPath(), configurationFilePath.getText());

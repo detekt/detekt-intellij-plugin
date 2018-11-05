@@ -11,15 +11,20 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiFile
 import io.gitlab.arturbosch.detekt.api.Finding
 import io.gitlab.arturbosch.detekt.api.TextLocation
-import io.gitlab.arturbosch.detekt.api.YamlConfig
+import io.gitlab.arturbosch.detekt.cli.CliArgs
+import io.gitlab.arturbosch.detekt.cli.loadConfiguration
 import io.gitlab.arturbosch.detekt.config.DetektConfigStorage
+import io.gitlab.arturbosch.detekt.config.NoAutoCorrectConfig
 import io.gitlab.arturbosch.detekt.core.DetektFacade
+import io.gitlab.arturbosch.detekt.core.FileProcessorLocator
 import io.gitlab.arturbosch.detekt.core.ProcessingSettings
+import io.gitlab.arturbosch.detekt.core.RuleSetLocator
 import java.nio.file.Paths
 import java.util.concurrent.ForkJoinPool
 
 /**
  * @author Dmytro Primshyts
+ * @author Artur Bosch
  */
 class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
 
@@ -57,7 +62,7 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
 	): List<Finding> {
 		val virtualFile = collectedInfo.originalFile.virtualFile
 		val settings = processingSettings(virtualFile, configuration)
-		val detektion = DetektFacade.create(settings).run()
+		val detektion = createFacade(settings, configuration).run()
 		return detektion.findings.flatMap { it.value }
 	}
 
@@ -78,26 +83,26 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
 		}
 	}
 
-	private fun TextLocation.toTextRange(): TextRange = TextRange.create(
-			start, end
-	)
+	private fun TextLocation.toTextRange(): TextRange = TextRange.create(start, end)
 
-	private fun processingSettings(
-			virtualFile: VirtualFile,
-			configStorage: DetektConfigStorage
-	): ProcessingSettings {
-		return if (configStorage.rulesPath.isEmpty()) {
+	private fun processingSettings(virtualFile: VirtualFile,
+								   configStorage: DetektConfigStorage) =
 			ProcessingSettings(
 					inputPath = Paths.get(virtualFile.path),
+					config = NoAutoCorrectConfig(CliArgs().apply {
+						if (configStorage.rulesPath.isNotEmpty()) {
+							config = configStorage.rulesPath
+						}
+					}.loadConfiguration()),
 					executorService = ForkJoinPool.commonPool()
 			)
-		} else {
-			ProcessingSettings(
-					inputPath = Paths.get(virtualFile.path),
-					config = YamlConfig.load(Paths.get(configStorage.rulesPath)),
-					executorService = ForkJoinPool.commonPool()
-			)
+
+	private fun createFacade(settings: ProcessingSettings, configuration: DetektConfigStorage): DetektFacade {
+		var providers = RuleSetLocator(settings).load()
+		if (!configuration.enableFormatting) {
+			providers = providers.filterNot { it.ruleSetId == "formatting" }
 		}
+		val processors = FileProcessorLocator(settings).load()
+		return DetektFacade.create(settings, providers, processors)
 	}
-
 }

@@ -25,8 +25,9 @@ plugins {
 }
 
 dependencies {
-	compile("io.gitlab.arturbosch.detekt:detekt-core:$detektVersion")
+	compile("io.gitlab.arturbosch.detekt:detekt-cli:$detektVersion")
 	compile("io.gitlab.arturbosch.detekt:detekt-rules:$detektVersion")
+	compile("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion")
 }
 
 configure<IntelliJPluginExtension> {
