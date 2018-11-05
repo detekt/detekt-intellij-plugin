@@ -33,8 +33,6 @@
                              displayName="Detekt"
                              id="preferences.detekt"
                              instance="io.gitlab.arturbosch.detekt.config.DetektConfig"/>
-
-        <errorHandler implementation="com.intellij.diagnostic.ITNReporter"/>
     </extensions>
 
     <application-components>
