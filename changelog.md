@@ -1,5 +1,10 @@
 ### Changelog
 
+#### 0.2.0
+
+- Uses detekt 1.0.0-RC10 as engine baseline
+- Support `detekt-formatting` (`enableFormatting` in settings)
+
 #### 0.1.2
 
 - Indicate warning name in error message - [#6](https://github.com/arturbosch/detekt-intellij-plugin/issues/6)
