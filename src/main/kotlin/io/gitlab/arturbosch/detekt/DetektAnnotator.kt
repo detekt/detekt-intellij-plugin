@@ -9,14 +9,12 @@ import com.intellij.openapi.util.Computable
 import com.intellij.openapi.util.TextRange
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiFile
-import com.intellij.psi.PsiManager
 import io.gitlab.arturbosch.detekt.api.Finding
 import io.gitlab.arturbosch.detekt.api.TextLocation
 import io.gitlab.arturbosch.detekt.api.YamlConfig
 import io.gitlab.arturbosch.detekt.config.DetektConfigStorage
 import io.gitlab.arturbosch.detekt.core.DetektFacade
 import io.gitlab.arturbosch.detekt.core.ProcessingSettings
-import java.io.File
 import java.nio.file.Paths
 import java.util.concurrent.ForkJoinPool
 
@@ -43,7 +41,7 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
 		val configuration = DetektConfigStorage.instance(collectedInfo.project)
 		if (configuration.enableDetekt) {
 			return if (ProjectRootsUtil.isInTestSource(collectedInfo)
-				&& !configuration.checkTestFiles
+					&& !configuration.checkTestFiles
 			) {
 				emptyList()
 			} else {
@@ -54,8 +52,8 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
 	}
 
 	private fun runDetekt(
-		collectedInfo: PsiFile,
-		configuration: DetektConfigStorage
+			collectedInfo: PsiFile,
+			configuration: DetektConfigStorage
 	): List<Finding> {
 		val virtualFile = collectedInfo.originalFile.virtualFile
 		val settings = processingSettings(virtualFile, configuration)
@@ -64,9 +62,9 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
 	}
 
 	override fun apply(
-		file: PsiFile,
-		annotationResult: List<Finding>,
-		holder: AnnotationHolder
+			file: PsiFile,
+			annotationResult: List<Finding>,
+			holder: AnnotationHolder
 	) {
 		val configuration = DetektConfigStorage.instance(file.project)
 		annotationResult.forEach {
@@ -81,23 +79,23 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
 	}
 
 	private fun TextLocation.toTextRange(): TextRange = TextRange.create(
-		start, end
+			start, end
 	)
 
 	private fun processingSettings(
-		virtualFile: VirtualFile,
-		configStorage: DetektConfigStorage
+			virtualFile: VirtualFile,
+			configStorage: DetektConfigStorage
 	): ProcessingSettings {
 		return if (configStorage.rulesPath.isEmpty()) {
 			ProcessingSettings(
-				project = Paths.get(virtualFile.path),
-				executorService = ForkJoinPool.commonPool()
+					inputPath = Paths.get(virtualFile.path),
+					executorService = ForkJoinPool.commonPool()
 			)
 		} else {
 			ProcessingSettings(
-				project = Paths.get(virtualFile.path),
-				config = YamlConfig.load(Paths.get(configStorage.rulesPath)),
-				executorService = ForkJoinPool.commonPool()
+					inputPath = Paths.get(virtualFile.path),
+					config = YamlConfig.load(Paths.get(configStorage.rulesPath)),
+					executorService = ForkJoinPool.commonPool()
 			)
 		}
 	}
