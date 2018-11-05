@@ -4,6 +4,7 @@
 
 - Uses detekt 1.0.0-RC10 as engine baseline
 - Support `detekt-formatting` (`enableFormatting` in settings)
+- Force save for accurate issue reporting
 
 #### 0.1.2
 
