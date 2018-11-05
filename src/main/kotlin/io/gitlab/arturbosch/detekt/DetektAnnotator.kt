@@ -31,16 +31,14 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
 	override fun collectInformation(file: PsiFile): PsiFile = file
 
 	override fun doAnnotate(collectedInfo: PsiFile): List<Finding> {
-		WriteCommandAction.runWriteCommandAction(collectedInfo.project, object : Computable<Boolean> {
-			override fun compute(): Boolean {
-				val documentManager = FileDocumentManager.getInstance()
-				val document = documentManager.getDocument(collectedInfo.virtualFile)
-				if (document != null) {
-					documentManager.saveDocument(document)
-					return false
-				}
-				return true
+		WriteCommandAction.runWriteCommandAction(collectedInfo.project, Computable<Boolean> {
+			val documentManager = FileDocumentManager.getInstance()
+			val document = documentManager.getDocument(collectedInfo.virtualFile)
+			if (document != null) {
+				documentManager.saveDocument(document)
+				return@Computable false
 			}
+			true
 		})
 
 		val configuration = DetektConfigStorage.instance(collectedInfo.project)
