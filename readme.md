@@ -12,7 +12,7 @@ The plugin can be downloaded from the [Jetbrains plugin repository](https://plug
 ## Enabling the plugin
 Once you have installed the plugin, navigate to Settings/Preferences -> Tools -> Detekt. From there you will see the following screen, where you can specify your Detekt configuration file and enable it for your project. Warnings will be displayed in each file.
 
-![Imgur](https://i.imgur.com/m91JlWy.png)
+![detekt in action](./img/detekt.png "detekt in action")
 
 ## Building the plugin
 
