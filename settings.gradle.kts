@@ -1,2 +1,1 @@
-rootProject.name = "detekt-intellij-plugin"
-
+rootProject.name = "detekt"
