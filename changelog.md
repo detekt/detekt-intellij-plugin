@@ -1,5 +1,8 @@
 ### Changelog
 
+#### 0.2.1
+- Upgrade detekt enging to 1.0.0-RC13
+
 #### 0.2.0
 
 - Uses detekt 1.0.0-RC10 as engine baseline
