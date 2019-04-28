@@ -2,8 +2,6 @@
 build/
 *.iws
 out/
-/detekt-intellij-plugin.iml
-/detekt-intellij-plugin.ipr
-/detekt-intellij-plugin_main.iml
-/detekt-intellij-plugin_test.iml
+detekt*.iml
+detekt*.ipr
 .idea
