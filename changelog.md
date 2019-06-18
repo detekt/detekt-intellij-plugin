@@ -1,7 +1,13 @@
 ### Changelog
 
+#### 0.2.3
+- Upgrade detekt engine to 1.0.0-RC15
+
+#### 0.2.2
+- Upgrade detekt engine to 1.0.0-RC14
+
 #### 0.2.1
-- Upgrade detekt enging to 1.0.0-RC13
+- Upgrade detekt engine to 1.0.0-RC13
 
 #### 0.2.0
 
