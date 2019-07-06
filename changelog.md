@@ -1,12 +1,18 @@
 ### Changelog
 
-#### 0.2.3
-- Upgrade detekt engine to 1.0.0-RC15
+#### 0.3.0
+
+- Upgrade detekt engine to 1.0.0-RC16
+- Integrate fail fast config option to enable all detekt rules regardless of the configured `active` properties.
+- Allow to reuse the default detekt configuration as baseline (checkbox)
+- Remove `analyzeTestCode` in favor of config based `excludes` on detekt RC15+ 
 
 #### 0.2.2
+
 - Upgrade detekt engine to 1.0.0-RC14
 
 #### 0.2.1
+
 - Upgrade detekt engine to 1.0.0-RC13
 
 #### 0.2.0
