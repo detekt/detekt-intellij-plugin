@@ -1,6 +1,5 @@
 package io.gitlab.arturbosch.detekt
 
-import com.intellij.ide.projectView.impl.ProjectRootsUtil
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.ExternalAnnotator
 import com.intellij.openapi.command.WriteCommandAction
@@ -43,13 +42,7 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
 
 		val configuration = DetektConfigStorage.instance(collectedInfo.project)
 		if (configuration.enableDetekt) {
-			return if (ProjectRootsUtil.isInTestSource(collectedInfo)
-					&& !configuration.checkTestFiles
-			) {
-				emptyList()
-			} else {
-				runDetekt(collectedInfo, configuration)
-			}
+			return runDetekt(collectedInfo, configuration)
 		}
 		return emptyList()
 	}
@@ -60,8 +53,8 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
 	): List<Finding> {
 		val virtualFile = collectedInfo.originalFile.virtualFile
 		val settings = processingSettings(virtualFile, configuration)
-		val detektion = createFacade(settings, configuration).run()
-		return detektion.findings.flatMap { it.value }
+		val result = createFacade(settings, configuration).run()
+		return result.findings.flatMap { it.value }
 	}
 
 	override fun apply(
@@ -90,6 +83,8 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
 					config = NoAutoCorrectConfig(CliArgs().apply {
 						if (configStorage.rulesPath.isNotEmpty()) {
 							config = configStorage.rulesPath
+							failFast = configStorage.failFast
+							buildUponDefaultConfig = configStorage.buildUponDefaultConfig
 						}
 					}.loadConfiguration()),
 					executorService = ForkJoinPool.commonPool()

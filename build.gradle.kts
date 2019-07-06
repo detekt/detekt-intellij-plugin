@@ -15,16 +15,16 @@ repositories {
 plugins {
 	id("org.jetbrains.intellij").version("0.3.4")
 	id("com.github.ben-manes.versions") version "0.20.0"
-	kotlin("jvm").version("1.3.21")
+	kotlin("jvm").version("1.3.40")
 	id("org.sonarqube") version "2.6.2"
 }
 
 dependencies {
-	implementation("io.gitlab.arturbosch.detekt:detekt-api:$detektVersion")
-	implementation("io.gitlab.arturbosch.detekt:detekt-core:$detektVersion")
-	implementation("io.gitlab.arturbosch.detekt:detekt-cli:$detektVersion")
-	implementation("io.gitlab.arturbosch.detekt:detekt-rules:$detektVersion")
-	implementation("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion")
+	compile("io.gitlab.arturbosch.detekt:detekt-api:$detektVersion")
+	compile("io.gitlab.arturbosch.detekt:detekt-core:$detektVersion")
+	compile("io.gitlab.arturbosch.detekt:detekt-cli:$detektVersion")
+	compile("io.gitlab.arturbosch.detekt:detekt-rules:$detektVersion")
+	compile("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion")
 }
 
 configure<IntelliJPluginExtension> {

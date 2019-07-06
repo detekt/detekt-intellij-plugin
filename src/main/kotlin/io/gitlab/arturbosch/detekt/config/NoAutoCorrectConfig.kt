@@ -1,5 +1,3 @@
-@file:Suppress("UNCHECKED_CAST")
-
 package io.gitlab.arturbosch.detekt.config
 
 import io.gitlab.arturbosch.detekt.api.Config
@@ -9,6 +7,7 @@ import io.gitlab.arturbosch.detekt.api.Config
  */
 class NoAutoCorrectConfig(private val config: Config) : Config by config {
 
+	@Suppress("UNCHECKED_CAST")
 	override fun <T : Any> valueOrDefault(key: String, default: T): T {
 		if ("autoCorrect" == key) {
 			return false as T
