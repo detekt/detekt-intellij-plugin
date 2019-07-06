@@ -1,8 +1,3 @@
-import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.extra
-import org.gradle.kotlin.dsl.getValue
-import org.gradle.kotlin.dsl.maven
-import org.gradle.kotlin.dsl.repositories
 import org.jetbrains.intellij.IntelliJPluginExtension
 
 val kotlinVersion: String by extra
