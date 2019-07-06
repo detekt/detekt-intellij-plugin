@@ -10,23 +10,21 @@ import javax.swing.JComponent
  */
 class DetektConfig(private val project: Project) : SearchableConfigurable {
 
-	private val detektConfigStorage: DetektConfigStorage = DetektConfigStorage.instance(project)
-	private val detektConfigurationForm: DetektConfigurationForm = DetektConfigurationForm()
+    private val detektConfigStorage: DetektConfigStorage = DetektConfigStorage.instance(project)
+    private val detektConfigurationForm: DetektConfigurationForm = DetektConfigurationForm()
 
-	override fun isModified(): Boolean = detektConfigurationForm.isModified
+    override fun isModified(): Boolean = detektConfigurationForm.isModified
 
-	override fun getId(): String = "detekt_config"
+    override fun getId(): String = "detekt_config"
 
-	override fun getDisplayName(): String = "Detekt"
+    override fun getDisplayName(): String = "Detekt"
 
-	override fun apply() {
-		detektConfigurationForm.apply()
-		DaemonCodeAnalyzer.getInstance(project)
-				.restart()
-	}
+    override fun apply() {
+        detektConfigurationForm.apply()
+        DaemonCodeAnalyzer.getInstance(project).restart()
+    }
 
-	override fun reset() = detektConfigurationForm.reset()
+    override fun reset() = detektConfigurationForm.reset()
 
-	override fun createComponent(): JComponent? = detektConfigurationForm.createPanel(detektConfigStorage)
-
+    override fun createComponent(): JComponent? = detektConfigurationForm.createPanel(detektConfigStorage)
 }
