@@ -1,5 +1,11 @@
 ### Changelog
 
+#### 0.3.1
+
+- Upgrade detekt engine to 1.0.0
+- Gradle Plugin: `autoCorrect` property is now allowed on the detekt extension. No need to create a new task anymore.
+- Formatting: updated to KtLint 0.34.2 which removed the two rules `NoItParamInMultilineLambda` and `SpacingAroundUnaryOperators`. 
+
 #### 0.3.0
 
 - Upgrade detekt engine to 1.0.0-RC16
