@@ -17,4 +17,4 @@ install:
   - java -version
   - gradlew.bat --version
 build_script:
-  - gradlew.bat -u -i assemble -PwarningsAsErrors=true
+  - gradlew build --build-cache --parallel -PwarningsAsErrors=true
