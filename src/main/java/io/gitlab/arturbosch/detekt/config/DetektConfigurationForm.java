@@ -8,6 +8,8 @@ import com.intellij.ui.IdeBorderFactory;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  * @author Dmytro Primshyts
@@ -29,6 +31,16 @@ public class DetektConfigurationForm {
         this.detektConfigStorage = detektConfigStorage;
 
         myMainPanel.setBorder(IdeBorderFactory.createTitledBorder("Detekt settings"));
+
+        enableDetekt.addChangeListener(changeEvent -> {
+            boolean enabled = enableDetekt.isSelected();
+            buildUponDefaultConfig.setEnabled(enabled);
+            failFast.setEnabled(enabled);
+            configurationFilePath.setEnabled(enabled);
+            treatAsErrors.setEnabled(enabled);
+            enableFormatting.setEnabled(enabled);
+            autoCorrect.setEnabled(enabled);
+        });
 
         FileChooserDescriptor fileChooserDescriptor = new FileChooserDescriptor(
                 true,
