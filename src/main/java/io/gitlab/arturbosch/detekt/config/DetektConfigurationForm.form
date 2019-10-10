@@ -30,7 +30,7 @@
             </constraints>
             <properties>
               <text value=""/>
-              <toolTipText value="Path to detekt configuration file"/>
+              <toolTipText value="Selects path to your custom detekt configuration file"/>
             </properties>
           </component>
         </children>
@@ -42,7 +42,7 @@
         <properties>
           <selected value="true"/>
           <text value="Enable Detekt"/>
-          <toolTipText value="Enable Detekt"/>
+          <toolTipText value="Enables Detekt to run on file modifications or not"/>
         </properties>
       </component>
       <component id="557e8" class="javax.swing.JCheckBox" binding="buildUponDefaultConfig">
@@ -60,6 +60,7 @@
         </constraints>
         <properties>
           <text value="Treat detekt findings as errors"/>
+          <toolTipText value="Shows detekt findings as errors instead of warnings"/>
         </properties>
       </component>
       <vspacer id="f22cd">
@@ -72,7 +73,8 @@
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Enable Formatting"/>
+          <text value="Enable Formatting rules"/>
+          <toolTipText value="Adds rules related to code formatting"/>
         </properties>
       </component>
       <component id="85c28" class="javax.swing.JCheckBox" binding="failFast">
@@ -90,7 +92,7 @@
         </constraints>
         <properties>
           <text value="Auto correct"/>
-          <toolTipText value="Automatically corrects in-place rules that are fixable"/>
+          <toolTipText value="Corrects automatically in-place rules that are fixable"/>
         </properties>
       </component>
     </children>
