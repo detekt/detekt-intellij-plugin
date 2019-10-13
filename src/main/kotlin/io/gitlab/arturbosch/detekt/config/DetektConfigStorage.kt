@@ -13,7 +13,7 @@ import com.intellij.util.xmlb.annotations.Tag
  */
 @State(
     name = "DetektProjectConfiguration",
-    storages = [(Storage(StoragePathMacros.WORKSPACE_FILE))]
+    storages = [Storage("detekt.xml")]
 )
 class DetektConfigStorage : PersistentStateComponent<DetektConfigStorage> {
 
