@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="io.gitlab.arturbosch.detekt.config.DetektConfigurationForm">
-  <grid id="27dc6" binding="myMainPanel" layout-manager="GridLayoutManager" row-count="7" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="myMainPanel" layout-manager="GridLayoutManager" row-count="8" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
       <xy x="20" y="20" width="680" height="400"/>
@@ -11,7 +11,7 @@
       <grid id="6b450" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
-          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
         <border type="none"/>
@@ -30,7 +30,7 @@
             </constraints>
             <properties>
               <text value=""/>
-              <toolTipText value="Path to detekt configuration file"/>
+              <toolTipText value="Selects path to your custom detekt configuration file"/>
             </properties>
           </component>
         </children>
@@ -42,12 +42,12 @@
         <properties>
           <selected value="true"/>
           <text value="Enable Detekt"/>
-          <toolTipText value="Enable Detekt"/>
+          <toolTipText value="Enables Detekt to run on file modifications or not"/>
         </properties>
       </component>
       <component id="557e8" class="javax.swing.JCheckBox" binding="buildUponDefaultConfig">
         <constraints>
-          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="Build upon the default configuration"/>
@@ -56,15 +56,16 @@
       </component>
       <component id="b76c7" class="javax.swing.JCheckBox" binding="treatAsErrors">
         <constraints>
-          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="Treat detekt findings as errors"/>
+          <toolTipText value="Shows detekt findings as errors instead of warnings"/>
         </properties>
       </component>
       <vspacer id="f22cd">
         <constraints>
-          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
         </constraints>
       </vspacer>
       <component id="4f4cc" class="javax.swing.JCheckBox" binding="enableFormatting">
@@ -72,16 +73,26 @@
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Enable Formatting"/>
+          <text value="Enable Formatting rules"/>
+          <toolTipText value="Adds rules related to code formatting"/>
         </properties>
       </component>
       <component id="85c28" class="javax.swing.JCheckBox" binding="failFast">
         <constraints>
-          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="Fail fast"/>
           <toolTipText value="Enables all existing rules in detekt regardless the configured active properties of rules."/>
+        </properties>
+      </component>
+      <component id="8719" class="javax.swing.JCheckBox" binding="autoCorrect">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Auto correct"/>
+          <toolTipText value="Corrects automatically in-place rules that are fixable"/>
         </properties>
       </component>
     </children>

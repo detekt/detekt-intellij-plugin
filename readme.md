@@ -14,7 +14,7 @@ Once you have installed the plugin, navigate to Settings/Preferences -> Tools ->
 
 ![detekt in action](./img/detekt.png "detekt in action")
 
-## Building the plugin
+## Building / developing the plugin
 
 For building the project, the [Gradle IntelliJ plugin](https://github.com/JetBrains/gradle-intellij-plugin)
 is used.
@@ -26,6 +26,7 @@ is used.
 gradlew buildPlugin
 ```
 
+To test your development, use task `runIde` which will automatically run an Intellij instance to test your new version of detekt plugin.
 
 ## License
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Farturbosch%2Fdetekt-intellij-plugin.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Farturbosch%2Fdetekt-intellij-plugin?ref=badge_large)

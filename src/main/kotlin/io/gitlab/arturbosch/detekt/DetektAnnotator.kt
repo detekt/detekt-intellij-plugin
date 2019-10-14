@@ -54,6 +54,11 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
         val virtualFile = collectedInfo.originalFile.virtualFile
         val settings = processingSettings(virtualFile, configuration)
         val result = createFacade(settings, configuration).run()
+
+        if (settings.autoCorrect) {
+            virtualFile.refresh(false, false)
+        }
+
         return result.findings.flatMap { it.value }
     }
 
@@ -80,13 +85,14 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
                                    configStorage: DetektConfigStorage) =
         ProcessingSettings(
             inputPath = Paths.get(virtualFile.path),
+            autoCorrect = configStorage.autoCorrect,
             config = NoAutoCorrectConfig(CliArgs().apply {
+                failFast = configStorage.failFast
+                buildUponDefaultConfig = configStorage.buildUponDefaultConfig
                 if (configStorage.rulesPath.isNotEmpty()) {
                     config = configStorage.rulesPath
-                    failFast = configStorage.failFast
-                    buildUponDefaultConfig = configStorage.buildUponDefaultConfig
                 }
-            }.loadConfiguration()),
+            }.loadConfiguration(), configStorage.autoCorrect),
             executorService = ForkJoinPool.commonPool()
         )
 
