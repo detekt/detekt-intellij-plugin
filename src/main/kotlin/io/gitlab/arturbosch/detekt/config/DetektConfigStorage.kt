@@ -7,6 +7,7 @@ import com.intellij.openapi.components.Storage
 import com.intellij.openapi.components.StoragePathMacros
 import com.intellij.openapi.project.Project
 import com.intellij.util.xmlb.annotations.Tag
+import java.io.File
 
 /**
  * @author Dmytro Primshyts
@@ -15,7 +16,7 @@ import com.intellij.util.xmlb.annotations.Tag
     name = "DetektProjectConfiguration",
     storages = [(Storage(StoragePathMacros.WORKSPACE_FILE))]
 )
-class DetektConfigStorage : PersistentStateComponent<DetektConfigStorage> {
+class DetektConfigStorage(val project: Project) : PersistentStateComponent<DetektConfigStorage> {
 
     @Tag
     var enableDetekt: Boolean = false
@@ -37,6 +38,12 @@ class DetektConfigStorage : PersistentStateComponent<DetektConfigStorage> {
 
     @Tag
     var rulesPath: String = ""
+        set(value) {
+            field = if (value.isBlank() || File(value).isAbsolute)
+                value
+            else
+                project.basePath + "/" + value
+        }
 
     override fun getState(): DetektConfigStorage? = this
 

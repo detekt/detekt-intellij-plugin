@@ -30,7 +30,7 @@
             </constraints>
             <properties>
               <text value=""/>
-              <toolTipText value="Selects path to your custom detekt configuration file"/>
+              <toolTipText value="Selects path to your custom detekt configuration file. A relative path can be used, and will be relative to project directory."/>
             </properties>
           </component>
         </children>
