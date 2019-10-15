@@ -14,7 +14,7 @@ import java.io.File
  */
 @State(
     name = "DetektProjectConfiguration",
-    storages = [(Storage(StoragePathMacros.WORKSPACE_FILE))]
+    storages = [Storage("detekt.xml")]
 )
 class DetektConfigStorage(val project: Project) : PersistentStateComponent<DetektConfigStorage> {
 
