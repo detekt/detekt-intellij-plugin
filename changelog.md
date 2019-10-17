@@ -1,5 +1,20 @@
 ### Changelog
 
+#### 0.3.2
+
+- Add baseline option - [#48](https://github.com/arturbosch/detekt-intellij-plugin/pull/48)
+- Put detekt plugin config in a separate file to ease sharing - [#47](https://github.com/arturbosch/detekt-intellij-plugin/pull/47)
+- Handle relative path configuration file - [#46](https://github.com/arturbosch/detekt-intellij-plugin/pull/46)
+- Show notification if provided config is invalid - [#45](https://github.com/arturbosch/detekt-intellij-plugin/pull/45)
+- Add autocorrect option - [#44](https://github.com/arturbosch/detekt-intellij-plugin/pull/44)
+- [IntelliJ plugin] Platform error if configuration file is removed - [#42](https://github.com/arturbosch/detekt-intellij-plugin/issues/42)
+- IDEA plugin doesn't handle relative config file path - [#29](https://github.com/arturbosch/detekt-intellij-plugin/issues/29)
+- no possibility to specify the baseline.xml - [#24](https://github.com/arturbosch/detekt-intellij-plugin/issues/24)
+- Uncaught exception  in the intellij plugin when switching to a branch that does not have the config.yml - [#22](https://github.com/arturbosch/detekt-intellij-plugin/issues/22)
+- Feature request: shared configuration - [#13](https://github.com/arturbosch/detekt-intellij-plugin/issues/13)
+
+See all issues at: [0.3.2](https://github.com/arturbosch/detekt-intellij-plugin/milestone/2)
+
 #### 0.3.1
 
 - Upgrade detekt engine to 1.0.0
