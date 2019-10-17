@@ -18,6 +18,8 @@ import com.intellij.psi.PsiFile
 import io.gitlab.arturbosch.detekt.api.Finding
 import io.gitlab.arturbosch.detekt.api.TextLocation
 import io.gitlab.arturbosch.detekt.cli.CliArgs
+import io.gitlab.arturbosch.detekt.cli.FilteredDetectionResult
+import io.gitlab.arturbosch.detekt.cli.baseline.BaselineFacade
 import io.gitlab.arturbosch.detekt.cli.loadConfiguration
 import io.gitlab.arturbosch.detekt.config.DetektConfig
 import io.gitlab.arturbosch.detekt.config.DetektConfigStorage
@@ -64,7 +66,13 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
         val settings = processingSettings(collectedInfo.project, virtualFile, configuration)
 
         return settings?.let {
-            val result = createFacade(settings, configuration).run()
+            val detektion = createFacade(settings, configuration).run()
+
+            val result = if (configuration.baselinePath.isNotBlank()) {
+                FilteredDetectionResult(detektion, BaselineFacade(File(absolutePath(collectedInfo.project, configuration.baselinePath)).toPath()))
+            } else {
+                detektion
+            }
 
             if (settings.autoCorrect) {
                 virtualFile.refresh(false, false)
@@ -98,38 +106,68 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
         virtualFile: VirtualFile,
         configStorage: DetektConfigStorage
     ): ProcessingSettings? {
-        if (configStorage.rulesPath.isNotEmpty()) {
-            val path = File(configStorage.rulesPath)
-            if (!path.exists()) {
-                val n = Notification(
-                    "Detekt",
-                    "Configuration file not found",
-                    "The provided detekt configuration file <b>${path.absolutePath}</b> does not exist. Skipping detekt run.",
-                    NotificationType.WARNING
+        val rulesPath = absolutePath(project, configStorage.rulesPath)
+        val baselinePath = absolutePath(project, configStorage.baselinePath)
+
+        if (baselinePath.isNotEmpty()) {
+            if (!ensureFileExists(
+                    baselinePath,
+                    project,
+                    "Baseline file not found",
+                    "The provided detekt baseline file <b>${baselinePath}</b> does not exist. Skipping detekt run."
                 )
-                n.addAction(object : AnAction("Open Detekt projects settings") {
-                    override fun actionPerformed(e: AnActionEvent) {
-                        val dialog = SettingsDialog(project, "Detekt project settings", DetektConfig(project), true, true)
-                        ApplicationManager.getApplication().invokeLater(dialog::show);
-                    }
-                })
-                n.notify(project)
+            )
                 return null
-            }
         }
 
-
+        if (rulesPath.isNotEmpty()) {
+            if (!ensureFileExists(
+                    rulesPath,
+                    project,
+                    "Configuration file not found",
+                    "The provided detekt configuration file <b>${rulesPath}</b> does not exist. Skipping detekt run."
+                )
+            )
+                return null
+        }
 
         return ProcessingSettings(
             inputPath = Paths.get(virtualFile.path),
             autoCorrect = configStorage.autoCorrect,
             config = NoAutoCorrectConfig(CliArgs().apply {
-                config = configStorage.rulesPath
+                config = rulesPath
                 failFast = configStorage.failFast
                 buildUponDefaultConfig = configStorage.buildUponDefaultConfig
             }.loadConfiguration(), configStorage.autoCorrect),
             executorService = ForkJoinPool.commonPool()
         )
+    }
+
+    private fun absolutePath(project: Project, path: String): String {
+        return if (path.isBlank() || File(path).isAbsolute)
+            path
+        else
+            project.basePath + "/" + path
+    }
+
+    private fun ensureFileExists(path: String, project: Project, title: String, content: String): Boolean {
+        if (!File(path).exists()) {
+            val n = Notification(
+                "Detekt",
+                title,
+                content,
+                NotificationType.WARNING
+            )
+            n.addAction(object : AnAction("Open Detekt projects settings") {
+                override fun actionPerformed(e: AnActionEvent) {
+                    val dialog = SettingsDialog(project, "Detekt project settings", DetektConfig(project), true, true)
+                    ApplicationManager.getApplication().invokeLater(dialog::show);
+                }
+            })
+            n.notify(project)
+            return false
+        }
+        return true
     }
 
     private fun createFacade(settings: ProcessingSettings, configuration: DetektConfigStorage): DetektFacade {

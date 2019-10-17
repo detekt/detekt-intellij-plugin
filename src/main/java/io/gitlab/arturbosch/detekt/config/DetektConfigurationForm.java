@@ -23,6 +23,7 @@ public class DetektConfigurationForm {
     private JCheckBox treatAsErrors;
     private JCheckBox enableFormatting;
     private JCheckBox autoCorrect;
+    private TextFieldWithBrowseButton baselineFilePath;
 
     private DetektConfigStorage detektConfigStorage;
 
@@ -58,6 +59,14 @@ public class DetektConfigurationForm {
                 TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT
         );
 
+        baselineFilePath.addBrowseFolderListener(
+                "",
+                "Detekt baseline file",
+                null,
+                fileChooserDescriptor,
+                TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT
+        );
+
         return myMainPanel;
     }
 
@@ -69,6 +78,7 @@ public class DetektConfigurationForm {
         detektConfigStorage.setFailFast(failFast.isSelected());
         detektConfigStorage.setTreatAsError(treatAsErrors.isSelected());
         detektConfigStorage.setRulesPath(configurationFilePath.getText());
+        detektConfigStorage.setBaselinePath(baselineFilePath.getText());
     }
 
     public void reset() {
@@ -79,6 +89,7 @@ public class DetektConfigurationForm {
         failFast.setSelected(detektConfigStorage.getFailFast());
         treatAsErrors.setSelected(detektConfigStorage.getTreatAsError());
         configurationFilePath.setText(detektConfigStorage.getRulesPath());
+        baselineFilePath.setText(detektConfigStorage.getBaselinePath());
     }
 
     public boolean isModified() {
@@ -88,6 +99,7 @@ public class DetektConfigurationForm {
                 || !Comparing.equal(detektConfigStorage.getBuildUponDefaultConfig(), buildUponDefaultConfig.isSelected())
                 || !Comparing.equal(detektConfigStorage.getFailFast(), failFast.isSelected())
                 || !Comparing.equal(detektConfigStorage.getTreatAsError(), treatAsErrors.isSelected())
-                || !Comparing.equal(detektConfigStorage.getRulesPath(), configurationFilePath.getText());
+                || !Comparing.equal(detektConfigStorage.getRulesPath(), configurationFilePath.getText())
+                || !Comparing.equal(detektConfigStorage.getBaselinePath(), baselineFilePath.getText());
     }
 }

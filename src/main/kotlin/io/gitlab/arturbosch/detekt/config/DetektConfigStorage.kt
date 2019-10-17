@@ -4,7 +4,6 @@ import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
-import com.intellij.openapi.components.StoragePathMacros
 import com.intellij.openapi.project.Project
 import com.intellij.util.xmlb.annotations.Tag
 import java.io.File
@@ -16,7 +15,7 @@ import java.io.File
     name = "DetektProjectConfiguration",
     storages = [Storage("detekt.xml")]
 )
-class DetektConfigStorage(val project: Project) : PersistentStateComponent<DetektConfigStorage> {
+class DetektConfigStorage : PersistentStateComponent<DetektConfigStorage> {
 
     @Tag
     var enableDetekt: Boolean = false
@@ -38,12 +37,9 @@ class DetektConfigStorage(val project: Project) : PersistentStateComponent<Detek
 
     @Tag
     var rulesPath: String = ""
-        set(value) {
-            field = if (value.isBlank() || File(value).isAbsolute)
-                value
-            else
-                project.basePath + "/" + value
-        }
+
+    @Tag
+    var baselinePath: String = ""
 
     override fun getState(): DetektConfigStorage? = this
 
@@ -54,6 +50,7 @@ class DetektConfigStorage(val project: Project) : PersistentStateComponent<Detek
         this.buildUponDefaultConfig = state.buildUponDefaultConfig
         this.failFast = state.failFast
         this.rulesPath = state.rulesPath
+        this.baselinePath = state.baselinePath
         this.treatAsError = state.treatAsError
     }
 
