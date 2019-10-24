@@ -11,7 +11,7 @@ import javax.swing.JComponent
 class DetektConfig(private val project: Project) : SearchableConfigurable {
 
     private val detektConfigStorage: DetektConfigStorage = DetektConfigStorage.instance(project)
-    private val detektConfigurationForm: DetektConfigurationForm = DetektConfigurationForm()
+    private val detektConfigurationForm: DetektConfigurationForm = DetektConfigurationForm(project)
 
     override fun isModified(): Boolean = detektConfigurationForm.isModified
 
