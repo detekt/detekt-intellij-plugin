@@ -1,6 +1,7 @@
 package io.gitlab.arturbosch.detekt.config;
 
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.TextComponentAccessor;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.util.Comparing;
@@ -8,8 +9,6 @@ import com.intellij.ui.IdeBorderFactory;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 /**
  * @author Dmytro Primshyts
@@ -26,6 +25,11 @@ public class DetektConfigurationForm {
     private TextFieldWithBrowseButton baselineFilePath;
 
     private DetektConfigStorage detektConfigStorage;
+    private final Project project;
+
+    public DetektConfigurationForm(Project project) {
+        this.project = project;
+    }
 
     @NotNull
     public JComponent createPanel(@NotNull DetektConfigStorage detektConfigStorage) {
@@ -54,7 +58,7 @@ public class DetektConfigurationForm {
         configurationFilePath.addBrowseFolderListener(
                 "",
                 "Detekt rules file",
-                null,
+                project,
                 fileChooserDescriptor,
                 TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT
         );
@@ -62,7 +66,7 @@ public class DetektConfigurationForm {
         baselineFilePath.addBrowseFolderListener(
                 "",
                 "Detekt baseline file",
-                null,
+                project,
                 fileChooserDescriptor,
                 TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT
         );
