@@ -6,7 +6,6 @@ import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
 import com.intellij.openapi.project.Project
 import com.intellij.util.xmlb.annotations.Tag
-import java.io.File
 
 /**
  * @author Dmytro Primshyts

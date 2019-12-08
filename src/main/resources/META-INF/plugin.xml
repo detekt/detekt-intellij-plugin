@@ -36,6 +36,10 @@
     </project-components>
 
     <actions>
+        <action id="Detekt.AutoCorrect" class="io.gitlab.arturbosch.detekt.action.AutoCorrectAction"
+                text="AutoCorrect by Detekt Rules" description="Run AutoCorrect action on the current file">
+            <add-to-group group-id="RefactoringMenu" relative-to-action="GenerateJavadoc" anchor="after"/>
+        </action>
     </actions>
 
 </idea-plugin>
