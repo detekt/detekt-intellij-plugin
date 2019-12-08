@@ -19,20 +19,24 @@ fun absolutePath(project: Project, path: String): String =
 
 fun ensureFileExists(path: String, project: Project, title: String, content: String): Boolean {
     if (!File(path).exists()) {
-        val n = Notification(
-            "Detekt",
-            title,
-            content,
-            NotificationType.WARNING
-        )
-        n.addAction(object : AnAction("Open Detekt projects settings") {
-            override fun actionPerformed(e: AnActionEvent) {
-                val dialog = SettingsDialog(project, "Detekt project settings", DetektConfig(project), true, true)
-                ApplicationManager.getApplication().invokeLater(dialog::show)
-            }
-        })
-        n.notify(project)
+        showNotification(title, content, project)
         return false
     }
     return true
+}
+
+fun showNotification(title: String, content: String, project: Project) {
+    val n = Notification(
+        "Detekt",
+        title,
+        content,
+        NotificationType.WARNING
+    )
+    n.addAction(object : AnAction("Open Detekt projects settings") {
+        override fun actionPerformed(e: AnActionEvent) {
+            val dialog = SettingsDialog(project, "Detekt project settings", DetektConfig(project), true, true)
+            ApplicationManager.getApplication().invokeLater(dialog::show);
+        }
+    })
+    n.notify(project)
 }

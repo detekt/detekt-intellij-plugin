@@ -1,14 +1,19 @@
 package io.gitlab.arturbosch.detekt.config;
 
+import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
+import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.TextComponentAccessor;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.util.Comparing;
+import com.intellij.openapi.util.io.FileUtil;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.IdeBorderFactory;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import java.io.File;
 
 /**
  * @author Dmytro Primshyts
@@ -22,6 +27,7 @@ public class DetektConfigurationForm {
     private JCheckBox treatAsErrors;
     private JCheckBox enableFormatting;
     private TextFieldWithBrowseButton baselineFilePath;
+    private TextFieldWithBrowseButton pluginPaths;
 
     private DetektConfigStorage detektConfigStorage;
     private final Project project;
@@ -43,6 +49,8 @@ public class DetektConfigurationForm {
             configurationFilePath.setEnabled(enabled);
             treatAsErrors.setEnabled(enabled);
             enableFormatting.setEnabled(enabled);
+            baselineFilePath.setEditable(enabled);
+            pluginPaths.setEditable(enabled);
         });
 
         FileChooserDescriptor fileChooserDescriptor = new FileChooserDescriptor(
@@ -69,6 +77,21 @@ public class DetektConfigurationForm {
                 TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT
         );
 
+        pluginPaths.addActionListener(__ -> {
+            final FileChooserDescriptor descriptor = FileChooserDescriptorFactory.createAllButJarContentsDescriptor();
+            final VirtualFile[] files = FileChooser.chooseFiles(descriptor, pluginPaths, project, null);
+            if (files.length > 0) {
+                final StringBuilder builder = new StringBuilder();
+                for (VirtualFile file : files) {
+                    if (builder.length() > 0) {
+                        builder.append(File.pathSeparator);
+                    }
+                    builder.append(FileUtil.toSystemDependentName(file.getPath()));
+                }
+                pluginPaths.setText(builder.toString());
+            }
+        });
+
         return myMainPanel;
     }
 
@@ -80,6 +103,7 @@ public class DetektConfigurationForm {
         detektConfigStorage.setTreatAsError(treatAsErrors.isSelected());
         detektConfigStorage.setRulesPath(configurationFilePath.getText());
         detektConfigStorage.setBaselinePath(baselineFilePath.getText());
+        detektConfigStorage.setPluginPaths(pluginPaths.getText());
     }
 
     public void reset() {
@@ -90,6 +114,7 @@ public class DetektConfigurationForm {
         treatAsErrors.setSelected(detektConfigStorage.getTreatAsError());
         configurationFilePath.setText(detektConfigStorage.getRulesPath());
         baselineFilePath.setText(detektConfigStorage.getBaselinePath());
+        pluginPaths.setText(detektConfigStorage.getPluginPaths());
     }
 
     public boolean isModified() {
@@ -99,6 +124,7 @@ public class DetektConfigurationForm {
                 || !Comparing.equal(detektConfigStorage.getFailFast(), failFast.isSelected())
                 || !Comparing.equal(detektConfigStorage.getTreatAsError(), treatAsErrors.isSelected())
                 || !Comparing.equal(detektConfigStorage.getRulesPath(), configurationFilePath.getText())
-                || !Comparing.equal(detektConfigStorage.getBaselinePath(), baselineFilePath.getText());
+                || !Comparing.equal(detektConfigStorage.getBaselinePath(), baselineFilePath.getText())
+                || !Comparing.equal(detektConfigStorage.getPluginPaths(), pluginPaths.getText());
     }
 }
