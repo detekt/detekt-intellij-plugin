@@ -21,7 +21,6 @@ public class DetektConfigurationForm {
     private JPanel myMainPanel;
     private JCheckBox treatAsErrors;
     private JCheckBox enableFormatting;
-    private JCheckBox autoCorrect;
     private TextFieldWithBrowseButton baselineFilePath;
 
     private DetektConfigStorage detektConfigStorage;
@@ -44,7 +43,6 @@ public class DetektConfigurationForm {
             configurationFilePath.setEnabled(enabled);
             treatAsErrors.setEnabled(enabled);
             enableFormatting.setEnabled(enabled);
-            autoCorrect.setEnabled(enabled);
         });
 
         FileChooserDescriptor fileChooserDescriptor = new FileChooserDescriptor(
@@ -77,7 +75,6 @@ public class DetektConfigurationForm {
     public void apply() {
         detektConfigStorage.setEnableDetekt(enableDetekt.isSelected());
         detektConfigStorage.setEnableFormatting(enableFormatting.isSelected());
-        detektConfigStorage.setAutoCorrect(autoCorrect.isSelected());
         detektConfigStorage.setBuildUponDefaultConfig(buildUponDefaultConfig.isSelected());
         detektConfigStorage.setFailFast(failFast.isSelected());
         detektConfigStorage.setTreatAsError(treatAsErrors.isSelected());
@@ -88,7 +85,6 @@ public class DetektConfigurationForm {
     public void reset() {
         enableDetekt.setSelected(detektConfigStorage.getEnableDetekt());
         enableFormatting.setSelected(detektConfigStorage.getEnableFormatting());
-        autoCorrect.setSelected(detektConfigStorage.getAutoCorrect());
         buildUponDefaultConfig.setSelected(detektConfigStorage.getBuildUponDefaultConfig());
         failFast.setSelected(detektConfigStorage.getFailFast());
         treatAsErrors.setSelected(detektConfigStorage.getTreatAsError());
@@ -99,7 +95,6 @@ public class DetektConfigurationForm {
     public boolean isModified() {
         return !Comparing.equal(detektConfigStorage.getEnableDetekt(), enableDetekt.isSelected())
                 || !Comparing.equal(detektConfigStorage.getEnableFormatting(), enableFormatting.isSelected())
-                || !Comparing.equal(detektConfigStorage.getAutoCorrect(), autoCorrect.isSelected())
                 || !Comparing.equal(detektConfigStorage.getBuildUponDefaultConfig(), buildUponDefaultConfig.isSelected())
                 || !Comparing.equal(detektConfigStorage.getFailFast(), failFast.isSelected())
                 || !Comparing.equal(detektConfigStorage.getTreatAsError(), treatAsErrors.isSelected())

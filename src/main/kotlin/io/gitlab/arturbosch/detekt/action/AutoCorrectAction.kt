@@ -32,8 +32,10 @@ class AutoCorrectAction : AnAction() {
     }
 
     override fun actionPerformed(event: AnActionEvent) {
+        println("Start autocorrect")
         val virtualFile = event.getData(CommonDataKeys.VIRTUAL_FILE)
         val project = event.getData(CommonDataKeys.PROJECT)
+        println("Update file")
         forceUpdateFile(project, virtualFile)
 
         if (virtualFile != null && project != null) {
@@ -42,7 +44,9 @@ class AutoCorrectAction : AnAction() {
 
             settings?.let {
                 createFacade(settings, configuration).run()
+
                 virtualFile.refresh(false, false)
+                println("AutoCorrect should be complete")
             }
         }
     }
@@ -82,5 +86,4 @@ class AutoCorrectAction : AnAction() {
             executorService = ForkJoinPool.commonPool()
         )
     }
-
 }

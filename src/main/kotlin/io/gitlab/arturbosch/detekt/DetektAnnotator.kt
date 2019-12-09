@@ -13,7 +13,6 @@ import io.gitlab.arturbosch.detekt.cli.FilteredDetectionResult
 import io.gitlab.arturbosch.detekt.cli.baseline.BaselineFacade
 import io.gitlab.arturbosch.detekt.cli.loadConfiguration
 import io.gitlab.arturbosch.detekt.config.DetektConfigStorage
-import io.gitlab.arturbosch.detekt.config.NoAutoCorrectConfig
 import io.gitlab.arturbosch.detekt.core.ProcessingSettings
 import io.gitlab.arturbosch.detekt.util.absolutePath
 import io.gitlab.arturbosch.detekt.util.createFacade
@@ -109,12 +108,11 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
 
         return ProcessingSettings(
             inputPath = Paths.get(virtualFile.path),
-            autoCorrect = false,
-            config = NoAutoCorrectConfig(CliArgs().apply {
+            config = CliArgs().apply {
                 config = rulesPath
                 failFast = configStorage.failFast
                 buildUponDefaultConfig = configStorage.buildUponDefaultConfig
-            }.loadConfiguration(), configStorage.autoCorrect),
+            }.loadConfiguration(),
             executorService = ForkJoinPool.commonPool()
         )
     }

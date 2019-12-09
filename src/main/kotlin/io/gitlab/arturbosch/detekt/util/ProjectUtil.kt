@@ -41,12 +41,3 @@ fun ensureFileExists(path: String, project: Project, title: String, content: Str
     }
     return true
 }
-
-fun createFacade(settings: ProcessingSettings, configuration: DetektConfigStorage): DetektFacade {
-    var providers = RuleSetLocator(settings).load()
-    if (!configuration.enableFormatting) {
-        providers = providers.filterNot { it.ruleSetId == "formatting" }
-    }
-    val processors = FileProcessorLocator(settings).load()
-    return DetektFacade.create(settings, providers, processors)
-}
