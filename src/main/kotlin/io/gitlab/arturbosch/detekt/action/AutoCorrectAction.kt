@@ -8,31 +8,31 @@ import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Computable
 import com.intellij.openapi.vfs.VirtualFile
-import io.gitlab.arturbosch.detekt.cli.CliArgs
-import io.gitlab.arturbosch.detekt.cli.loadConfiguration
 import io.gitlab.arturbosch.detekt.config.DetektConfigStorage
 import io.gitlab.arturbosch.detekt.core.ProcessingSettings
+import io.gitlab.arturbosch.detekt.util.DetektPluginService
 import io.gitlab.arturbosch.detekt.util.FileExtensions
 import io.gitlab.arturbosch.detekt.util.absolutePath
-import io.gitlab.arturbosch.detekt.util.createFacade
 import java.io.File
-import java.nio.file.Paths
-import java.util.concurrent.ForkJoinPool
 
 class AutoCorrectAction : AnAction() {
+    private lateinit var detektPluginService: DetektPluginService
 
     override fun update(event: AnActionEvent) {
-        val file: VirtualFile? = event.getData(CommonDataKeys.VIRTUAL_FILE)
+        val file: VirtualFile = event.getData(CommonDataKeys.VIRTUAL_FILE) ?: return
+        val project = event.getData(CommonDataKeys.PROJECT) ?: return
+        val configuration = DetektConfigStorage.instance(project)
 
-        println(file?.extension)
-        if (file?.extension != FileExtensions.KOTLIN_FILE_EXTENSION) {
+        if (file.extension == FileExtensions.KOTLIN_FILE_EXTENSION) {
+            // enable auto corrrect option only when plugin is enabled
+            event.presentation.isEnabledAndVisible = configuration.enableDetekt
+        } else {
             // hide action for non-Kotlin source files
             event.presentation.isEnabledAndVisible = false
         }
     }
 
     override fun actionPerformed(event: AnActionEvent) {
-        println("Start autocorrect")
         val virtualFile = event.getData(CommonDataKeys.VIRTUAL_FILE)
         val project = event.getData(CommonDataKeys.PROJECT)
         println("Update file")
@@ -40,10 +40,14 @@ class AutoCorrectAction : AnAction() {
 
         if (virtualFile != null && project != null) {
             val configuration = DetektConfigStorage.instance(project)
+            detektPluginService = DetektPluginService(configuration)
+
             val settings = processingSettings(project, virtualFile, configuration)
 
             settings?.let {
-                createFacade(settings, configuration).run()
+                detektPluginService
+                    .createFacade(settings)
+                    .run()
 
                 virtualFile.refresh(false, false)
                 println("AutoCorrect should be complete")
@@ -57,6 +61,7 @@ class AutoCorrectAction : AnAction() {
             val document = documentManager.getDocument(virtualFile!!)
             if (document != null) {
                 documentManager.saveDocument(document)
+                println("Force update was completed")
                 return@Computable false
             }
             true
@@ -75,15 +80,11 @@ class AutoCorrectAction : AnAction() {
             }
         }
 
-        return ProcessingSettings(
-            inputPath = Paths.get(virtualFile.path),
-            autoCorrect = true,
-            config = CliArgs().apply {
-                config = rulesPath
-                failFast = configStorage.failFast
-                buildUponDefaultConfig = configStorage.buildUponDefaultConfig
-            }.loadConfiguration(),
-            executorService = ForkJoinPool.commonPool()
+        return detektPluginService.getProcessSettings(
+            virtualFile = virtualFile,
+            rulesPath = rulesPath,
+            configStorage = configStorage,
+            autoCorrect = true
         )
     }
 }

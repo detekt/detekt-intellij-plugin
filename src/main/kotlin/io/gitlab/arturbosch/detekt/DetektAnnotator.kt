@@ -8,18 +8,14 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiFile
 import io.gitlab.arturbosch.detekt.api.Finding
 import io.gitlab.arturbosch.detekt.api.TextLocation
-import io.gitlab.arturbosch.detekt.cli.CliArgs
 import io.gitlab.arturbosch.detekt.cli.FilteredDetectionResult
 import io.gitlab.arturbosch.detekt.cli.baseline.BaselineFacade
-import io.gitlab.arturbosch.detekt.cli.loadConfiguration
 import io.gitlab.arturbosch.detekt.config.DetektConfigStorage
 import io.gitlab.arturbosch.detekt.core.ProcessingSettings
+import io.gitlab.arturbosch.detekt.util.DetektPluginService
 import io.gitlab.arturbosch.detekt.util.absolutePath
-import io.gitlab.arturbosch.detekt.util.createFacade
 import io.gitlab.arturbosch.detekt.util.ensureFileExists
 import java.io.File
-import java.nio.file.Paths
-import java.util.concurrent.ForkJoinPool
 
 /**
  * @author Dmytro Primshyts
@@ -27,10 +23,13 @@ import java.util.concurrent.ForkJoinPool
  */
 class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
 
+    private lateinit var detektPluginService: DetektPluginService
+
     override fun collectInformation(file: PsiFile): PsiFile = file
 
     override fun doAnnotate(collectedInfo: PsiFile): List<Finding> {
         val configuration = DetektConfigStorage.instance(collectedInfo.project)
+        detektPluginService = DetektPluginService(configuration)
         if (configuration.enableDetekt) {
             return runDetekt(collectedInfo, configuration)
         }
@@ -45,7 +44,9 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
         val settings = processingSettings(collectedInfo.project, virtualFile, configuration)
 
         return settings?.let {
-            val detektion = createFacade(settings, configuration).run()
+            val detektion = detektPluginService
+                .createFacade(settings, !configuration.enableFormatting)
+                .run()
 
             val result = if (configuration.baselinePath.isNotBlank()) {
                 FilteredDetectionResult(detektion, BaselineFacade(File(absolutePath(collectedInfo.project, configuration.baselinePath)).toPath()))
@@ -106,14 +107,11 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
                 return null
         }
 
-        return ProcessingSettings(
-            inputPath = Paths.get(virtualFile.path),
-            config = CliArgs().apply {
-                config = rulesPath
-                failFast = configStorage.failFast
-                buildUponDefaultConfig = configStorage.buildUponDefaultConfig
-            }.loadConfiguration(),
-            executorService = ForkJoinPool.commonPool()
+        return detektPluginService.getProcessSettings(
+            virtualFile = virtualFile,
+            rulesPath = rulesPath,
+            configStorage = configStorage,
+            autoCorrect = false
         )
     }
 }

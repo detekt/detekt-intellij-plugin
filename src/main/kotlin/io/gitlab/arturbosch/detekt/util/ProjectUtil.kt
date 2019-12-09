@@ -8,11 +8,6 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.options.newEditor.SettingsDialog
 import com.intellij.openapi.project.Project
 import io.gitlab.arturbosch.detekt.config.DetektConfig
-import io.gitlab.arturbosch.detekt.config.DetektConfigStorage
-import io.gitlab.arturbosch.detekt.core.DetektFacade
-import io.gitlab.arturbosch.detekt.core.FileProcessorLocator
-import io.gitlab.arturbosch.detekt.core.ProcessingSettings
-import io.gitlab.arturbosch.detekt.core.RuleSetLocator
 import java.io.File
 
 fun absolutePath(project: Project, path: String): String =
