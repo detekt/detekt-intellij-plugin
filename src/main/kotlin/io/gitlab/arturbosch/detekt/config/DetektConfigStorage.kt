@@ -6,7 +6,6 @@ import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
 import com.intellij.openapi.project.Project
 import com.intellij.util.xmlb.annotations.Tag
-import java.io.File
 
 /**
  * @author Dmytro Primshyts
@@ -22,9 +21,6 @@ class DetektConfigStorage : PersistentStateComponent<DetektConfigStorage> {
 
     @Tag
     var enableFormatting: Boolean = false
-
-    @Tag
-    var autoCorrect: Boolean = false
 
     @Tag
     var buildUponDefaultConfig: Boolean = false
@@ -46,7 +42,6 @@ class DetektConfigStorage : PersistentStateComponent<DetektConfigStorage> {
     override fun loadState(state: DetektConfigStorage) {
         this.enableDetekt = state.enableDetekt
         this.enableFormatting = state.enableFormatting
-        this.autoCorrect = state.autoCorrect
         this.buildUponDefaultConfig = state.buildUponDefaultConfig
         this.failFast = state.failFast
         this.rulesPath = state.rulesPath

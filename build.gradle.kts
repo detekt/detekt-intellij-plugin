@@ -29,7 +29,7 @@ dependencies {
 
 configure<IntelliJPluginExtension> {
 	pluginName = "Detekt IntelliJ Plugin"
-	version = "2019.2"
+	version = "2019.3"
 	updateSinceUntilBuild = false
 	setPlugins("IntelliLang", "Kotlin")
 }
