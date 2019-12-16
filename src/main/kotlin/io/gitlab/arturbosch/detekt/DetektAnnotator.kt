@@ -11,6 +11,7 @@ import io.gitlab.arturbosch.detekt.api.TextLocation
 import io.gitlab.arturbosch.detekt.cli.FilteredDetectionResult
 import io.gitlab.arturbosch.detekt.cli.baseline.BaselineFacade
 import io.gitlab.arturbosch.detekt.config.DetektConfigStorage
+import io.gitlab.arturbosch.detekt.config.plugins
 import io.gitlab.arturbosch.detekt.core.ProcessingSettings
 import io.gitlab.arturbosch.detekt.util.DetektPluginService
 import io.gitlab.arturbosch.detekt.util.absolutePath
@@ -44,14 +45,17 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
         val settings = processingSettings(collectedInfo.project, virtualFile, configuration)
 
         return settings?.let {
-            val detektion = detektPluginService
+            val service = detektPluginService
                 .createFacade(settings, !configuration.enableFormatting)
                 .run()
 
             val result = if (configuration.baselinePath.isNotBlank()) {
-                FilteredDetectionResult(detektion, BaselineFacade(File(absolutePath(collectedInfo.project, configuration.baselinePath)).toPath()))
+                FilteredDetectionResult(
+                    service,
+                    BaselineFacade(File(absolutePath(collectedInfo.project, configuration.baselinePath)).toPath())
+                )
             } else {
-                detektion
+                service
             }
 
             result.findings.flatMap { it.value }
@@ -107,11 +111,14 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
                 return null
         }
 
+        val pluginPaths = configStorage.plugins(project) ?: return null
+
         return detektPluginService.getProcessSettings(
             virtualFile = virtualFile,
             rulesPath = rulesPath,
             configStorage = configStorage,
-            autoCorrect = false
+            autoCorrect = false,
+            pluginPaths = pluginPaths
         )
     }
 }

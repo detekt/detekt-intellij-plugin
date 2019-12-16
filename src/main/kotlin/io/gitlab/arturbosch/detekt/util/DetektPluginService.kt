@@ -8,11 +8,12 @@ import io.gitlab.arturbosch.detekt.core.DetektFacade
 import io.gitlab.arturbosch.detekt.core.FileProcessorLocator
 import io.gitlab.arturbosch.detekt.core.ProcessingSettings
 import io.gitlab.arturbosch.detekt.core.RuleSetLocator
+import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.concurrent.ForkJoinPool
 
 class DetektPluginService(
-    private val configuration: DetektConfigStorage
+    private val configStorage: DetektConfigStorage
 ) {
 
     fun createFacade(settings: ProcessingSettings, withoutFormatting: Boolean = false): DetektFacade {
@@ -28,7 +29,8 @@ class DetektPluginService(
         virtualFile: VirtualFile,
         rulesPath: String,
         configStorage: DetektConfigStorage,
-        autoCorrect: Boolean
+        autoCorrect: Boolean,
+        pluginPaths: List<Path>
     ): ProcessingSettings {
         return ProcessingSettings(
             inputPath = Paths.get(virtualFile.path),
@@ -38,7 +40,7 @@ class DetektPluginService(
                 failFast = configStorage.failFast
                 buildUponDefaultConfig = configStorage.buildUponDefaultConfig
             }.loadConfiguration(),
-
+            pluginPaths = pluginPaths,
             executorService = ForkJoinPool.commonPool()
         )
     }

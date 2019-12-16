@@ -37,6 +37,9 @@ class DetektConfigStorage : PersistentStateComponent<DetektConfigStorage> {
     @Tag
     var baselinePath: String = ""
 
+    @Tag
+    var pluginPaths: String = ""
+
     override fun getState(): DetektConfigStorage? = this
 
     override fun loadState(state: DetektConfigStorage) {
@@ -47,6 +50,7 @@ class DetektConfigStorage : PersistentStateComponent<DetektConfigStorage> {
         this.rulesPath = state.rulesPath
         this.baselinePath = state.baselinePath
         this.treatAsError = state.treatAsError
+        this.pluginPaths = state.pluginPaths
     }
 
     companion object {

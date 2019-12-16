@@ -9,6 +9,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Computable
 import com.intellij.openapi.vfs.VirtualFile
 import io.gitlab.arturbosch.detekt.config.DetektConfigStorage
+import io.gitlab.arturbosch.detekt.config.plugins
 import io.gitlab.arturbosch.detekt.core.ProcessingSettings
 import io.gitlab.arturbosch.detekt.util.DetektPluginService
 import io.gitlab.arturbosch.detekt.util.FileExtensions
@@ -16,6 +17,7 @@ import io.gitlab.arturbosch.detekt.util.absolutePath
 import java.io.File
 
 class AutoCorrectAction : AnAction() {
+
     private lateinit var detektPluginService: DetektPluginService
 
     override fun update(event: AnActionEvent) {
@@ -24,7 +26,7 @@ class AutoCorrectAction : AnAction() {
         val configuration = DetektConfigStorage.instance(project)
 
         if (file.extension == FileExtensions.KOTLIN_FILE_EXTENSION) {
-            // enable auto corrrect option only when plugin is enabled
+            // enable auto correct option only when plugin is enabled
             event.presentation.isEnabledAndVisible = configuration.enableDetekt
         } else {
             // hide action for non-Kotlin source files
@@ -79,12 +81,13 @@ class AutoCorrectAction : AnAction() {
                 return null
             }
         }
-
+        val plugins = configStorage.plugins(project) ?: return null
         return detektPluginService.getProcessSettings(
             virtualFile = virtualFile,
             rulesPath = rulesPath,
             configStorage = configStorage,
-            autoCorrect = true
+            autoCorrect = true,
+            pluginPaths = plugins
         )
     }
 }
