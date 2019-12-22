@@ -1,5 +1,27 @@
 ### Changelog
 
+#### 0.4.0
+
+##### Notable Changes
+
+- The plugin now does not auto correct issues as this conflicts with idea and other plugins.
+Use the new `AutoCorrect by Detekt Rules` action for this.
+This change also fixes inconvenient errors in the event log when debugging or commiting.
+- Custom rule sets can be applied using the new `pluginPaths` config option.
+
+##### Changelog
+
+- Remove running 'AutoCorrect' automatically on background and assign it to IDEA action - [#55](https://github.com/detekt/detekt-intellij-plugin/pull/55)
+- Add pluginPaths option (#43) - [#54](https://github.com/detekt/detekt-intellij-plugin/pull/54)
+- Run autocorrect only when save is trigerred - [#53](https://github.com/detekt/detekt-intellij-plugin/issues/53)
+- Set current project directory for the "Baseline File" and "Configuration File" browse file dialog window - [#51](https://github.com/detekt/detekt-intellij-plugin/pull/51)
+- Save Actions does not work when detekt plugin is also enabled - [#50](https://github.com/detekt/detekt-intellij-plugin/issues/50)
+- Custom rules integration to IntelliJ plugin? - [#43](https://github.com/detekt/detekt-intellij-plugin/issues/43)
+- java.lang.IllegalArgumentException: Given path /fragment.kt does not exist! - [#23](https://github.com/detekt/detekt-intellij-plugin/issues/23)
+- Must not start write action from within read action in the other thread - deadlock is coming - [#21](https://github.com/detekt/detekt-intellij-plugin/issues/21)
+
+See all issues at: [0.4.0](https://github.com/detekt/detekt-intellij-plugin/milestone/3)
+
 #### 0.3.2
 
 - Add baseline option - [#48](https://github.com/arturbosch/detekt-intellij-plugin/pull/48)
