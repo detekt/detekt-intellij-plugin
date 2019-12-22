@@ -12,20 +12,20 @@ import io.gitlab.arturbosch.detekt.config.DetektConfigStorage
 import io.gitlab.arturbosch.detekt.config.plugins
 import io.gitlab.arturbosch.detekt.core.ProcessingSettings
 import io.gitlab.arturbosch.detekt.util.DetektPluginService
-import io.gitlab.arturbosch.detekt.util.FileExtensions
+import io.gitlab.arturbosch.detekt.util.KOTLIN_FILE_EXTENSION
 import io.gitlab.arturbosch.detekt.util.absolutePath
 import java.io.File
 
 class AutoCorrectAction : AnAction() {
 
-    private lateinit var detektPluginService: DetektPluginService
+    private var service = DetektPluginService()
 
     override fun update(event: AnActionEvent) {
         val file: VirtualFile = event.getData(CommonDataKeys.VIRTUAL_FILE) ?: return
         val project = event.getData(CommonDataKeys.PROJECT) ?: return
         val configuration = DetektConfigStorage.instance(project)
 
-        if (file.extension == FileExtensions.KOTLIN_FILE_EXTENSION) {
+        if (file.extension == KOTLIN_FILE_EXTENSION) {
             // enable auto correct option only when plugin is enabled
             event.presentation.isEnabledAndVisible = configuration.enableDetekt
         } else {
@@ -42,15 +42,9 @@ class AutoCorrectAction : AnAction() {
 
         if (virtualFile != null && project != null) {
             val configuration = DetektConfigStorage.instance(project)
-            detektPluginService = DetektPluginService(configuration)
-
             val settings = processingSettings(project, virtualFile, configuration)
-
-            settings?.let {
-                detektPluginService
-                    .createFacade(settings)
-                    .run()
-
+            if (settings != null) {
+                service.createFacade(settings).run()
                 virtualFile.refresh(false, false)
                 println("AutoCorrect should be complete")
             }
@@ -70,6 +64,7 @@ class AutoCorrectAction : AnAction() {
         })
     }
 
+    @Suppress("ReturnCount")
     private fun processingSettings(
         project: Project,
         virtualFile: VirtualFile,
@@ -82,7 +77,7 @@ class AutoCorrectAction : AnAction() {
             }
         }
         val plugins = configStorage.plugins(project) ?: return null
-        return detektPluginService.getProcessSettings(
+        return service.getProcessSettings(
             virtualFile = virtualFile,
             rulesPath = rulesPath,
             configStorage = configStorage,

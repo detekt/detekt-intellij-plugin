@@ -12,14 +12,12 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.concurrent.ForkJoinPool
 
-class DetektPluginService(
-    private val configStorage: DetektConfigStorage
-) {
+class DetektPluginService {
 
     fun createFacade(settings: ProcessingSettings, withoutFormatting: Boolean = false): DetektFacade {
         var providers = RuleSetLocator(settings).load()
         if (withoutFormatting) {
-            providers = providers.filterNot { it.ruleSetId == "formatting" }
+            providers = providers.filterNot { it.ruleSetId == FORMATTING_RULE_SET_ID }
         }
         val processors = FileProcessorLocator(settings).load()
         return DetektFacade.create(settings, providers, processors)
@@ -31,17 +29,15 @@ class DetektPluginService(
         configStorage: DetektConfigStorage,
         autoCorrect: Boolean,
         pluginPaths: List<Path>
-    ): ProcessingSettings {
-        return ProcessingSettings(
-            inputPath = Paths.get(virtualFile.path),
-            autoCorrect = autoCorrect,
-            config = CliArgs().apply {
-                config = rulesPath
-                failFast = configStorage.failFast
-                buildUponDefaultConfig = configStorage.buildUponDefaultConfig
-            }.loadConfiguration(),
-            pluginPaths = pluginPaths,
-            executorService = ForkJoinPool.commonPool()
-        )
-    }
+    ) = ProcessingSettings(
+        inputPath = Paths.get(virtualFile.path),
+        autoCorrect = autoCorrect,
+        config = CliArgs().apply {
+            config = rulesPath
+            failFast = configStorage.failFast
+            buildUponDefaultConfig = configStorage.buildUponDefaultConfig
+        }.loadConfiguration(),
+        pluginPaths = pluginPaths,
+        executorService = ForkJoinPool.commonPool()
+    )
 }

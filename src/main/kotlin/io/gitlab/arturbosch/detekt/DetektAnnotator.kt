@@ -20,13 +20,12 @@ import java.io.File
 
 class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
 
-    private lateinit var detektPluginService: DetektPluginService
+    private val service = DetektPluginService()
 
     override fun collectInformation(file: PsiFile): PsiFile = file
 
     override fun doAnnotate(collectedInfo: PsiFile): List<Finding> {
         val configuration = DetektConfigStorage.instance(collectedInfo.project)
-        detektPluginService = DetektPluginService(configuration)
         if (configuration.enableDetekt) {
             return runDetekt(collectedInfo, configuration)
         }
@@ -39,23 +38,23 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
     ): List<Finding> {
         val virtualFile = collectedInfo.originalFile.virtualFile
         val settings = processingSettings(collectedInfo.project, virtualFile, configuration)
-
-        return settings?.let {
-            val service = detektPluginService
+        if (settings != null) {
+            var result = service
                 .createFacade(settings, !configuration.enableFormatting)
                 .run()
 
-            val result = if (configuration.baselinePath.isNotBlank()) {
+            result = if (configuration.baselinePath.isNotBlank()) {
                 FilteredDetectionResult(
-                    service,
+                    result,
                     BaselineFacade(File(absolutePath(collectedInfo.project, configuration.baselinePath)).toPath())
                 )
             } else {
-                service
+                result
             }
 
-            result.findings.flatMap { it.value }
-        } ?: emptyList()
+            return result.findings.flatMap { it.value }
+        }
+        return emptyList()
     }
 
     override fun apply(
@@ -77,6 +76,7 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
 
     private fun TextLocation.toTextRange(): TextRange = TextRange.create(start, end)
 
+    @Suppress("ReturnCount")
     private fun processingSettings(
         project: Project,
         virtualFile: VirtualFile,
@@ -92,8 +92,9 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
                     "Baseline file not found",
                     "The provided detekt baseline file <b>$baselinePath</b> does not exist. Skipping detekt run."
                 )
-            )
+            ) {
                 return null
+            }
         }
 
         if (rulesPath.isNotEmpty()) {
@@ -103,13 +104,14 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
                     "Configuration file not found",
                     "The provided detekt configuration file <b>$rulesPath</b> does not exist. Skipping detekt run."
                 )
-            )
+            ) {
                 return null
+            }
         }
 
         val pluginPaths = configStorage.plugins(project) ?: return null
 
-        return detektPluginService.getProcessSettings(
+        return service.getProcessSettings(
             virtualFile = virtualFile,
             rulesPath = rulesPath,
             configStorage = configStorage,

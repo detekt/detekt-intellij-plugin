@@ -26,17 +26,23 @@ fun ensureFileExists(path: String, project: Project, title: String, content: Str
 }
 
 fun showNotification(title: String, content: String, project: Project) {
-    val n = Notification(
+    val notification = Notification(
         "Detekt",
         title,
         content,
         NotificationType.WARNING
     )
-    n.addAction(object : AnAction("Open Detekt projects settings") {
+    notification.addAction(object : AnAction("Open Detekt projects settings") {
         override fun actionPerformed(e: AnActionEvent) {
-            val dialog = SettingsDialog(project, "Detekt project settings", DetektConfig(project), true, true)
-            ApplicationManager.getApplication().invokeLater(dialog::show);
+            val dialog = SettingsDialog(
+                project,
+                "Detekt project settings",
+                DetektConfig(project),
+                true,
+                true
+            )
+            ApplicationManager.getApplication().invokeLater(dialog::show)
         }
     })
-    n.notify(project)
+    notification.notify(project)
 }

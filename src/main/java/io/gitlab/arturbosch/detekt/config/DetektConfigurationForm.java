@@ -75,7 +75,7 @@ public class DetektConfigurationForm {
                 TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT
         );
 
-        pluginPaths.addActionListener(__ -> {
+        pluginPaths.addActionListener(action -> {
             final FileChooserDescriptor descriptor = FileChooserDescriptorFactory.createAllButJarContentsDescriptor();
             final VirtualFile[] files = FileChooser.chooseFiles(descriptor, pluginPaths, project, null);
             if (files.length > 0) {
