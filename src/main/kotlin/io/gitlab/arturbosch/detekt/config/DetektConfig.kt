@@ -5,9 +5,6 @@ import com.intellij.openapi.options.SearchableConfigurable
 import com.intellij.openapi.project.Project
 import javax.swing.JComponent
 
-/**
- * @author Dmytro Primshyts
- */
 class DetektConfig(private val project: Project) : SearchableConfigurable {
 
     private val detektConfigStorage: DetektConfigStorage = DetektConfigStorage.instance(project)

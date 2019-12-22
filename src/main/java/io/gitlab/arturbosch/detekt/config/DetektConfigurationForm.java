@@ -15,10 +15,8 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.io.File;
 
-/**
- * @author Dmytro Primshyts
- */
 public class DetektConfigurationForm {
+
     private JCheckBox enableDetekt;
     private JCheckBox buildUponDefaultConfig;
     private JCheckBox failFast;

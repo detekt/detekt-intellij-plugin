@@ -7,9 +7,6 @@ import com.intellij.openapi.components.Storage
 import com.intellij.openapi.project.Project
 import com.intellij.util.xmlb.annotations.Tag
 
-/**
- * @author Dmytro Primshyts
- */
 @State(
     name = "DetektProjectConfiguration",
     storages = [Storage("detekt.xml")]

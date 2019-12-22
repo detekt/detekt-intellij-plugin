@@ -18,10 +18,6 @@ import io.gitlab.arturbosch.detekt.util.absolutePath
 import io.gitlab.arturbosch.detekt.util.ensureFileExists
 import java.io.File
 
-/**
- * @author Dmytro Primshyts
- * @author Artur Bosch
- */
 class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
 
     private lateinit var detektPluginService: DetektPluginService
