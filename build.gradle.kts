@@ -13,9 +13,9 @@ repositories {
 }
 
 plugins {
-	id("org.jetbrains.intellij").version("0.4.10")
+	id("org.jetbrains.intellij").version("0.4.15")
 	id("com.github.ben-manes.versions") version "0.27.0"
-	kotlin("jvm").version("1.3.50")
+	kotlin("jvm").version("1.3.61")
 	id("org.sonarqube") version "2.8"
 }
 
