@@ -10,7 +10,9 @@ import java.nio.file.Paths
 
 fun DetektConfigStorage.plugins(project: Project): List<Path>? {
     val pluginPaths = pluginPaths
+        .trim()
         .split(File.pathSeparator)
+        .filter { it.isNotEmpty() }
         .map { absolutePath(project, it) }
         .map { Paths.get(it) }
 
