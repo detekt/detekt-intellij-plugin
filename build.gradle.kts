@@ -1,4 +1,5 @@
 import org.jetbrains.intellij.IntelliJPluginExtension
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val kotlinVersion: String by extra
 val detektVersion: String by extra
@@ -25,6 +26,10 @@ dependencies {
 	compile("io.gitlab.arturbosch.detekt:detekt-cli:$detektVersion")
 	compile("io.gitlab.arturbosch.detekt:detekt-rules:$detektVersion")
 	compile("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion")
+}
+
+tasks.withType<KotlinCompile> {
+	kotlinOptions.jvmTarget = "1.8"
 }
 
 configure<IntelliJPluginExtension> {

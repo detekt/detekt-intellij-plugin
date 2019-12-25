@@ -1,5 +1,11 @@
 ### Changelog
 
+#### 0.4.1
+
+##### Notable Changes
+
+- Set JVM target version to Java 8
+
 #### 0.4.0
 
 ##### Notable Changes
