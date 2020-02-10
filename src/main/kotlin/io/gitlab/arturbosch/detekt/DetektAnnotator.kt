@@ -4,7 +4,6 @@ import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.ExternalAnnotator
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.TextRange
-import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiFile
 import io.gitlab.arturbosch.detekt.api.Finding
 import io.gitlab.arturbosch.detekt.api.TextLocation
@@ -16,7 +15,9 @@ import io.gitlab.arturbosch.detekt.core.ProcessingSettings
 import io.gitlab.arturbosch.detekt.util.DetektPluginService
 import io.gitlab.arturbosch.detekt.util.absolutePath
 import io.gitlab.arturbosch.detekt.util.ensureFileExists
-import java.io.File
+import io.gitlab.arturbosch.detekt.util.toTmpFile
+import java.nio.file.Path
+import java.nio.file.Paths
 
 class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
 
@@ -36,18 +37,16 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
         collectedInfo: PsiFile,
         configuration: DetektConfigStorage
     ): List<Finding> {
-        val virtualFile = collectedInfo.originalFile.virtualFile
-        val settings = processingSettings(collectedInfo.project, virtualFile, configuration)
+        val settings = processingSettings(
+            collectedInfo.project,
+            collectedInfo.toTmpFile(),
+            configuration
+        )
         if (settings != null) {
-            var result = service
-                .createFacade(settings, !configuration.enableFormatting)
-                .run()
-
+            var result = service.createFacade(settings, !configuration.enableFormatting).run()
             result = if (configuration.baselinePath.isNotBlank()) {
-                FilteredDetectionResult(
-                    result,
-                    BaselineFacade(File(absolutePath(collectedInfo.project, configuration.baselinePath)).toPath())
-                )
+                val path = Paths.get(absolutePath(collectedInfo.project, configuration.baselinePath))
+                FilteredDetectionResult(result, BaselineFacade(path))
             } else {
                 result
             }
@@ -79,7 +78,7 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
     @Suppress("ReturnCount")
     private fun processingSettings(
         project: Project,
-        virtualFile: VirtualFile,
+        file: Path,
         configStorage: DetektConfigStorage
     ): ProcessingSettings? {
         val rulesPath = absolutePath(project, configStorage.rulesPath)
@@ -112,7 +111,7 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
         val pluginPaths = configStorage.plugins(project) ?: return null
 
         return service.getProcessSettings(
-            virtualFile = virtualFile,
+            file = file,
             rulesPath = rulesPath,
             configStorage = configStorage,
             autoCorrect = false,

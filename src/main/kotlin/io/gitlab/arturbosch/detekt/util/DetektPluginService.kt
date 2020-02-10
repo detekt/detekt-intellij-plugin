@@ -1,6 +1,5 @@
 package io.gitlab.arturbosch.detekt.util
 
-import com.intellij.openapi.vfs.VirtualFile
 import io.gitlab.arturbosch.detekt.cli.CliArgs
 import io.gitlab.arturbosch.detekt.cli.loadConfiguration
 import io.gitlab.arturbosch.detekt.config.DetektConfigStorage
@@ -9,7 +8,6 @@ import io.gitlab.arturbosch.detekt.core.FileProcessorLocator
 import io.gitlab.arturbosch.detekt.core.ProcessingSettings
 import io.gitlab.arturbosch.detekt.core.RuleSetLocator
 import java.nio.file.Path
-import java.nio.file.Paths
 import java.util.concurrent.ForkJoinPool
 
 class DetektPluginService {
@@ -24,13 +22,13 @@ class DetektPluginService {
     }
 
     fun getProcessSettings(
-        virtualFile: VirtualFile,
+        file: Path,
         rulesPath: String,
         configStorage: DetektConfigStorage,
         autoCorrect: Boolean,
         pluginPaths: List<Path>
     ) = ProcessingSettings(
-        inputPath = Paths.get(virtualFile.path),
+        inputPath = file,
         autoCorrect = autoCorrect,
         config = CliArgs().apply {
             config = rulesPath
