@@ -15,6 +15,7 @@ import io.gitlab.arturbosch.detekt.util.DetektPluginService
 import io.gitlab.arturbosch.detekt.util.KOTLIN_FILE_EXTENSION
 import io.gitlab.arturbosch.detekt.util.absolutePath
 import java.io.File
+import java.nio.file.Paths
 
 class AutoCorrectAction : AnAction() {
 
@@ -78,7 +79,7 @@ class AutoCorrectAction : AnAction() {
         }
         val plugins = configStorage.plugins(project) ?: return null
         return service.getProcessSettings(
-            virtualFile = virtualFile,
+            file = Paths.get(virtualFile.path),
             rulesPath = rulesPath,
             configStorage = configStorage,
             autoCorrect = true,
