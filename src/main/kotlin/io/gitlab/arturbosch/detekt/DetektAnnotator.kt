@@ -42,7 +42,8 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
             collectedInfo.toTmpFile(),
             configuration
         )
-        if (settings != null) {
+
+        fun execute(settings: ProcessingSettings): List<Finding> {
             var result = service.createFacade(settings, !configuration.enableFormatting).run()
             result = if (configuration.baselinePath.isNotBlank()) {
                 val path = Paths.get(absolutePath(collectedInfo.project, configuration.baselinePath))
@@ -50,10 +51,10 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
             } else {
                 result
             }
-
             return result.findings.flatMap { it.value }
         }
-        return emptyList()
+
+        return settings?.use { execute(it) } ?: emptyList()
     }
 
     override fun apply(

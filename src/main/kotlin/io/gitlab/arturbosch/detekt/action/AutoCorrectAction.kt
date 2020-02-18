@@ -43,9 +43,8 @@ class AutoCorrectAction : AnAction() {
 
         if (virtualFile != null && project != null) {
             val configuration = DetektConfigStorage.instance(project)
-            val settings = processingSettings(project, virtualFile, configuration)
-            if (settings != null) {
-                service.createFacade(settings).run()
+            processingSettings(project, virtualFile, configuration)?.use {
+                service.createFacade(it).run()
                 virtualFile.refresh(false, false)
                 println("AutoCorrect should be complete")
             }
