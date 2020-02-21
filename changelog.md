@@ -1,5 +1,13 @@
 ### Changelog
 
+#### 1.0.0-RC1
+
+- Close ProcessingSettings after usage - [#61](https://github.com/detekt/detekt-intellij-plugin/pull/61)
+- Analyze cached PsiFile instead of old version on disk - [#59](https://github.com/detekt/detekt-intellij-plugin/pull/59)
+- Warning ranges not consistent with editor content - [#57](https://github.com/detekt/detekt-intellij-plugin/issues/57)
+
+See all issues at: [1.0.0-RC1](https://github.com/detekt/detekt-intellij-plugin/milestone/4)
+
 #### 0.4.1
 
 ##### Notable Changes
