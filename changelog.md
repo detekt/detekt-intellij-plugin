@@ -1,5 +1,15 @@
 ### Changelog
 
+#### 1.0.0-RC2
+
+- I can`t open the settings after update to 1.0.0-RC1 - [#67](https://github.com/detekt/detekt-intellij-plugin/issues/67)
+- Fix path filters due to missing directories of the analyzed file - [#65](https://github.com/detekt/detekt-intellij-plugin/pull/65)
+- Make sure that java classes are also compiled to 1.8 bytecode - #62 - [#64](https://github.com/detekt/detekt-intellij-plugin/pull/64)
+- Difference in how exclude paths are evaluated after upgrade to 1.0.0-RC1 - [#63](https://github.com/detekt/detekt-intellij-plugin/issues/63)
+- Plugin not working in Android Studio 3.6 - [#62](https://github.com/detekt/detekt-intellij-plugin/issues/62)
+
+See all issues at: [1.0.0-RC2](https://github.com/detekt/detekt-intellij-plugin/milestone/5)
+
 #### 1.0.0-RC1
 
 - Close ProcessingSettings after usage - [#61](https://github.com/detekt/detekt-intellij-plugin/pull/61)
