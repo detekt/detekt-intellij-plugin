@@ -1,5 +1,12 @@
 ### Changelog
 
+#### 1.0.0
+
+- Update to detekt 1.7.4 - [#71](https://github.com/detekt/detekt-intellij-plugin/pull/71)
+- Allow configuration files with 'yaml' extension - [#69](https://github.com/detekt/detekt-intellij-plugin/issues/69)
+
+See all issues at: [1.0.0](https://github.com/detekt/detekt-intellij-plugin/milestone/6)
+
 #### 1.0.0-RC2
 
 - I can`t open the settings after update to 1.0.0-RC1 - [#67](https://github.com/detekt/detekt-intellij-plugin/issues/67)
