@@ -28,7 +28,7 @@ class DetektPluginService {
         autoCorrect: Boolean,
         pluginPaths: List<Path>
     ) = ProcessingSettings(
-        inputPath = file,
+        inputPaths = listOf(file),
         autoCorrect = autoCorrect,
         config = CliArgs().apply {
             config = rulesPath
@@ -36,6 +36,8 @@ class DetektPluginService {
             buildUponDefaultConfig = configStorage.buildUponDefaultConfig
         }.loadConfiguration(),
         pluginPaths = pluginPaths,
-        executorService = ForkJoinPool.commonPool()
+        executorService = ForkJoinPool.commonPool(),
+        outPrinter = System.out,
+        errPrinter = System.err
     )
 }
