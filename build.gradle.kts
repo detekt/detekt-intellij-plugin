@@ -18,6 +18,7 @@ plugins {
 	id("com.github.ben-manes.versions") version "0.27.0"
 	kotlin("jvm").version("1.3.61")
 	id("org.sonarqube") version "2.8"
+	id("com.github.breadmoirai.github-release") version "2.2.12"
 }
 
 dependencies {
@@ -42,4 +43,22 @@ configure<IntelliJPluginExtension> {
 	version = "2019.3"
 	updateSinceUntilBuild = false
 	setPlugins("IntelliLang", "Kotlin")
+}
+
+githubRelease {
+	token(project.findProperty("github.token") as? String ?: "")
+	owner.set("detekt")
+	repo.set("detekt-intellij-plugin")
+	overwrite.set(true)
+	dryRun.set(false)
+	body {
+		var changelog = project.file("changelog.md").readText()
+		val sectionStart = "#### ${project.version}"
+		changelog = changelog.substring(changelog.indexOf(sectionStart) + sectionStart.length)
+		changelog = changelog.substring(0, changelog.indexOf("#### 1"))
+		changelog.trim()
+	}
+	val distribution = project.buildDir
+		.resolve("distributions/Detekt IntelliJ Plugin-${project.version}.zip")
+	releaseAssets.setFrom(distribution)
 }
