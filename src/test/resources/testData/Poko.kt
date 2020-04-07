@@ -1,4 +1,10 @@
 package testData
 
-class Poko {
+class Poko(
+
+) {
+
+
 }
+
+fun f() = 5
