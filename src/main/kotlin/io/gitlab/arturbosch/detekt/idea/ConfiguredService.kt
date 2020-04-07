@@ -14,8 +14,8 @@ import io.gitlab.arturbosch.detekt.core.FileProcessorLocator
 import io.gitlab.arturbosch.detekt.core.ProcessingSettings
 import io.gitlab.arturbosch.detekt.core.RuleSetLocator
 import io.gitlab.arturbosch.detekt.idea.util.DirectExecuter
+import io.gitlab.arturbosch.detekt.idea.util.absolutePath
 import io.gitlab.arturbosch.detekt.idea.util.extractPaths
-import io.gitlab.arturbosch.detekt.util.absolutePath
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
