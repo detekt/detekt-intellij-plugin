@@ -1,5 +1,6 @@
 import org.jetbrains.intellij.IntelliJPluginExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.util.Date
 
 val kotlinVersion: String by extra
 val detektVersion: String by extra
@@ -21,6 +22,8 @@ plugins {
     kotlin("jvm").version("1.3.71")
     id("org.sonarqube") version "2.8"
     id("com.github.breadmoirai.github-release") version "2.2.12"
+    id("com.jfrog.bintray") version "1.8.5"
+    `maven-publish`
 }
 
 dependencies {
@@ -70,4 +73,93 @@ githubRelease {
     val distribution = project.buildDir
         .resolve("distributions/Detekt IntelliJ Plugin-${project.version}.zip")
     releaseAssets.setFrom(distribution)
+}
+
+val bintrayUser: String? = findProperty("bintrayUser")?.toString()
+    ?: System.getenv("BINTRAY_USER")
+val bintrayKey: String? = findProperty("bintrayKey")?.toString()
+    ?: System.getenv("BINTRAY_API_KEY")
+val detektPublication = "DetektPublication"
+
+bintray {
+    user = bintrayUser
+    key = bintrayKey
+    val mavenCentralUser = System.getenv("MAVEN_CENTRAL_USER") ?: ""
+    val mavenCentralPassword = System.getenv("MAVEN_CENTRAL_PW") ?: ""
+
+    setPublications(detektPublication)
+
+    pkg(delegateClosureOf<com.jfrog.bintray.gradle.BintrayExtension.PackageConfig> {
+        repo = "code-analysis"
+        name = "detekt"
+        userOrg = "arturbosch"
+        setLicenses("Apache-2.0")
+        vcsUrl = "https://github.com/detekt/detekt-intellij-plugin"
+
+        version(delegateClosureOf<com.jfrog.bintray.gradle.BintrayExtension.VersionConfig> {
+            name = project.version as? String
+            released = Date().toString()
+
+            gpg(delegateClosureOf<com.jfrog.bintray.gradle.BintrayExtension.GpgConfig> {
+                sign = true
+            })
+
+            mavenCentralSync(delegateClosureOf<com.jfrog.bintray.gradle.BintrayExtension.MavenCentralSyncConfig> {
+                sync = true
+                user = mavenCentralUser
+                password = mavenCentralPassword
+                close = "1"
+            })
+        })
+    })
+}
+
+val sourcesJar by tasks.creating(Jar::class) {
+    dependsOn(tasks.classes)
+    archiveClassifier.set("sources")
+    from(sourceSets.main.get().allSource)
+}
+
+val javadocJar by tasks.creating(Jar::class) {
+    from(tasks.javadoc)
+    archiveClassifier.set("javadoc")
+}
+
+artifacts {
+    archives(sourcesJar)
+    archives(javadocJar)
+}
+
+publishing {
+    publications.register<MavenPublication>(detektPublication) {
+        from(components["java"])
+        artifact(sourcesJar)
+        artifact(javadocJar)
+        artifact(project.buildDir.resolve("distributions/Detekt IntelliJ Plugin-$version.zip"))
+        groupId = project.group as? String
+        artifactId = project.name
+        version = project.version as? String
+        pom {
+            description.set("Static code analysis for Kotlin")
+            name.set("detekt-intellij-plugin")
+            url.set("https://arturbosch.github.io/detekt")
+            licenses {
+                license {
+                    name.set("The Apache Software License, Version 2.0")
+                    url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    distribution.set("repo")
+                }
+            }
+            developers {
+                developer {
+                    id.set("Artur Bosch")
+                    name.set("Artur Bosch")
+                    email.set("arturbosch@gmx.de")
+                }
+            }
+            scm {
+                url.set("https://github.com/detekt/detekt-intellij-plugin")
+            }
+        }
+    }
 }
