@@ -17,7 +17,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <externalAnnotator language="kotlin"
-                           implementationClass="io.gitlab.arturbosch.detekt.DetektAnnotator"/>
+                           implementationClass="io.gitlab.arturbosch.detekt.idea.DetektAnnotator"/>
 
         <projectService serviceImplementation="io.gitlab.arturbosch.detekt.config.DetektConfigStorage"/>
 
@@ -28,7 +28,7 @@
     </extensions>
 
     <actions>
-        <action id="Detekt.AutoCorrect" class="io.gitlab.arturbosch.detekt.action.AutoCorrectAction"
+        <action id="Detekt.AutoCorrect" class="io.gitlab.arturbosch.detekt.idea.action.AutoCorrectAction"
                 text="AutoCorrect by Detekt Rules" description="Run AutoCorrect action on the current file">
             <add-to-group group-id="RefactoringMenu"/>
         </action>

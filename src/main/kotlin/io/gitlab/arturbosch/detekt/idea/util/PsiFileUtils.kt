@@ -1,4 +1,4 @@
-package io.gitlab.arturbosch.detekt.util
+package io.gitlab.arturbosch.detekt.idea.util
 
 import com.intellij.psi.PsiFile
 import com.intellij.util.io.createDirectories
