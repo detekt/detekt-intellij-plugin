@@ -31,7 +31,6 @@ class AutoCorrectAction : AnAction() {
     override fun actionPerformed(event: AnActionEvent) {
         val virtualFile = event.getData(CommonDataKeys.VIRTUAL_FILE)
         val project = event.getData(CommonDataKeys.PROJECT)
-        println("Update file") // TODO
 
         if (virtualFile != null && project != null) {
             val service = ConfiguredService(project)
@@ -41,7 +40,6 @@ class AutoCorrectAction : AnAction() {
                 val pathToAnalyze = Paths.get(virtualFile.path)
                 service.execute(pathToAnalyze, autoCorrect = true)
                 virtualFile.refresh(false, false)
-                println("AutoCorrect should be complete") // TODO
             } else {
                 showNotification(problems, project)
             }
@@ -54,7 +52,6 @@ class AutoCorrectAction : AnAction() {
             val document = documentManager.getDocument(virtualFile)
             if (document != null) {
                 documentManager.saveDocument(document)
-                println("Force update was completed") // TODO
             }
         }
     }
