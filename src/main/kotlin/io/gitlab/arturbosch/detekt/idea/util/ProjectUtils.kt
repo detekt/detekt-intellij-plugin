@@ -1,4 +1,4 @@
-package io.gitlab.arturbosch.detekt.util
+package io.gitlab.arturbosch.detekt.idea.util
 
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
@@ -7,8 +7,15 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.options.newEditor.SettingsDialog
 import com.intellij.openapi.project.Project
-import io.gitlab.arturbosch.detekt.config.DetektConfig
+import io.gitlab.arturbosch.detekt.idea.DETEKT
+import io.gitlab.arturbosch.detekt.idea.config.DetektConfig
+import io.gitlab.arturbosch.detekt.idea.config.DetektConfigStorage
 import java.io.File
+import java.nio.file.Path
+import java.nio.file.Paths
+
+fun Project.isDetektEnabled(): Boolean =
+    DetektConfigStorage.instance(this).enableDetekt
 
 fun absolutePath(project: Project, path: String): String =
     if (path.isBlank() || File(path).isAbsolute) {
@@ -17,17 +24,24 @@ fun absolutePath(project: Project, path: String): String =
         project.basePath + "/" + path
     }
 
-fun ensureFileExists(path: String, project: Project, title: String, content: String): Boolean {
-    if (!File(path).exists()) {
-        showNotification(title, content, project)
-        return false
-    }
-    return true
+fun extractPaths(path: String, project: Project): List<Path> =
+    path.trim()
+        .split(File.pathSeparator)
+        .filter { it.isNotEmpty() }
+        .map { absolutePath(project, it) }
+        .map { Paths.get(it) }
+
+fun showNotification(problems: List<String>, project: Project) {
+    showNotification(
+        "detekt plugin noticed some problems",
+        problems.joinToString(System.lineSeparator()) + "Skipping detekt run.",
+        project
+    )
 }
 
 fun showNotification(title: String, content: String, project: Project) {
     val notification = Notification(
-        "Detekt",
+        DETEKT,
         title,
         content,
         NotificationType.WARNING

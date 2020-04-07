@@ -1,4 +1,4 @@
-package io.gitlab.arturbosch.detekt.config
+package io.gitlab.arturbosch.detekt.idea.config
 
 import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.ServiceManager
@@ -23,7 +23,7 @@ class DetektConfigStorage : PersistentStateComponent<DetektConfigStorage> {
     var buildUponDefaultConfig: Boolean = false
 
     @Tag
-    var failFast: Boolean = false
+    var enableAllRules: Boolean = false
 
     @Tag
     var treatAsError: Boolean = false
@@ -43,7 +43,7 @@ class DetektConfigStorage : PersistentStateComponent<DetektConfigStorage> {
         this.enableDetekt = state.enableDetekt
         this.enableFormatting = state.enableFormatting
         this.buildUponDefaultConfig = state.buildUponDefaultConfig
-        this.failFast = state.failFast
+        this.enableAllRules = state.enableAllRules
         this.rulesPath = state.rulesPath
         this.baselinePath = state.baselinePath
         this.treatAsError = state.treatAsError
