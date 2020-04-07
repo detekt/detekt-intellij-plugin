@@ -8,11 +8,11 @@ import io.gitlab.arturbosch.detekt.cli.CliArgs
 import io.gitlab.arturbosch.detekt.cli.FilteredDetectionResult
 import io.gitlab.arturbosch.detekt.cli.baseline.BaselineFacade
 import io.gitlab.arturbosch.detekt.cli.loadConfiguration
-import io.gitlab.arturbosch.detekt.config.DetektConfigStorage
 import io.gitlab.arturbosch.detekt.core.DetektFacade
 import io.gitlab.arturbosch.detekt.core.FileProcessorLocator
 import io.gitlab.arturbosch.detekt.core.ProcessingSettings
 import io.gitlab.arturbosch.detekt.core.RuleSetLocator
+import io.gitlab.arturbosch.detekt.idea.config.DetektConfigStorage
 import io.gitlab.arturbosch.detekt.idea.util.DirectExecuter
 import io.gitlab.arturbosch.detekt.idea.util.absolutePath
 import io.gitlab.arturbosch.detekt.idea.util.extractPaths

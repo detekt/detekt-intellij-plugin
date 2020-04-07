@@ -6,7 +6,7 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiFile
 import io.gitlab.arturbosch.detekt.api.Finding
 import io.gitlab.arturbosch.detekt.api.TextLocation
-import io.gitlab.arturbosch.detekt.config.DetektConfigStorage
+import io.gitlab.arturbosch.detekt.idea.config.DetektConfigStorage
 import io.gitlab.arturbosch.detekt.idea.util.isDetektEnabled
 import io.gitlab.arturbosch.detekt.idea.util.showNotification
 import io.gitlab.arturbosch.detekt.idea.util.toTmpFile

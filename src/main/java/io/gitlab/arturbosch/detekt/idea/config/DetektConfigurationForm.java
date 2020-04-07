@@ -1,4 +1,4 @@
-package io.gitlab.arturbosch.detekt.config;
+package io.gitlab.arturbosch.detekt.idea.config;
 
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;

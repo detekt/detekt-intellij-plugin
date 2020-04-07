@@ -1,4 +1,4 @@
-package io.gitlab.arturbosch.detekt.config
+package io.gitlab.arturbosch.detekt.idea.config
 
 import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.ServiceManager

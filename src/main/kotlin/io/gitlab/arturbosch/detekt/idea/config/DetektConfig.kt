@@ -1,4 +1,4 @@
-package io.gitlab.arturbosch.detekt.config
+package io.gitlab.arturbosch.detekt.idea.config
 
 import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer
 import com.intellij.openapi.options.SearchableConfigurable
