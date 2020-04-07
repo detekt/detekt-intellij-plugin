@@ -21,7 +21,7 @@ public class DetektConfigurationForm {
 
     private JCheckBox enableDetekt;
     private JCheckBox buildUponDefaultConfig;
-    private JCheckBox failFast;
+    private JCheckBox enableAllRules;
     private TextFieldWithBrowseButton configurationFilePath;
     private JPanel myMainPanel;
     private JCheckBox treatAsErrors;
@@ -45,7 +45,7 @@ public class DetektConfigurationForm {
         enableDetekt.addChangeListener(changeEvent -> {
             boolean enabled = enableDetekt.isSelected();
             buildUponDefaultConfig.setEnabled(enabled);
-            failFast.setEnabled(enabled);
+            enableAllRules.setEnabled(enabled);
             configurationFilePath.setEnabled(enabled);
             treatAsErrors.setEnabled(enabled);
             enableFormatting.setEnabled(enabled);
@@ -99,7 +99,7 @@ public class DetektConfigurationForm {
         detektConfigStorage.setEnableDetekt(enableDetekt.isSelected());
         detektConfigStorage.setEnableFormatting(enableFormatting.isSelected());
         detektConfigStorage.setBuildUponDefaultConfig(buildUponDefaultConfig.isSelected());
-        detektConfigStorage.setFailFast(failFast.isSelected());
+        detektConfigStorage.setEnableAllRules(enableAllRules.isSelected());
         detektConfigStorage.setTreatAsError(treatAsErrors.isSelected());
         detektConfigStorage.setRulesPath(configurationFilePath.getText());
         detektConfigStorage.setBaselinePath(baselineFilePath.getText());
@@ -110,7 +110,7 @@ public class DetektConfigurationForm {
         enableDetekt.setSelected(detektConfigStorage.getEnableDetekt());
         enableFormatting.setSelected(detektConfigStorage.getEnableFormatting());
         buildUponDefaultConfig.setSelected(detektConfigStorage.getBuildUponDefaultConfig());
-        failFast.setSelected(detektConfigStorage.getFailFast());
+        enableAllRules.setSelected(detektConfigStorage.getEnableAllRules());
         treatAsErrors.setSelected(detektConfigStorage.getTreatAsError());
         configurationFilePath.setText(detektConfigStorage.getRulesPath());
         baselineFilePath.setText(detektConfigStorage.getBaselinePath());
@@ -121,7 +121,7 @@ public class DetektConfigurationForm {
         return !Comparing.equal(detektConfigStorage.getEnableDetekt(), enableDetekt.isSelected())
                 || !Comparing.equal(detektConfigStorage.getEnableFormatting(), enableFormatting.isSelected())
                 || !Comparing.equal(detektConfigStorage.getBuildUponDefaultConfig(), buildUponDefaultConfig.isSelected())
-                || !Comparing.equal(detektConfigStorage.getFailFast(), failFast.isSelected())
+                || !Comparing.equal(detektConfigStorage.getEnableAllRules(), enableAllRules.isSelected())
                 || !Comparing.equal(detektConfigStorage.getTreatAsError(), treatAsErrors.isSelected())
                 || !Comparing.equal(detektConfigStorage.getRulesPath(), configurationFilePath.getText())
                 || !Comparing.equal(detektConfigStorage.getBaselinePath(), baselineFilePath.getText())

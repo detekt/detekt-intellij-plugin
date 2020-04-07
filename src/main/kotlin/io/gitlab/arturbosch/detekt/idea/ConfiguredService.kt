@@ -45,7 +45,7 @@ class ConfiguredService(private val project: Project) {
 
     private fun config(): Config = CliArgs().apply {
         config = configPaths().joinToString(",")
-        failFast = storage.failFast
+        failFast = storage.enableAllRules
         buildUponDefaultConfig = storage.buildUponDefaultConfig
     }.loadConfiguration()
 

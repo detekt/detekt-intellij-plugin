@@ -24,7 +24,7 @@
         </constraints>
         <properties>
           <text value="Build upon the default configuration"/>
-          <toolTipText value="Uses the default detekt config as baseline configuration. Provided additional configuration can override properties."/>
+          <toolTipText value="Uses the default detekt config with stable rules as baseline configuration. Provided additional configuration can override properties."/>
         </properties>
       </component>
       <component id="b76c7" class="javax.swing.JCheckBox" binding="treatAsErrors">
@@ -50,13 +50,13 @@
           <toolTipText value="Adds rules related to code formatting"/>
         </properties>
       </component>
-      <component id="85c28" class="javax.swing.JCheckBox" binding="failFast">
+      <component id="85c28" class="javax.swing.JCheckBox" binding="enableAllRules">
         <constraints>
           <grid row="3" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Fail fast"/>
-          <toolTipText value="Enables all existing rules in detekt regardless the configured active properties of rules."/>
+          <text value="Enable all experimental rules"/>
+          <toolTipText value="Enables all existing rules in detekt even if they are considered experimental.  Provided additional configuration can still override the active properties."/>
         </properties>
       </component>
       <grid id="f400d" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
