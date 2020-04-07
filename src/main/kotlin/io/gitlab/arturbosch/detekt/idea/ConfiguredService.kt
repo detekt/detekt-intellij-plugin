@@ -43,8 +43,9 @@ class ConfiguredService(private val project: Project) {
         return messages
     }
 
-    private fun config(): Config = CliArgs().apply {
+    fun config(autoCorrect: Boolean = false): Config = CliArgs().apply {
         config = configPaths().joinToString(",")
+        this.autoCorrect = autoCorrect
         failFast = storage.enableAllRules
         buildUponDefaultConfig = storage.buildUponDefaultConfig
     }.loadConfiguration()
@@ -53,7 +54,7 @@ class ConfiguredService(private val project: Project) {
         ProcessingSettings(
             inputPaths = files,
             autoCorrect = autoCorrect,
-            config = config(),
+            config = config(autoCorrect),
             pluginPaths = plugins(),
             executorService = DirectExecuter(),
             outPrinter = System.out,
@@ -68,9 +69,9 @@ class ConfiguredService(private val project: Project) {
         .takeIf { it.isNotEmpty() }
         ?.let { Paths.get(absolutePath(project, storage.baselinePath)) }
 
-    private fun facade(settings: ProcessingSettings, autoCorrect: Boolean = false): DetektFacade {
+    private fun facade(settings: ProcessingSettings): DetektFacade {
         var providers = RuleSetLocator(settings).load()
-        if (!autoCorrect) {
+        if (!storage.enableFormatting) {
             providers = providers.filterNot { it.ruleSetId == FORMATTING_RULE_SET_ID }
         }
         val processors = FileProcessorLocator(settings).load()
