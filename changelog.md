@@ -2,6 +2,11 @@
 
 #### 1.0.0
 
+- Remove println statements - [#76](https://github.com/detekt/detekt-intellij-plugin/pull/76)
+- Add testcases for different plugin config options - [#75](https://github.com/detekt/detekt-intellij-plugin/pull/75)
+- Simplify internal detekt usage for 1.0 - [#74](https://github.com/detekt/detekt-intellij-plugin/pull/74)
+- Make plugin fit for dynamic plugin requirements - [#73](https://github.com/detekt/detekt-intellij-plugin/pull/73)
+- Use Github actions for CI - [#72](https://github.com/detekt/detekt-intellij-plugin/pull/72)
 - Update to detekt 1.7.4 - [#71](https://github.com/detekt/detekt-intellij-plugin/pull/71)
 - Allow configuration files with 'yaml' extension - [#69](https://github.com/detekt/detekt-intellij-plugin/issues/69)
 
