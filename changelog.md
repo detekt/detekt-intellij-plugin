@@ -1,5 +1,12 @@
 ### Changelog
 
+#### 1.1.0
+
+- Update to detekt 1.8.0 - [#84](https://github.com/detekt/detekt-intellij-plugin/pull/84)
+- Plugin highlights whole object - [#81](https://github.com/detekt/detekt-intellij-plugin/issues/81)
+
+See all issues at: [1.1.0](https://github.com/detekt/detekt-intellij-plugin/milestone/7)
+
 #### 1.0.0
 
 - Remove println statements - [#76](https://github.com/detekt/detekt-intellij-plugin/pull/76)
