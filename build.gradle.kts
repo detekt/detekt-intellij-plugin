@@ -1,3 +1,4 @@
+import com.github.breadmoirai.githubreleaseplugin.GithubReleaseTask
 import org.jetbrains.intellij.IntelliJPluginExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.util.Date
@@ -73,6 +74,10 @@ githubRelease {
     val distribution = project.buildDir
         .resolve("distributions/Detekt IntelliJ Plugin-${project.version}.zip")
     releaseAssets.setFrom(distribution)
+}
+
+tasks.withType<GithubReleaseTask>().configureEach {
+    dependsOn(tasks.named("bintrayUpload"))
 }
 
 val bintrayUser: String? = findProperty("bintrayUser")?.toString()
