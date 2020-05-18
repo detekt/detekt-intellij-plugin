@@ -13,7 +13,7 @@
 
     <depends>com.intellij.modules.lang</depends>
 
-    <idea-version since-build="193"/>
+    <idea-version since-build="192"/>
 
     <extensions defaultExtensionNs="com.intellij">
         <externalAnnotator language="kotlin"
