@@ -1,5 +1,5 @@
-import com.github.breadmoirai.githubreleaseplugin.GithubReleaseTask
 import org.jetbrains.intellij.IntelliJPluginExtension
+import org.jetbrains.intellij.tasks.PublishTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.util.Date
 
@@ -58,6 +58,18 @@ configure<IntelliJPluginExtension> {
     setPlugins("IntelliLang", "Kotlin")
 }
 
+tasks.withType<PublishTask> {
+    setToken(System.getenv("DETEKT_INTELLIJ_PLUGINS_TOKEN"))
+}
+
+val release by tasks.registering {
+    dependsOn(
+        tasks.named("githubRelease"),
+        tasks.named("publishPlugin"),
+        tasks.named("bintrayUpload")
+    )
+}
+
 githubRelease {
     token(project.findProperty("github.token") as? String ?: "")
     owner.set("detekt")
@@ -74,10 +86,6 @@ githubRelease {
     val distribution = project.buildDir
         .resolve("distributions/Detekt IntelliJ Plugin-${project.version}.zip")
     releaseAssets.setFrom(distribution)
-}
-
-tasks.withType<GithubReleaseTask>().configureEach {
-    dependsOn(tasks.named("bintrayUpload"))
 }
 
 val bintrayUser: String? = findProperty("bintrayUser")?.toString()
