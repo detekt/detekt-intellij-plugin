@@ -36,6 +36,7 @@
 
     <change-notes><![CDATA[
       <ul>
+        <li>1.2.0 - Based on detekt 1.9.1.</li>
         <li>1.1.0 - Based on detekt 1.8.0.</li>
         <li>1.0.0 - First stable release. Based on detekt 1.7.4.</li>
       </ul>

@@ -1,5 +1,17 @@
 ### Changelog
 
+#### 1.2.0
+
+##### Changelog
+
+- Update intellij plugin - [#91](https://github.com/detekt/detekt-intellij-plugin/pull/91)
+- Update to detekt 1.9.1 - [#90](https://github.com/detekt/detekt-intellij-plugin/pull/90)
+- Make compatible with Android Studio 3.6.3 - [#88](https://github.com/detekt/detekt-intellij-plugin/pull/88)
+- Not compatible with Android Studio since version 1.0.0 - [#87](https://github.com/detekt/detekt-intellij-plugin/issues/87)
+- TooManyFunctions - Plugin highlights whole file - [#83](https://github.com/detekt/detekt-intellij-plugin/issues/83)
+
+See all issues at: [1.2.0](https://github.com/detekt/detekt-intellij-plugin/milestone/8)
+
 #### 1.1.0
 
 - Update to detekt 1.8.0 - [#84](https://github.com/detekt/detekt-intellij-plugin/pull/84)
