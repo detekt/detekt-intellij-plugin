@@ -7,11 +7,11 @@ import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.psi.PsiManager
 import io.gitlab.arturbosch.detekt.idea.ConfiguredService
 import io.gitlab.arturbosch.detekt.idea.KOTLIN_FILE_EXTENSIONS
 import io.gitlab.arturbosch.detekt.idea.util.isDetektEnabled
 import io.gitlab.arturbosch.detekt.idea.util.showNotification
-import java.nio.file.Paths
 
 class AutoCorrectAction : AnAction() {
 
@@ -37,9 +37,11 @@ class AutoCorrectAction : AnAction() {
             val problems = service.validate()
             if (problems.isEmpty()) {
                 forceUpdateFile(project, virtualFile)
-                val pathToAnalyze = Paths.get(virtualFile.path)
-                service.execute(pathToAnalyze, autoCorrect = true)
-                virtualFile.refresh(false, false)
+                val psiFile = PsiManager.getInstance(project).findFile(virtualFile)
+                if (psiFile != null) {
+                    service.execute(psiFile, autoCorrect = true)
+                    virtualFile.refresh(false, false)
+                }
             } else {
                 showNotification(problems, project)
             }

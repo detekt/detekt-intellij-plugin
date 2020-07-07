@@ -13,6 +13,7 @@ project.group = "io.gitlab.arturbosch.detekt"
 project.version = detektIntellijPluginVersion
 
 repositories {
+    mavenLocal()
     jcenter()
     maven { setUrl("http://dl.bintray.com/jetbrains/intellij-plugin-service") }
 }
@@ -28,12 +29,14 @@ plugins {
 }
 
 dependencies {
+    implementation(platform("io.gitlab.arturbosch.detekt:detekt-bom:$detektVersion"))
     implementation("io.gitlab.arturbosch.detekt:detekt-api:$detektVersion")
-    implementation("io.gitlab.arturbosch.detekt:detekt-core:$detektVersion")
-    implementation("io.gitlab.arturbosch.detekt:detekt-cli:$detektVersion")
-    implementation("io.gitlab.arturbosch.detekt:detekt-rules:$detektVersion")
-    implementation("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion")
+    implementation("io.gitlab.arturbosch.detekt:detekt-tooling:$detektVersion")
+    runtimeOnly("io.gitlab.arturbosch.detekt:detekt-core:$detektVersion")
+    runtimeOnly("io.gitlab.arturbosch.detekt:detekt-rules:$detektVersion")
+    runtimeOnly("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion")
     testImplementation("io.gitlab.arturbosch.detekt:detekt-test:$detektVersion")
+    testImplementation("org.assertj:assertj-core")
     testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
     testImplementation("io.strikt:strikt-core:$striktVersion")
 }
@@ -45,6 +48,9 @@ java {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.freeCompilerArgs = listOf(
+        "-Xopt-in=kotlin.RequiresOptIn"
+    )
 }
 
 tasks.withType<Test> {
