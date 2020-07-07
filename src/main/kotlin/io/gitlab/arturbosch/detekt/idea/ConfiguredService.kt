@@ -5,8 +5,6 @@ import com.intellij.util.io.exists
 import io.gitlab.arturbosch.detekt.api.Config
 import io.gitlab.arturbosch.detekt.api.Finding
 import io.gitlab.arturbosch.detekt.cli.CliArgs
-import io.gitlab.arturbosch.detekt.cli.FilteredDetectionResult
-import io.gitlab.arturbosch.detekt.cli.baseline.BaselineFacade
 import io.gitlab.arturbosch.detekt.cli.loadConfiguration
 import io.gitlab.arturbosch.detekt.core.DetektFacade
 import io.gitlab.arturbosch.detekt.core.FileProcessorLocator
@@ -82,11 +80,7 @@ class ConfiguredService(private val project: Project) {
         val settings = settings(listOf(path), autoCorrect)
 
         fun run(settings: ProcessingSettings): List<Finding> {
-            var result = facade(settings).run()
-            val baseline = baseline()
-            if (baseline != null) {
-                result = FilteredDetectionResult(result, BaselineFacade(baseline))
-            }
+            val result = facade(settings).run()
             return result.findings.flatMap { it.value }
         }
 
