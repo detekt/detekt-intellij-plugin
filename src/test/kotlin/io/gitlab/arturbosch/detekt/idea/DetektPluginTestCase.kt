@@ -1,13 +1,12 @@
 package io.gitlab.arturbosch.detekt.idea
 
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import io.github.detekt.test.utils.resourceAsPath
 import io.gitlab.arturbosch.detekt.idea.config.DetektConfigStorage
-import io.gitlab.arturbosch.detekt.test.resource
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInstance
-import java.nio.file.Paths
 
 /**
  * Base class for 'light' test cases.
@@ -16,7 +15,7 @@ import java.nio.file.Paths
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 open class DetektPluginTestCase : BasePlatformTestCase() {
 
-    override fun getTestDataPath(): String = Paths.get(resource("testData")).toString()
+    override fun getTestDataPath(): String = resourceAsPath("testData").toString()
 
     override fun isWriteActionRequired(): Boolean = true
 
