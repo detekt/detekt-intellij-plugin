@@ -60,6 +60,9 @@ class ConfiguredService(private val project: Project) {
         }
         extensions {
             fromPaths { pluginPaths() }
+            if (!storage.enableFormatting) {
+                disableExtension(FORMATTING_RULE_SET_ID)
+            }
         }
         execution {
             executorService = DirectExecuter()
