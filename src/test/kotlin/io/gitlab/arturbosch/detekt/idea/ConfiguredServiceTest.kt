@@ -11,6 +11,7 @@ import strikt.assertions.hasSize
 import strikt.assertions.isA
 import strikt.assertions.isEmpty
 import strikt.assertions.isFailure
+import strikt.assertions.isSuccess
 
 class ConfiguredServiceTest : DetektPluginTestCase() {
 
@@ -77,5 +78,14 @@ class ConfiguredServiceTest : DetektPluginTestCase() {
         }
             .isFailure()
             .isA<ClassCastException>()
+    }
+
+    @Test
+    fun `debugging fragments are excluded from analysis`() {
+        val service = ConfiguredService(project)
+
+        expectCatching { service.execute("", SPECIAL_FILENAME_FOR_DEBUGGING, false) }
+            .isSuccess()
+            .isEmpty()
     }
 }

@@ -86,6 +86,10 @@ class ConfiguredService(private val project: Project) {
 
     @UseExperimental(UnstableApi::class)
     fun execute(fileContent: String, filename: String, autoCorrect: Boolean): List<Finding> {
+        if (filename == SPECIAL_FILENAME_FOR_DEBUGGING) {
+            return emptyList()
+        }
+
         val spec: ProcessingSpec = settings(filename, autoCorrect)
         val detekt = DetektProvider.load().get(spec)
         val result = detekt.run(fileContent, filename)
