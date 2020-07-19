@@ -1,5 +1,13 @@
 ### Changelog
 
+#### 1.3.0
+
+##### Changelog
+
+- Update to detekt 1.10.0 - [#93](https://github.com/detekt/detekt-intellij-plugin/pull/93)
+
+See all issues at: [1.3.0](https://github.com/detekt/detekt-intellij-plugin/milestone/9)
+
 #### 1.2.0
 
 ##### Changelog
