@@ -40,7 +40,7 @@ public class DetektConfigurationForm {
     public JComponent createPanel(@NotNull DetektConfigStorage detektConfigStorage) {
         this.detektConfigStorage = detektConfigStorage;
 
-        myMainPanel.setBorder(IdeBorderFactory.createTitledBorder("Detekt settings"));
+        myMainPanel.setBorder(IdeBorderFactory.createTitledBorder("Detekt Settings"));
 
         enableDetekt.addChangeListener(changeEvent -> {
             boolean enabled = enableDetekt.isSelected();
@@ -63,7 +63,7 @@ public class DetektConfigurationForm {
 
         configurationFilePath.addBrowseFolderListener(
                 "",
-                "Detekt rules file",
+                "detekt rules file",
                 project,
                 fileChooserDescriptor,
                 TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT
@@ -71,7 +71,7 @@ public class DetektConfigurationForm {
 
         baselineFilePath.addBrowseFolderListener(
                 "",
-                "Detekt baseline file",
+                "detekt baseline file",
                 project,
                 fileChooserDescriptor,
                 TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT
