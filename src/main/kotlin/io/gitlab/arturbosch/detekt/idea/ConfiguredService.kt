@@ -1,15 +1,15 @@
 package io.gitlab.arturbosch.detekt.idea
 
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.project.guessProjectDir
+import com.intellij.psi.PsiFile
 import com.intellij.util.io.exists
-import io.gitlab.arturbosch.detekt.api.Config
+import io.github.detekt.tooling.api.DetektProvider
+import io.github.detekt.tooling.api.UnexpectedError
+import io.github.detekt.tooling.api.spec.ProcessingSpec
+import io.github.detekt.tooling.api.spec.RulesSpec
 import io.gitlab.arturbosch.detekt.api.Finding
-import io.gitlab.arturbosch.detekt.cli.CliArgs
-import io.gitlab.arturbosch.detekt.cli.loadConfiguration
-import io.gitlab.arturbosch.detekt.core.DetektFacade
-import io.gitlab.arturbosch.detekt.core.FileProcessorLocator
-import io.gitlab.arturbosch.detekt.core.ProcessingSettings
-import io.gitlab.arturbosch.detekt.core.RuleSetLocator
+import io.gitlab.arturbosch.detekt.api.UnstableApi
 import io.gitlab.arturbosch.detekt.idea.config.DetektConfigStorage
 import io.gitlab.arturbosch.detekt.idea.util.DirectExecuter
 import io.gitlab.arturbosch.detekt.idea.util.absolutePath
@@ -25,7 +25,7 @@ class ConfiguredService(private val project: Project) {
     fun validate(): List<String> {
         val messages = mutableListOf<String>()
 
-        plugins()
+        pluginPaths()
             .filter { Files.notExists(it) }
             .forEach { messages += "Plugin jar <b>$it</b> does not exist." }
 
@@ -41,49 +41,65 @@ class ConfiguredService(private val project: Project) {
         return messages
     }
 
-    fun config(autoCorrect: Boolean = false): Config = CliArgs().apply {
-        config = configPaths().joinToString(",")
-        this.autoCorrect = autoCorrect
-        failFast = storage.enableAllRules
-        buildUponDefaultConfig = storage.buildUponDefaultConfig
-    }.loadConfiguration()
-
-    private fun settings(files: List<Path>, autoCorrect: Boolean): ProcessingSettings =
-        ProcessingSettings(
-            inputPaths = files,
-            autoCorrect = autoCorrect,
-            config = config(autoCorrect),
-            pluginPaths = plugins(),
-            executorService = DirectExecuter(),
-            outPrinter = System.out,
-            errPrinter = System.err
-        )
+    private fun settings(filename: String, autoCorrect: Boolean) = ProcessingSpec {
+        project {
+            basePath = project.guessProjectDir()?.canonicalPath?.let { Paths.get(it) }
+            inputPaths = listOf(Paths.get(filename))
+        }
+        rules {
+            this.autoCorrect = autoCorrect
+            activateExperimentalRules = storage.enableAllRules
+            maxIssuePolicy = RulesSpec.MaxIssuePolicy.AllowAny
+        }
+        config {
+            useDefaultConfig = storage.buildUponDefaultConfig
+            configPaths = configPaths()
+        }
+        baseline {
+            path = baseline()
+        }
+        extensions {
+            fromPaths { pluginPaths() }
+            if (!storage.enableFormatting) {
+                disableExtension(FORMATTING_RULE_SET_ID)
+            }
+        }
+        execution {
+            executorService = DirectExecuter()
+        }
+    }
 
     private fun configPaths(): List<Path> = extractPaths(storage.rulesPath, project)
 
-    private fun plugins(): List<Path> = extractPaths(storage.pluginPaths, project)
+    private fun pluginPaths(): List<Path> = extractPaths(storage.pluginPaths, project)
 
     private fun baseline(): Path? = storage.baselinePath.trim()
         .takeIf { it.isNotEmpty() }
         ?.let { Paths.get(absolutePath(project, storage.baselinePath)) }
 
-    private fun facade(settings: ProcessingSettings): DetektFacade {
-        var providers = RuleSetLocator(settings).load()
-        if (!storage.enableFormatting) {
-            providers = providers.filterNot { it.ruleSetId == FORMATTING_RULE_SET_ID }
-        }
-        val processors = FileProcessorLocator(settings).load()
-        return DetektFacade.create(settings, providers, processors)
+    fun execute(file: PsiFile, autoCorrect: Boolean): List<Finding> {
+        val pathToAnalyze = file.virtualFile
+            ?.canonicalPath
+            ?: return emptyList()
+        return execute(file.text, pathToAnalyze, autoCorrect)
     }
 
-    fun execute(path: Path, autoCorrect: Boolean): List<Finding> {
-        val settings = settings(listOf(path), autoCorrect)
-
-        fun run(settings: ProcessingSettings): List<Finding> {
-            val result = facade(settings).run()
-            return result.findings.flatMap { it.value }
+    @UseExperimental(UnstableApi::class)
+    fun execute(fileContent: String, filename: String, autoCorrect: Boolean): List<Finding> {
+        if (filename == SPECIAL_FILENAME_FOR_DEBUGGING) {
+            return emptyList()
         }
 
-        return settings.use(::run)
+        val spec: ProcessingSpec = settings(filename, autoCorrect)
+        val detekt = DetektProvider.load().get(spec)
+        val result = detekt.run(fileContent, filename)
+
+        when (val error = result.error) {
+            is UnexpectedError -> throw error.cause
+            null -> Unit
+            else -> throw error
+        }
+
+        return result.container?.findings?.flatMap { it.value } ?: emptyList()
     }
 }

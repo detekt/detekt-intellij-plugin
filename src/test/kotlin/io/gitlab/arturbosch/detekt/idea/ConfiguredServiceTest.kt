@@ -1,15 +1,17 @@
 package io.gitlab.arturbosch.detekt.idea
 
-import io.gitlab.arturbosch.detekt.api.internal.DisabledAutoCorrectConfig
-import io.gitlab.arturbosch.detekt.api.internal.YamlConfig
+import io.github.detekt.test.utils.readResourceContent
+import io.github.detekt.test.utils.resourceAsPath
 import io.gitlab.arturbosch.detekt.idea.config.DetektConfigStorage
 import org.junit.jupiter.api.Test
+import strikt.api.expectCatching
 import strikt.api.expectThat
 import strikt.assertions.contains
 import strikt.assertions.hasSize
 import strikt.assertions.isA
 import strikt.assertions.isEmpty
-import strikt.assertions.isTrue
+import strikt.assertions.isFailure
+import strikt.assertions.isSuccess
 
 class ConfiguredServiceTest : DetektPluginTestCase() {
 
@@ -59,28 +61,31 @@ class ConfiguredServiceTest : DetektPluginTestCase() {
     }
 
     @Test
-    fun `auto correct is disabled by default`() {
-        val config = ConfiguredService(project).config()
-
-        expectThat(config).isA<DisabledAutoCorrectConfig>()
-    }
-
-    @Test
-    fun `auto correct can be enabled`() {
-        val config = ConfiguredService(project).config(autoCorrect = true)
-
-        expectThat(config).isA<YamlConfig>()
-    }
-
-    @Test
-    fun `all experimental rules are active`() {
-        val config = DetektConfigStorage.instance(project)
-        config.enableAllRules = true
-
+    fun `expect detekt runs successfully`() {
         val service = ConfiguredService(project)
 
-        val detektConfig = service.config()
+        // If a ClassCastException is thrown, it means detekt-core was called and creating a KotlinEnvironment
+        // failed due to conflicted compiler vs embedded-compiler dependency.
+        // IntelliJ isolates plugins in an own classloader so detekt runs fine.
+        // In the testcase this is not possible but it is enough to prove detekt runs and does not crash due to
+        // regressions in this plugin.
+        expectCatching {
+            service.execute(
+                readResourceContent("testData/Poko.kt"),
+                resourceAsPath("testData/Poko.kt").toString(),
+                autoCorrect = false
+            )
+        }
+            .isFailure()
+            .isA<ClassCastException>()
+    }
 
-        expectThat(detektConfig.valueOrDefault("active", false)).isTrue()
+    @Test
+    fun `debugging fragments are excluded from analysis`() {
+        val service = ConfiguredService(project)
+
+        expectCatching { service.execute("", SPECIAL_FILENAME_FOR_DEBUGGING, false) }
+            .isSuccess()
+            .isEmpty()
     }
 }

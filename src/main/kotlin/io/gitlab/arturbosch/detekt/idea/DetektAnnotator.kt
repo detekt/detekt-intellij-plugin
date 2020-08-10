@@ -9,7 +9,6 @@ import io.gitlab.arturbosch.detekt.api.TextLocation
 import io.gitlab.arturbosch.detekt.idea.config.DetektConfigStorage
 import io.gitlab.arturbosch.detekt.idea.util.isDetektEnabled
 import io.gitlab.arturbosch.detekt.idea.util.showNotification
-import io.gitlab.arturbosch.detekt.idea.util.toTmpFile
 
 class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
 
@@ -19,7 +18,6 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
         if (!collectedInfo.project.isDetektEnabled()) {
             return emptyList()
         }
-        val pathToAnalyze = collectedInfo.toTmpFile() ?: return emptyList()
         val service = ConfiguredService(collectedInfo.project)
 
         val problems = service.validate()
@@ -28,7 +26,7 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
             return emptyList()
         }
 
-        return service.execute(pathToAnalyze, autoCorrect = false)
+        return service.execute(collectedInfo, autoCorrect = false)
     }
 
     override fun apply(
