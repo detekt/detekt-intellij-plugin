@@ -6,7 +6,7 @@ import java.util.Date
 val kotlinVersion: String by extra
 val detektVersion: String by extra
 val junitVersion: String by extra
-val striktVersion: String by extra
+val assertjVersion: String by extra
 val detektIntellijPluginVersion: String by extra
 
 project.group = "io.gitlab.arturbosch.detekt"
@@ -37,7 +37,7 @@ dependencies {
         exclude(group = "org.assertj")
         exclude(group = "org.spekframework.spek2")
     }
-    testImplementation("org.assertj:assertj-core:3.17.2")
+    testImplementation("org.assertj:assertj-core:$assertjVersion")
     testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
 }
 
