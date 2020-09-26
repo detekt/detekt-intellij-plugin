@@ -19,8 +19,8 @@ repositories {
 
 plugins {
     id("org.jetbrains.intellij").version("0.4.21")
-    id("com.github.ben-manes.versions") version "0.28.0"
-    kotlin("jvm").version("1.3.72")
+    id("com.github.ben-manes.versions") version "0.33.0"
+    kotlin("jvm").version("1.4.10")
     id("org.sonarqube") version "3.0"
     id("com.github.breadmoirai.github-release") version "2.2.12"
     id("com.jfrog.bintray") version "1.8.5"
@@ -37,8 +37,8 @@ dependencies {
         exclude(group = "org.assertj")
         exclude(group = "org.spekframework.spek2")
     }
+    testImplementation("org.assertj:assertj-core:3.17.2")
     testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
-    testImplementation("io.strikt:strikt-core:$striktVersion")
 }
 
 java {
