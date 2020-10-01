@@ -3,11 +3,9 @@ package io.gitlab.arturbosch.detekt.idea
 import com.intellij.openapi.application.WriteAction
 import com.intellij.psi.PsiFile
 import io.gitlab.arturbosch.detekt.idea.config.DetektConfigStorage
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import strikt.api.expectThat
-import strikt.assertions.isEmpty
-import strikt.assertions.isNotEmpty
 
 class DetektAnnotatorTest : DetektPluginTestCase() {
 
@@ -18,7 +16,7 @@ class DetektAnnotatorTest : DetektPluginTestCase() {
 
         val findings = DetektAnnotator().doAnnotate(psi)
 
-        expectThat(findings).isEmpty()
+        assertThat(findings).isEmpty()
     }
 
     @Test
@@ -30,6 +28,6 @@ class DetektAnnotatorTest : DetektPluginTestCase() {
 
         val findings = DetektAnnotator().doAnnotate(psi)
 
-        expectThat(findings).isNotEmpty()
+        assertThat(findings).isNotEmpty()
     }
 }

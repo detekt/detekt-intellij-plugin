@@ -3,15 +3,9 @@ package io.gitlab.arturbosch.detekt.idea
 import io.github.detekt.test.utils.readResourceContent
 import io.github.detekt.test.utils.resourceAsPath
 import io.gitlab.arturbosch.detekt.idea.config.DetektConfigStorage
+import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatCode
 import org.junit.jupiter.api.Test
-import strikt.api.expectCatching
-import strikt.api.expectThat
-import strikt.assertions.contains
-import strikt.assertions.hasSize
-import strikt.assertions.isA
-import strikt.assertions.isEmpty
-import strikt.assertions.isFailure
-import strikt.assertions.isSuccess
 
 class ConfiguredServiceTest : DetektPluginTestCase() {
 
@@ -21,7 +15,7 @@ class ConfiguredServiceTest : DetektPluginTestCase() {
 
         val problems = service.validate()
 
-        expectThat(problems).isEmpty()
+        assertThat(problems).isEmpty()
     }
 
     @Test
@@ -31,9 +25,9 @@ class ConfiguredServiceTest : DetektPluginTestCase() {
 
         val problems = ConfiguredService(project).validate()
 
-        expectThat(problems).hasSize(1)
-        expectThat(problems.first()).contains("Configuration file")
-        expectThat(problems.first()).contains("does not exist")
+        assertThat(problems).hasSize(1)
+        assertThat(problems.first()).contains("Configuration file")
+        assertThat(problems.first()).contains("does not exist")
     }
 
     @Test
@@ -43,9 +37,9 @@ class ConfiguredServiceTest : DetektPluginTestCase() {
 
         val problems = ConfiguredService(project).validate()
 
-        expectThat(problems).hasSize(1)
-        expectThat(problems.first()).contains("baseline file")
-        expectThat(problems.first()).contains("does not exist")
+        assertThat(problems).hasSize(1)
+        assertThat(problems.first()).contains("baseline file")
+        assertThat(problems.first()).contains("does not exist")
     }
 
     @Test
@@ -55,9 +49,9 @@ class ConfiguredServiceTest : DetektPluginTestCase() {
 
         val problems = ConfiguredService(project).validate()
 
-        expectThat(problems).hasSize(1)
-        expectThat(problems.first()).contains("Plugin jar")
-        expectThat(problems.first()).contains("does not exist")
+        assertThat(problems).hasSize(1)
+        assertThat(problems.first()).contains("Plugin jar")
+        assertThat(problems.first()).contains("does not exist")
     }
 
     @Test
@@ -69,23 +63,21 @@ class ConfiguredServiceTest : DetektPluginTestCase() {
         // IntelliJ isolates plugins in an own classloader so detekt runs fine.
         // In the testcase this is not possible but it is enough to prove detekt runs and does not crash due to
         // regressions in this plugin.
-        expectCatching {
+        assertThatCode {
             service.execute(
                 readResourceContent("testData/Poko.kt"),
                 resourceAsPath("testData/Poko.kt").toString(),
                 autoCorrect = false
             )
-        }
-            .isFailure()
-            .isA<ClassCastException>()
+        }.isInstanceOf(ClassCastException::class.java)
     }
 
     @Test
     fun `debugging fragments are excluded from analysis`() {
         val service = ConfiguredService(project)
 
-        expectCatching { service.execute("", SPECIAL_FILENAME_FOR_DEBUGGING, false) }
-            .isSuccess()
-            .isEmpty()
+        val findings = service.execute("", SPECIAL_FILENAME_FOR_DEBUGGING, false)
+
+        assertThat(findings).isEmpty()
     }
 }
