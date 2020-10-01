@@ -1,5 +1,9 @@
 ### Changelog
 
+#### 1.6.0
+
+- Update to detekt 1.14.1
+
 #### 1.5.0
 
 - Update to detekt 1.11.0
