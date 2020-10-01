@@ -52,6 +52,9 @@ class ConfiguredService(private val project: Project) {
             maxIssuePolicy = RulesSpec.MaxIssuePolicy.AllowAny
         }
         config {
+            // Do not throw an error during annotation mode as it is a common scenario
+            // that the IntelliJ plugin is behind detekt core version-wise (new unknown config properties).
+            shouldValidateBeforeAnalysis = false
             useDefaultConfig = storage.buildUponDefaultConfig
             configPaths = configPaths()
         }
