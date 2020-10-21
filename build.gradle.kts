@@ -33,10 +33,7 @@ dependencies {
     runtimeOnly("io.gitlab.arturbosch.detekt:detekt-core:$detektVersion")
     runtimeOnly("io.gitlab.arturbosch.detekt:detekt-rules:$detektVersion")
     runtimeOnly("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion")
-    testImplementation("io.gitlab.arturbosch.detekt:detekt-test-utils:$detektVersion") {
-        exclude(group = "org.assertj")
-        exclude(group = "org.spekframework.spek2")
-    }
+    testImplementation("io.gitlab.arturbosch.detekt:detekt-test-utils:$detektVersion")
     testImplementation("org.assertj:assertj-core:$assertjVersion")
     testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
 }
