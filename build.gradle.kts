@@ -20,7 +20,7 @@ repositories {
 plugins {
     id("org.jetbrains.intellij").version("0.4.21")
     id("com.github.ben-manes.versions") version "0.33.0"
-    kotlin("jvm").version("1.4.10")
+    kotlin("jvm").version("1.4.21")
     id("org.sonarqube") version "3.0"
     id("com.github.breadmoirai.github-release") version "2.2.12"
     id("com.jfrog.bintray") version "1.8.5"
