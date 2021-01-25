@@ -1,5 +1,9 @@
 ### Changelog
 
+#### 1.15.0
+- Update to detekt 1.15.0
+- Align the major and minor version with detekt to follow semantic versions
+
 #### 1.6.1
 
 - Update to detekt 1.14.2
