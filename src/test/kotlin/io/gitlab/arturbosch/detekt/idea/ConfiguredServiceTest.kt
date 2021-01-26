@@ -58,7 +58,7 @@ class ConfiguredServiceTest : DetektPluginTestCase() {
     fun `expect detekt runs successfully`() {
         val service = ConfiguredService(project)
 
-        // If a ClassCastException is thrown, it means detekt-core was called and creating a KotlinEnvironment
+        // If a NoSuchMethodError is thrown, it means detekt-core was called and creating a KotlinEnvironment
         // failed due to conflicted compiler vs embedded-compiler dependency.
         // IntelliJ isolates plugins in an own classloader so detekt runs fine.
         // In the testcase this is not possible but it is enough to prove detekt runs and does not crash due to
@@ -69,7 +69,12 @@ class ConfiguredServiceTest : DetektPluginTestCase() {
                 resourceAsPath("testData/Poko.kt").toString(),
                 autoCorrect = false
             )
-        }.isInstanceOf(ClassCastException::class.java)
+        }.isInstanceOf(NoSuchMethodError::class.java)
+            .hasMessage("'org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment " +
+                "org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment\$Companion.createForProduction(" +
+                "org.jetbrains.kotlin.com.intellij.openapi.Disposable, " +
+                "org.jetbrains.kotlin.config.CompilerConfiguration, " +
+                "org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles)'")
     }
 
     @Test
