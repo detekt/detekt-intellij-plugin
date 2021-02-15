@@ -1,5 +1,11 @@
 ### Changelog
 
+#### 1.15.0
+- Update to detekt 1.15.0
+- Update to Gradle 6.8
+- Update to IntelliJ 2020.3
+- Align the major and minor version with detekt to follow semantic versions
+
 #### 1.6.1
 
 - Update to detekt 1.14.2
