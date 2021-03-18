@@ -70,11 +70,7 @@ class ConfiguredServiceTest : DetektPluginTestCase() {
                 autoCorrect = false
             )
         }.isInstanceOf(NoSuchMethodError::class.java)
-            .hasMessage("'org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment " +
-                "org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment\$Companion.createForProduction(" +
-                "org.jetbrains.kotlin.com.intellij.openapi.Disposable, " +
-                "org.jetbrains.kotlin.config.CompilerConfiguration, " +
-                "org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles)'")
+            .hasMessage("org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment${"$"}Companion.createForProduction")
     }
 
     @Test
