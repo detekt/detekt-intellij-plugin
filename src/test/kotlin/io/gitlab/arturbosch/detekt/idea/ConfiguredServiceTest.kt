@@ -69,8 +69,11 @@ class ConfiguredServiceTest : DetektPluginTestCase() {
                 resourceAsPath("testData/Poko.kt").toString(),
                 autoCorrect = false
             )
-        }.isInstanceOf(NoSuchMethodError::class.java)
-            .hasMessage("org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment${"$"}Companion.createForProduction")
+        }
+            .isInstanceOf(NoSuchMethodError::class.java)
+            .hasMessageContaining(
+                    "org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment${"$"}Companion.createForProduction"
+            )
     }
 
     @Test
