@@ -68,6 +68,7 @@ githubRelease {
     token(project.findProperty("github.token") as? String ?: "")
     owner.set("detekt")
     repo.set("detekt-intellij-plugin")
+    targetCommitish.set("main")
     overwrite.set(true)
     dryRun.set(false)
     body {
