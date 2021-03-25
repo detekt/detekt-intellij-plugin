@@ -1,5 +1,8 @@
 ### Changelog
 
+#### 1.16.0
+- Upgrade to detekt 1.16.0
+
 #### 1.15.0
 - Update to detekt 1.15.0
 - Update to Gradle 6.8
