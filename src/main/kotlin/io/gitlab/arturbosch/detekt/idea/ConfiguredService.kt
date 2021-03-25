@@ -48,7 +48,7 @@ class ConfiguredService(private val project: Project) {
         }
         rules {
             this.autoCorrect = autoCorrect
-            activateExperimentalRules = storage.enableAllRules
+            activateAllRules = storage.enableAllRules
             maxIssuePolicy = RulesSpec.MaxIssuePolicy.AllowAny
         }
         config {
@@ -87,7 +87,7 @@ class ConfiguredService(private val project: Project) {
         return execute(file.text, pathToAnalyze, autoCorrect)
     }
 
-    @UseExperimental(UnstableApi::class)
+    @OptIn(UnstableApi::class)
     fun execute(fileContent: String, filename: String, autoCorrect: Boolean): List<Finding> {
         if (filename == SPECIAL_FILENAME_FOR_DEBUGGING) {
             return emptyList()
