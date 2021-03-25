@@ -72,7 +72,7 @@ class ConfiguredService(private val project: Project) {
         }
     }
 
-    private fun configPaths(): List<Path> = extractPaths(storage.rulesPath, project)
+    private fun configPaths(): List<Path> = extractPaths(storage.configPaths, project)
 
     private fun pluginPaths(): List<Path> = extractPaths(storage.pluginPaths, project)
 

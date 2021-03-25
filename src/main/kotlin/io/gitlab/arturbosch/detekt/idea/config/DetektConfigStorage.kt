@@ -29,7 +29,7 @@ class DetektConfigStorage : PersistentStateComponent<DetektConfigStorage> {
     var treatAsError: Boolean = false
 
     @Tag
-    var rulesPath: String = ""
+    var configPaths: String = ""
 
     @Tag
     var baselinePath: String = ""
@@ -44,7 +44,7 @@ class DetektConfigStorage : PersistentStateComponent<DetektConfigStorage> {
         this.enableFormatting = state.enableFormatting
         this.buildUponDefaultConfig = state.buildUponDefaultConfig
         this.enableAllRules = state.enableAllRules
-        this.rulesPath = state.rulesPath
+        this.configPaths = state.configPaths
         this.baselinePath = state.baselinePath
         this.treatAsError = state.treatAsError
         this.pluginPaths = state.pluginPaths
