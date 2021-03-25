@@ -16,6 +16,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import java.io.File;
+import java.util.Objects;
 
 public class DetektConfigurationForm {
 
@@ -117,14 +118,14 @@ public class DetektConfigurationForm {
         pluginPaths.setText(detektConfigStorage.getPluginPaths());
     }
 
-    public boolean isModified() {
-        return !Comparing.equal(detektConfigStorage.getEnableDetekt(), enableDetekt.isSelected())
-                || !Comparing.equal(detektConfigStorage.getEnableFormatting(), enableFormatting.isSelected())
-                || !Comparing.equal(detektConfigStorage.getBuildUponDefaultConfig(), buildUponDefaultConfig.isSelected())
-                || !Comparing.equal(detektConfigStorage.getEnableAllRules(), enableAllRules.isSelected())
-                || !Comparing.equal(detektConfigStorage.getTreatAsError(), treatAsErrors.isSelected())
-                || !Comparing.equal(detektConfigStorage.getRulesPath(), configurationFilePath.getText())
-                || !Comparing.equal(detektConfigStorage.getBaselinePath(), baselineFilePath.getText())
-                || !Comparing.equal(detektConfigStorage.getPluginPaths(), pluginPaths.getText());
+    public boolean isNotModified() {
+        return Objects.equals(detektConfigStorage.getEnableDetekt(), enableDetekt.isSelected())
+                && Objects.equals(detektConfigStorage.getEnableFormatting(), enableFormatting.isSelected())
+                && Objects.equals(detektConfigStorage.getBuildUponDefaultConfig(), buildUponDefaultConfig.isSelected())
+                && Objects.equals(detektConfigStorage.getEnableAllRules(), enableAllRules.isSelected())
+                && Objects.equals(detektConfigStorage.getTreatAsError(), treatAsErrors.isSelected())
+                && Objects.equals(detektConfigStorage.getRulesPath(), configurationFilePath.getText())
+                && Objects.equals(detektConfigStorage.getBaselinePath(), baselineFilePath.getText())
+                && Objects.equals(detektConfigStorage.getPluginPaths(), pluginPaths.getText());
     }
 }

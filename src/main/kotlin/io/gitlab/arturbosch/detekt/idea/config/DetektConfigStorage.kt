@@ -37,7 +37,7 @@ class DetektConfigStorage : PersistentStateComponent<DetektConfigStorage> {
     @Tag
     var pluginPaths: String = ""
 
-    override fun getState(): DetektConfigStorage? = this
+    override fun getState(): DetektConfigStorage = this
 
     override fun loadState(state: DetektConfigStorage) {
         this.enableDetekt = state.enableDetekt

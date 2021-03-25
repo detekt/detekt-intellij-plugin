@@ -11,7 +11,7 @@ class DetektConfig(private val project: Project) : SearchableConfigurable {
     private val detektConfigStorage: DetektConfigStorage = DetektConfigStorage.instance(project)
     private val detektConfigurationForm: DetektConfigurationForm = DetektConfigurationForm(project)
 
-    override fun isModified(): Boolean = detektConfigurationForm.isModified
+    override fun isModified(): Boolean = !detektConfigurationForm.isNotModified
 
     override fun getId(): String = "io.github.detekt.config"
 
@@ -24,5 +24,5 @@ class DetektConfig(private val project: Project) : SearchableConfigurable {
 
     override fun reset() = detektConfigurationForm.reset()
 
-    override fun createComponent(): JComponent? = detektConfigurationForm.createPanel(detektConfigStorage)
+    override fun createComponent(): JComponent = detektConfigurationForm.createPanel(detektConfigStorage)
 }
