@@ -21,7 +21,7 @@ class ConfiguredServiceTest : DetektPluginTestCase() {
     @Test
     fun `invalid config found`() {
         val config = DetektConfigStorage.instance(project)
-        config.rulesPath = "asadadasdas"
+        config.configPaths = "asadadasdas"
 
         val problems = ConfiguredService(project).validate()
 

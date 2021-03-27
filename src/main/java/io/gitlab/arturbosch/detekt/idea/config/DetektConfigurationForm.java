@@ -6,7 +6,6 @@ import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.TextComponentAccessor;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
-import com.intellij.openapi.util.Comparing;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.IdeBorderFactory;
@@ -102,7 +101,7 @@ public class DetektConfigurationForm {
         detektConfigStorage.setBuildUponDefaultConfig(buildUponDefaultConfig.isSelected());
         detektConfigStorage.setEnableAllRules(enableAllRules.isSelected());
         detektConfigStorage.setTreatAsError(treatAsErrors.isSelected());
-        detektConfigStorage.setRulesPath(configurationFilePath.getText());
+        detektConfigStorage.setConfigPaths(configurationFilePath.getText());
         detektConfigStorage.setBaselinePath(baselineFilePath.getText());
         detektConfigStorage.setPluginPaths(pluginPaths.getText());
     }
@@ -113,7 +112,7 @@ public class DetektConfigurationForm {
         buildUponDefaultConfig.setSelected(detektConfigStorage.getBuildUponDefaultConfig());
         enableAllRules.setSelected(detektConfigStorage.getEnableAllRules());
         treatAsErrors.setSelected(detektConfigStorage.getTreatAsError());
-        configurationFilePath.setText(detektConfigStorage.getRulesPath());
+        configurationFilePath.setText(detektConfigStorage.getConfigPaths());
         baselineFilePath.setText(detektConfigStorage.getBaselinePath());
         pluginPaths.setText(detektConfigStorage.getPluginPaths());
     }
@@ -124,7 +123,7 @@ public class DetektConfigurationForm {
                 && Objects.equals(detektConfigStorage.getBuildUponDefaultConfig(), buildUponDefaultConfig.isSelected())
                 && Objects.equals(detektConfigStorage.getEnableAllRules(), enableAllRules.isSelected())
                 && Objects.equals(detektConfigStorage.getTreatAsError(), treatAsErrors.isSelected())
-                && Objects.equals(detektConfigStorage.getRulesPath(), configurationFilePath.getText())
+                && Objects.equals(detektConfigStorage.getConfigPaths(), configurationFilePath.getText())
                 && Objects.equals(detektConfigStorage.getBaselinePath(), baselineFilePath.getText())
                 && Objects.equals(detektConfigStorage.getPluginPaths(), pluginPaths.getText());
     }
