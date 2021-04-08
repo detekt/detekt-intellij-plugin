@@ -19,9 +19,9 @@ The plugin can be downloaded from the [Jetbrains plugin repository](https://plug
 - Baseline file: Path to custom baseline.xml file (optional)
 - Plugin jars: Path to jar file that has the 'custom rules', if you want them to be reported as well (optional)
 
-That's it. Detekt issues will be annotated on-the-fly while coding.
-
 ![detekt in action](./img/detekt.png "detekt in action")
+
+That's it. Detekt issues will be annotated on-the-fly while coding.
 
 ## Building / developing the plugin
 
