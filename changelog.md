@@ -1,5 +1,9 @@
 ### Changelog
 
+#### Unreleased
+
+- Update to Gradle 7.0.2
+
 #### 1.16.0
 - Upgrade to detekt 1.16.0
 

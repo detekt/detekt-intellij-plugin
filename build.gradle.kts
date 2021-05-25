@@ -9,7 +9,7 @@ project.version = detektIntellijPluginVersion
 
 repositories {
     mavenCentral()
-    maven { setUrl("http://dl.bintray.com/jetbrains/intellij-plugin-service") }
+    maven(url = "https://dl.bintray.com/jetbrains/intellij-plugin-service")
     jcenter()
 }
 
