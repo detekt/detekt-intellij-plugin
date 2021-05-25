@@ -2,6 +2,7 @@
 
 #### Unreleased
 
+- Update to detekt 1.17.1
 - Update to Gradle 7.0.2
 - Update to IntelliJ 2021.1
 
