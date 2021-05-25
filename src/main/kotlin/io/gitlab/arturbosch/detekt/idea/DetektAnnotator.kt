@@ -2,6 +2,7 @@ package io.gitlab.arturbosch.detekt.idea
 
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.ExternalAnnotator
+import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiFile
 import io.gitlab.arturbosch.detekt.api.Finding
@@ -38,11 +39,10 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
         for (finding in annotationResult) {
             val textRange = finding.charPosition.toTextRange()
             val message = finding.id + ": " + finding.messageOrDescription()
-            if (configuration.treatAsError) {
-                holder.createErrorAnnotation(textRange, message)
-            } else {
-                holder.createWarningAnnotation(textRange, message)
-            }
+            val severity = if (configuration.treatAsError) HighlightSeverity.ERROR else HighlightSeverity.WARNING
+            holder.newAnnotation(severity, message)
+                .range(textRange)
+                .create()
         }
     }
 
