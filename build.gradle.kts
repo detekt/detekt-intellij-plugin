@@ -1,4 +1,3 @@
-import org.jetbrains.intellij.IntelliJPluginExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val detektIntellijPluginVersion: String by extra
@@ -38,14 +37,14 @@ java {
     withSourcesJar()
 }
 
-tasks.withType<KotlinCompile> {
+tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions {
         jvmTarget = "1.8"
         freeCompilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
     }
 }
 
-tasks.withType<Test> {
+tasks.withType<Test>().configureEach {
     useJUnitPlatform()
     testLogging {
         showStandardStreams = true
@@ -59,7 +58,7 @@ tasks.publishPlugin {
     setToken(System.getenv("ORG_GRADLE_PROJECT_intellijPublishToken"))
 }
 
-configure<IntelliJPluginExtension> {
+intellij {
     pluginName = "Detekt IntelliJ Plugin"
     version = "2020.3"
     updateSinceUntilBuild = false
