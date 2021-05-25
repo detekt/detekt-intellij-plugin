@@ -14,9 +14,9 @@ repositories {
 }
 
 plugins {
-    id("org.jetbrains.intellij").version("0.7.2")
-    id("com.github.ben-manes.versions") version "0.33.0"
-    kotlin("jvm").version("1.4.21")
+    id("org.jetbrains.intellij").version("0.7.3")
+    id("com.github.ben-manes.versions") version "0.38.0"
+    kotlin("jvm").version("1.4.32")
     id("com.github.breadmoirai.github-release") version "2.2.12"
 }
 
@@ -27,8 +27,8 @@ dependencies {
     runtimeOnly("io.gitlab.arturbosch.detekt:detekt-rules:$detektVersion")
     runtimeOnly("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion")
     testImplementation("io.gitlab.arturbosch.detekt:detekt-test-utils:$detektVersion")
-    testImplementation("org.assertj:assertj-core:3.17.2")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.7.0")
+    testImplementation("org.assertj:assertj-core:3.19.0")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.7.2")
 }
 
 java {
@@ -39,8 +39,10 @@ java {
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
-    kotlinOptions.freeCompilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
+    kotlinOptions {
+        jvmTarget = "1.8"
+        freeCompilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
+    }
 }
 
 tasks.withType<Test> {
@@ -65,7 +67,7 @@ configure<IntelliJPluginExtension> {
 }
 
 githubRelease {
-    token(project.findProperty("github.token") as? String ?: "")
+    token((project.findProperty("github.token") as? String).orEmpty())
     owner.set("detekt")
     repo.set("detekt-intellij-plugin")
     targetCommitish.set("main")
