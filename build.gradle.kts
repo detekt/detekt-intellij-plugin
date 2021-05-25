@@ -60,9 +60,13 @@ tasks.publishPlugin {
 
 intellij {
     pluginName = "Detekt IntelliJ Plugin"
-    version = "2020.3"
+    version = "2021.1"
     updateSinceUntilBuild = false
     setPlugins("IntelliLang", "Kotlin")
+}
+
+tasks.runPluginVerifier {
+    ideVersions(listOf("2020.2.4", "2020.3.4", "2021.1.2"))
 }
 
 githubRelease {
