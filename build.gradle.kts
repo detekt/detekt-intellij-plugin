@@ -54,7 +54,9 @@ tasks.withType<Test>().configureEach {
 }
 
 tasks.publishPlugin {
-    setToken(System.getenv("ORG_GRADLE_PROJECT_intellijPublishToken"))
+    // This property can be configured via environment variable ORG_GRADLE_PROJECT_intellijPublishToken
+    // See: https://docs.gradle.org/current/userguide/build_environment.html#sec:project_properties
+    setToken(findProperty("intellijPublishToken"))
 }
 
 intellij {
