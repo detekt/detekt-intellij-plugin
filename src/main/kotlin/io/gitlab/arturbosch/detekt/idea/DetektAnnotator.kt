@@ -38,7 +38,12 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
         val configuration = DetektConfigStorage.instance(file.project)
         for (finding in annotationResult) {
             val textRange = finding.charPosition.toTextRange()
-            val message = finding.id + ": " + finding.messageOrDescription()
+            val message = buildString {
+                append("Detekt - ")
+                append(finding.id)
+                append(": ")
+                append(finding.messageOrDescription())
+            }
             val severity = if (configuration.treatAsError) HighlightSeverity.ERROR else HighlightSeverity.WARNING
             holder.newAnnotation(severity, message)
                 .range(textRange)
