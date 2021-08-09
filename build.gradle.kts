@@ -1,3 +1,4 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val detektIntellijPluginVersion: String by extra
@@ -13,8 +14,9 @@ repositories {
 
 plugins {
     id("org.jetbrains.intellij").version("0.7.3")
-    id("com.github.ben-manes.versions") version "0.38.0"
-    kotlin("jvm").version("1.4.32")
+//    id("org.jetbrains.intellij").version("1.1.4")
+    id("com.github.ben-manes.versions") version "0.39.0"
+    kotlin("jvm") version "1.4.31"
     id("com.github.breadmoirai.github-release") version "2.2.12"
 }
 
@@ -49,7 +51,7 @@ tasks.withType<Test>().configureEach {
         showStandardStreams = true
         showExceptions = true
         showCauses = true
-        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+        exceptionFormat = FULL
     }
 }
 
@@ -61,13 +63,13 @@ tasks.publishPlugin {
 
 intellij {
     pluginName = "Detekt IntelliJ Plugin"
-    version = "2021.1"
+    version = "2021.2"
     updateSinceUntilBuild = false
     setPlugins("IntelliLang", "Kotlin")
 }
 
 tasks.runPluginVerifier {
-    ideVersions(listOf("2020.2.4", "2020.3.4", "2021.1.2"))
+    ideVersions(listOf("2020.2.4", "2020.3.4", "2021.1.2", "2021.2"))
 }
 
 githubRelease {
