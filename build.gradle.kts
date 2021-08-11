@@ -1,4 +1,6 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+import org.jetbrains.intellij.tasks.RunPluginVerifierTask.FailureLevel.DEPRECATED_API_USAGES
+import org.jetbrains.intellij.tasks.RunPluginVerifierTask.FailureLevel.INVALID_PLUGIN
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val detektIntellijPluginVersion: String by extra
@@ -13,8 +15,7 @@ repositories {
 }
 
 plugins {
-    id("org.jetbrains.intellij").version("0.7.3")
-//    id("org.jetbrains.intellij").version("1.1.4")
+    id("org.jetbrains.intellij") version "1.1.4"
     id("com.github.ben-manes.versions") version "0.39.0"
     kotlin("jvm") version "1.4.31"
     id("com.github.breadmoirai.github-release") version "2.2.12"
@@ -23,11 +24,13 @@ plugins {
 dependencies {
     implementation("io.gitlab.arturbosch.detekt:detekt-api:$detektVersion")
     implementation("io.gitlab.arturbosch.detekt:detekt-tooling:$detektVersion")
+
     runtimeOnly("io.gitlab.arturbosch.detekt:detekt-core:$detektVersion")
     runtimeOnly("io.gitlab.arturbosch.detekt:detekt-rules:$detektVersion")
     runtimeOnly("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion")
+
     testImplementation("io.gitlab.arturbosch.detekt:detekt-test-utils:$detektVersion")
-    testImplementation("org.assertj:assertj-core:3.19.0")
+    testImplementation("org.assertj:assertj-core:3.20.2")
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.2")
 }
 
@@ -58,18 +61,19 @@ tasks.withType<Test>().configureEach {
 tasks.publishPlugin {
     // This property can be configured via environment variable ORG_GRADLE_PROJECT_intellijPublishToken
     // See: https://docs.gradle.org/current/userguide/build_environment.html#sec:project_properties
-    setToken(findProperty("intellijPublishToken"))
+    token.set((findProperty("intellijPublishToken") as? String).orEmpty())
 }
 
 intellij {
-    pluginName = "Detekt IntelliJ Plugin"
-    version = "2021.2"
-    updateSinceUntilBuild = false
-    setPlugins("IntelliLang", "Kotlin")
+    pluginName.set("Detekt IntelliJ Plugin")
+    version.set("2021.2")
+    updateSinceUntilBuild.set(false)
+    plugins.set(listOf("IntelliLang", "Kotlin"))
 }
 
 tasks.runPluginVerifier {
-    ideVersions(listOf("2020.2.4", "2020.3.4", "2021.1.2", "2021.2"))
+    ideVersions.set(listOf("2020.2.4", "2020.3.4", "2021.1.2", "2021.2"))
+    failureLevel.set(listOf(DEPRECATED_API_USAGES, INVALID_PLUGIN))
 }
 
 githubRelease {
