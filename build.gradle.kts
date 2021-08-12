@@ -17,7 +17,7 @@ repositories {
 plugins {
     id("org.jetbrains.intellij") version "1.1.4"
     id("com.github.ben-manes.versions") version "0.39.0"
-    kotlin("jvm") version "1.4.31"
+    kotlin("jvm") version embeddedKotlinVersion
     id("com.github.breadmoirai.github-release") version "2.2.12"
 }
 

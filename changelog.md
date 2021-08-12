@@ -1,8 +1,8 @@
 ### Changelog
 
-#### 1.18.0-RC3
+#### 1.18.0
 
-- Update to detekt 1.18.0-RC3 - [#133](https://github.com/detekt/detekt-intellij-plugin/pull/133)
+- Update to detekt 1.18.0 - [#133](https://github.com/detekt/detekt-intellij-plugin/pull/133)
 - Update to Gradle 7.1.1 - [#133](https://github.com/detekt/detekt-intellij-plugin/pull/133)
 - Update to IntelliJ 2021.2 - [#133](https://github.com/detekt/detekt-intellij-plugin/pull/133)
 - Update Gradle plugins - [#133](https://github.com/detekt/detekt-intellij-plugin/pull/133)
