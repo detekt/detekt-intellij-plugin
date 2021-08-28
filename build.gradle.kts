@@ -34,16 +34,22 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.2")
 }
 
+val jvmVersion = JavaVersion.VERSION_11
+val currentJavaVersion = JavaVersion.current()
+check(currentJavaVersion.isCompatibleWith(jvmVersion)) {
+    "the current JVM ($currentJavaVersion) is incompatible with $jvmVersion"
+}
+
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = jvmVersion
+    targetCompatibility = jvmVersion
     withJavadocJar()
     withSourcesJar()
 }
 
 tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = jvmVersion.majorVersion
         freeCompilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
     }
 }
@@ -72,7 +78,7 @@ intellij {
 }
 
 tasks.runPluginVerifier {
-    ideVersions.set(listOf("2020.2.4", "2020.3.4", "2021.1.2", "2021.2"))
+    ideVersions.set(listOf("2020.3.4", "2021.1.2", "2021.2"))
     failureLevel.set(listOf(DEPRECATED_API_USAGES, INVALID_PLUGIN))
 }
 

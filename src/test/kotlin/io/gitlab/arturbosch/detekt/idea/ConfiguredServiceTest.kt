@@ -72,7 +72,7 @@ class ConfiguredServiceTest : DetektPluginTestCase() {
         }
             .isInstanceOf(NoSuchMethodError::class.java)
             .hasMessageContaining(
-                    "org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment${"$"}Companion.createForProduction"
+                "org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment${"$"}Companion.createForProduction"
             )
     }
 
