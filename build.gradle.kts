@@ -5,7 +5,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val detektIntellijPluginVersion: String by extra
 val detektVersion: String by extra
-val intellijVersion: String by extra
 
 project.group = "io.gitlab.arturbosch.detekt"
 project.version = detektIntellijPluginVersion
@@ -73,13 +72,13 @@ tasks.publishPlugin {
 
 intellij {
     pluginName.set("Detekt IntelliJ Plugin")
-    version.set(intellijVersion)
+    version.set("2021.2.1")
     updateSinceUntilBuild.set(false)
     plugins.set(listOf("IntelliLang", "Kotlin"))
 }
 
 tasks.runPluginVerifier {
-    ideVersions.set(listOf(intellijVersion, "2020.3.4", "2021.1.2", "2021.2"))
+    ideVersions.set(listOf("2020.3.4", "2021.1.3", "2021.2.1"))
     failureLevel.set(listOf(DEPRECATED_API_USAGES, INVALID_PLUGIN))
 }
 
