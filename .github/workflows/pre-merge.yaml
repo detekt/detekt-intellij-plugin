@@ -13,10 +13,9 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
+        jdk: [11]
     if: ${{ !contains(github.event.head_commit.message, 'ci skip') }}
-    env:
-      JDK_VERSION: 11
+    runs-on: ${{ matrix.os }}
     steps:
     - name: Checkout Repo
       uses: actions/checkout@v2
@@ -24,10 +23,7 @@ jobs:
     - name: Setup Java
       uses: actions/setup-java@v1
       with:
-        java-version: ${{ JDK_VERSION }}
-
-    - name: check the binary compatibility with specified IntelliJ IDE builds
-      run: ./gradlew runPluginVerifier --no-daemon
+        java-version: ${{ matrix.jdk }}
 
     - name: Build detekt idea plugin
       run: ./gradlew build --no-daemon
