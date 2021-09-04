@@ -25,8 +25,5 @@ jobs:
       with:
         java-version: ${{ matrix.jdk }}
 
-    - name: check the binary compatibility with specified IntelliJ IDE builds
-      run: ./gradlew runPluginVerifier --no-daemon
-
     - name: Build detekt idea plugin
       run: ./gradlew build --no-daemon
