@@ -23,6 +23,9 @@ The plugin can be downloaded from the [Jetbrains plugin repository](https://plug
 
 That's it. Detekt issues will be annotated on-the-fly while coding.
 
+## Auto correction
+You may optionally click `Refactor` -> `AutoCorrect by Detekt rules` to auto correct detekt violations if possible.
+
 ## Building / developing the plugin
 
 For building the project, the [Gradle IntelliJ plugin](https://github.com/JetBrains/gradle-intellij-plugin)
