@@ -5,3 +5,5 @@ out/
 *.iml
 *.ipr
 .idea/
+
+tmp.*
