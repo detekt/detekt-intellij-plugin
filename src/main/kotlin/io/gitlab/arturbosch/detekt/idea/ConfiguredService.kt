@@ -12,6 +12,7 @@ import io.gitlab.arturbosch.detekt.api.Finding
 import io.gitlab.arturbosch.detekt.api.UnstableApi
 import io.gitlab.arturbosch.detekt.idea.config.DetektConfigStorage
 import io.gitlab.arturbosch.detekt.idea.util.DirectExecuter
+import io.gitlab.arturbosch.detekt.idea.util.DownloadFileImpl
 import io.gitlab.arturbosch.detekt.idea.util.absolutePath
 import io.gitlab.arturbosch.detekt.idea.util.extractPaths
 import java.nio.file.Files
@@ -21,18 +22,31 @@ import java.nio.file.Paths
 class ConfiguredService(private val project: Project) {
 
     private val storage = DetektConfigStorage.instance(project)
+    private val download = DownloadFileImpl()
+    private var configPaths: String = ""
+    private var pluginPaths: String = ""
+    private var baseline: String = ""
 
     fun validate(): List<String> {
         val messages = mutableListOf<String>()
 
+        if (!validateHttpPlugin(storage.pluginPaths)) {
+            messages += "Plugin jar <b>${storage.pluginPaths}</b> download failed."
+        }
         pluginPaths()
             .filter { Files.notExists(it) }
             .forEach { messages += "Plugin jar <b>$it</b> does not exist." }
 
+        if (!validateHttpConfig(storage.configPaths)) {
+            messages += "Configuration file <b>${storage.configPaths}</b> download failed."
+        }
         configPaths()
             .filter { Files.notExists(it) }
             .forEach { messages += "Configuration file <b>$it</b> does not exist." }
 
+        if (!validateHttpBaseline(storage.baselinePath)) {
+            messages += "The provided baseline file <b>${storage.baselinePath}</b> download failed."
+        }
         val baseline = baseline()
         if (baseline != null && !baseline.exists()) {
             messages += "The provided baseline file <b>$baseline</b> does not exist."
@@ -72,13 +86,55 @@ class ConfiguredService(private val project: Project) {
         }
     }
 
-    private fun configPaths(): List<Path> = extractPaths(storage.configPaths, project)
+    private fun configPaths(): List<Path> = extractPaths(configPaths, project)
 
-    private fun pluginPaths(): List<Path> = extractPaths(storage.pluginPaths, project)
+    private fun pluginPaths(): List<Path> = extractPaths(pluginPaths, project)
 
-    private fun baseline(): Path? = storage.baselinePath.trim()
+    private fun validateHttpPlugin(path: String): Boolean {
+        if (!path.startsWith("http")) {
+            pluginPaths = storage.pluginPaths
+            return true
+        }
+
+        val file = download.download(path)
+        if (file != null) {
+            pluginPaths = file.path
+            return true
+        }
+        return false
+    }
+
+    private fun validateHttpConfig(path: String): Boolean {
+        if (!path.startsWith("http")) {
+            configPaths = storage.configPaths
+            return true
+        }
+
+        val file = download.download(path)
+        if (file != null) {
+            configPaths = file.path
+            return true
+        }
+        return false
+    }
+
+    private fun validateHttpBaseline(path: String): Boolean {
+        if (!path.startsWith("http")) {
+            baseline = storage.baselinePath
+            return true
+        }
+
+        val file = download.download(path)
+        if (file != null) {
+            baseline = file.path
+            return true
+        }
+        return false
+    }
+
+    private fun baseline(): Path? = baseline.trim()
         .takeIf { it.isNotEmpty() }
-        ?.let { Paths.get(absolutePath(project, storage.baselinePath)) }
+        ?.let { Paths.get(absolutePath(project, baseline)) }
 
     fun execute(file: PsiFile, autoCorrect: Boolean): List<Finding> {
         val pathToAnalyze = file.virtualFile

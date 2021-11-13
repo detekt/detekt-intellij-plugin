@@ -19,6 +19,27 @@ class ConfiguredServiceTest : DetektPluginTestCase() {
     }
 
     @Test
+    fun `download http config`() {
+        val config = DetektConfigStorage.instance(project)
+        config.configPaths = "https://raw.githubusercontent.com/detekt/detekt/main/config/detekt/detekt.yml"
+
+        val problems = ConfiguredService(project).validate()
+
+        assertThat(problems).hasSize(0)
+    }
+
+    @Test
+    fun `download http config failed`() {
+        val config = DetektConfigStorage.instance(project)
+        config.configPaths = "http://xxxxxxx"
+        val problems = ConfiguredService(project).validate()
+
+        assertThat(problems).hasSize(1)
+        assertThat(problems.first()).contains("Configuration file")
+        assertThat(problems.first()).contains("download failed")
+    }
+
+    @Test
     fun `invalid config found`() {
         val config = DetektConfigStorage.instance(project)
         config.configPaths = "asadadasdas"
@@ -31,6 +52,28 @@ class ConfiguredServiceTest : DetektPluginTestCase() {
     }
 
     @Test
+    fun `download http baseline`() {
+        val config = DetektConfigStorage.instance(project)
+        config.baselinePath = "https://raw.githubusercontent.com/detekt/detekt/main/config/detekt/baseline.xml"
+
+        val problems = ConfiguredService(project).validate()
+
+        assertThat(problems).hasSize(0)
+    }
+
+    @Test
+    fun `download http config baseline`() {
+        val config = DetektConfigStorage.instance(project)
+        config.baselinePath = "http://xxxxxxx"
+
+        val problems = ConfiguredService(project).validate()
+
+        assertThat(problems).hasSize(1)
+        assertThat(problems.first()).contains("baseline file")
+        assertThat(problems.first()).contains("download failed")
+    }
+
+    @Test
     fun `invalid baseline file found`() {
         val config = DetektConfigStorage.instance(project)
         config.baselinePath = "asadadasdas"
@@ -40,6 +83,18 @@ class ConfiguredServiceTest : DetektPluginTestCase() {
         assertThat(problems).hasSize(1)
         assertThat(problems.first()).contains("baseline file")
         assertThat(problems.first()).contains("does not exist")
+    }
+
+    @Test
+    fun `download http config jar`() {
+        val config = DetektConfigStorage.instance(project)
+        config.pluginPaths = "http://xxxxxxx"
+
+        val problems = ConfiguredService(project).validate()
+
+        assertThat(problems).hasSize(1)
+        assertThat(problems.first()).contains("Plugin jar")
+        assertThat(problems.first()).contains("download failed")
     }
 
     @Test
