@@ -3,11 +3,8 @@ import org.jetbrains.intellij.tasks.RunPluginVerifierTask.FailureLevel.DEPRECATE
 import org.jetbrains.intellij.tasks.RunPluginVerifierTask.FailureLevel.INVALID_PLUGIN
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val detektIntellijPluginVersion: String by extra
-val detektVersion: String by extra
-
 project.group = "io.gitlab.arturbosch.detekt"
-project.version = detektIntellijPluginVersion
+project.version = libs.versions.detekt.get()
 
 repositories {
     mavenCentral()
@@ -15,23 +12,23 @@ repositories {
 }
 
 plugins {
-    id("org.jetbrains.intellij").version("1.1.5")
+    id("org.jetbrains.intellij").version("1.3.0")
     id("com.github.ben-manes.versions").version("0.39.0")
     kotlin("jvm").version(embeddedKotlinVersion)
     id("com.github.breadmoirai.github-release").version("2.2.12")
 }
 
 dependencies {
-    implementation("io.gitlab.arturbosch.detekt:detekt-api:$detektVersion")
-    implementation("io.gitlab.arturbosch.detekt:detekt-tooling:$detektVersion")
+    implementation(libs.detekt.api)
+    implementation(libs.detekt.tooling)
 
-    runtimeOnly("io.gitlab.arturbosch.detekt:detekt-core:$detektVersion")
-    runtimeOnly("io.gitlab.arturbosch.detekt:detekt-rules:$detektVersion")
-    runtimeOnly("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion")
+    runtimeOnly(libs.detekt.core)
+    runtimeOnly(libs.detekt.rules)
+    runtimeOnly(libs.detekt.formatting)
 
-    testImplementation("io.gitlab.arturbosch.detekt:detekt-test-utils:$detektVersion")
-    testImplementation("org.assertj:assertj-core:3.20.2")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.7.2")
+    testImplementation(libs.detekt.testUtils)
+    testImplementation(libs.assertj.core)
+    testImplementation(libs.junit.jupiter)
 }
 
 val jvmVersion = JavaVersion.VERSION_11
@@ -78,7 +75,7 @@ intellij {
 }
 
 tasks.runPluginVerifier {
-    ideVersions.set(listOf("2020.3.4", "2021.1.3", "2021.2.1"))
+    ideVersions.set(listOf("2020.3.4", "2021.1.3", "2021.2.3"))
     failureLevel.set(listOf(DEPRECATED_API_USAGES, INVALID_PLUGIN))
 }
 
