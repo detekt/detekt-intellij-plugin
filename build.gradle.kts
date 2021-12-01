@@ -8,7 +8,6 @@ project.version = libs.versions.detekt.get()
 
 repositories {
     mavenCentral()
-    maven(url = "https://dl.bintray.com/jetbrains/intellij-plugin-service")
 }
 
 plugins {
