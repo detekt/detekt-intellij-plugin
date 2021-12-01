@@ -1,11 +1,12 @@
 ### Changelog
 
-#### 1.19.0-RC2
-- Update to detekt 1.19.0-RC2 - [#144](https://github.com/detekt/detekt-intellij-plugin/pull/144)
+#### 1.19.0
+- Update to detekt 1.19.0 - [#144](https://github.com/detekt/detekt-intellij-plugin/pull/144)
 - Update to Gradle 7.3 - [#144](https://github.com/detekt/detekt-intellij-plugin/pull/144)
 - Update Gradle plugins - [#144](https://github.com/detekt/detekt-intellij-plugin/pull/144)
 - Fixed warnings in plugin.xml - [#144](https://github.com/detekt/detekt-intellij-plugin/pull/144)
-- Added plugin icon ([source](https://github.com/detekt/detekt/blob/main/media/icon.svg))
+- Migrating to the [version catalog](https://docs.gradle.org/current/userguide/platforms.html#sec:sharing-catalogs) - [#144](https://github.com/detekt/detekt-intellij-plugin/pull/144)
+- Added plugin icon ([source](https://github.com/detekt/detekt/blob/main/media/icon.svg)) - [#144](https://github.com/detekt/detekt-intellij-plugin/pull/144)
 
 #### 1.18.1
 
