@@ -1,5 +1,12 @@
 ### Changelog
 
+#### 1.20.0
+- Update to detekt 1.20.0 - [#154](https://github.com/detekt/detekt-intellij-plugin/pull/154)
+- Update to Gradle 7.4 - [#154](https://github.com/detekt/detekt-intellij-plugin/pull/154)
+- Update Gradle plugins - [#154](https://github.com/detekt/detekt-intellij-plugin/pull/154)
+- Update dependencies - [#154](https://github.com/detekt/detekt-intellij-plugin/pull/154)
+
+
 #### 1.19.0
 - Update to detekt 1.19.0 - [#144](https://github.com/detekt/detekt-intellij-plugin/pull/144)
 - Update to Gradle 7.3.1 - [#144](https://github.com/detekt/detekt-intellij-plugin/pull/144)
