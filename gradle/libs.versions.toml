@@ -1,5 +1,5 @@
 [versions]
-detekt = "1.20.0-RC1"
+detekt = "1.20.0-RC2"
 
 [libraries]
 detekt-core = { group = "io.gitlab.arturbosch.detekt", name = "detekt-core", version.ref = "detekt" }
