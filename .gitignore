@@ -1,5 +1,7 @@
 .gradle/
 build/
+
+# IDEA
 *.iws
 out/
 *.iml

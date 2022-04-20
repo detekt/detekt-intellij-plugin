@@ -21,8 +21,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Setup Java
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
+          distribution: 'zulu'
           java-version: ${{ matrix.jdk }}
 
       - name: Build detekt idea plugin
