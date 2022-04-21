@@ -1,6 +1,5 @@
 # Releasing
 
-- Update version numbers in gradle.properties
 - Add a new entry in changelog.md as well as plugin.xml
 - Run `./gradlew build`
 - Run `./gradlew buildPlugin`
