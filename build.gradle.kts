@@ -11,7 +11,7 @@ repositories {
 }
 
 plugins {
-    id("org.jetbrains.intellij").version("1.5.2")
+    id("org.jetbrains.intellij").version("1.5.3")
     id("com.github.ben-manes.versions").version("0.42.0")
     kotlin("jvm").version(embeddedKotlinVersion)
     id("com.github.breadmoirai.github-release").version("2.2.12")
@@ -68,7 +68,7 @@ tasks.publishPlugin {
 
 intellij {
     pluginName.set("Detekt IntelliJ Plugin")
-    version.set("2020.3.4")
+    version.set("2021.3.3")
     updateSinceUntilBuild.set(false)
     plugins.set(listOf("IntelliLang", "Kotlin"))
 }
