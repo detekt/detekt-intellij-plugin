@@ -13,7 +13,7 @@ repositories {
 plugins {
     id("org.jetbrains.intellij").version("1.5.3")
     id("com.github.ben-manes.versions").version("0.42.0")
-    kotlin("jvm").version(embeddedKotlinVersion)
+    kotlin("jvm").version("1.6.20")
     id("com.github.breadmoirai.github-release").version("2.2.12")
 }
 
@@ -46,7 +46,7 @@ java {
 tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions {
         jvmTarget = jvmVersion.toString()
-        freeCompilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
+        freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
     }
 }
 
@@ -68,7 +68,7 @@ tasks.publishPlugin {
 
 intellij {
     pluginName.set("Detekt IntelliJ Plugin")
-    version.set("2021.3.3")
+    version.set("2022.1")
     updateSinceUntilBuild.set(false)
     plugins.set(listOf("IntelliLang", "Kotlin"))
 }

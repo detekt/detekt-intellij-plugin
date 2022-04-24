@@ -70,9 +70,9 @@ class ConfiguredServiceTest : DetektPluginTestCase() {
                 autoCorrect = false
             )
         }
-            .isInstanceOf(NoSuchMethodError::class.java)
+            .isInstanceOf(ClassCastException::class.java)
             .hasMessageContaining(
-                "org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment${"$"}Companion.createForProduction"
+                "class org.jetbrains.kotlin.idea.KotlinFileType cannot be cast"
             )
     }
 
