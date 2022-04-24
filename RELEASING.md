@@ -1,6 +1,7 @@
 # Releasing
 
 - Add a new entry in changelog.md as well as plugin.xml
+- Manually verify the plugin through `./gradlew runIde`
 - Run `./gradlew build`
 - Run `./gradlew buildPlugin`
 - Run `./gradlew publishPlugin` (Required system environment variable ORG_GRADLE_PROJECT_intellijPublishToken)
