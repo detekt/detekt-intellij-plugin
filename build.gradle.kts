@@ -21,6 +21,7 @@ dependencies {
     implementation(libs.detekt.api)
     implementation(libs.detekt.tooling)
 
+    runtimeOnly(libs.slf4j.nop)
     runtimeOnly(libs.detekt.core)
     runtimeOnly(libs.detekt.rules)
     runtimeOnly(libs.detekt.formatting)
