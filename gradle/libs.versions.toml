@@ -10,3 +10,4 @@ detekt-tooling = { group = "io.gitlab.arturbosch.detekt", name = "detekt-tooling
 detekt-testUtils = { group = "io.gitlab.arturbosch.detekt", name = "detekt-test-utils", version.ref = "detekt" }
 assertj-core = { group = "org.assertj", name = "assertj-core", version = "3.22.0" }
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version = "5.8.2" }
+slf4j-nop = { module = "org.slf4j:slf4j-nop", version = "1.7.36"  }
