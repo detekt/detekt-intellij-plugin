@@ -41,6 +41,14 @@
 
     <change-notes><![CDATA[
       <ul>
+        <li>1.20.1
+            <br>
+            <ul>
+                <li>Fix crash when formatting ruleset for used</li>
+                <li>Support for reporting plugin errors</li>
+                <li>Allow to enable detekt through the action menu via a toggle action</li>
+            </ul>
+        </li>
         <li>1.20.0 - Based on detekt 1.20.0.</li>
         <li>1.19.0 - Based on detekt 1.19.0.</li>
         <li>1.18.1 - Based on detekt 1.18.1.</li>

@@ -1,11 +1,16 @@
 ### Changelog
 
+#### 1.20.1
+
+- Fix crash when formatting ruleset for used - [#164](https://github.com/detekt/detekt-intellij-plugin/pull/164)
+- Support for reporting plugin errors - [#162](https://github.com/detekt/detekt-intellij-plugin/pull/162)
+- Allow to enable detekt through the action menu via a toggle action - [#166](https://github.com/detekt/detekt-intellij-plugin/pull/166)
+
 #### 1.20.0
 - Update to detekt 1.20.0 - [#155](https://github.com/detekt/detekt-intellij-plugin/pull/155)
 - Update to Gradle 7.4.2 - [#155](https://github.com/detekt/detekt-intellij-plugin/pull/155)
 - Update Gradle plugins - [#155](https://github.com/detekt/detekt-intellij-plugin/pull/155)
 - Update dependencies - [#155](https://github.com/detekt/detekt-intellij-plugin/pull/155)
-
 
 #### 1.19.0
 - Update to detekt 1.19.0 - [#144](https://github.com/detekt/detekt-intellij-plugin/pull/144)
