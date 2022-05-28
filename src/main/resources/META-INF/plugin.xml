@@ -28,10 +28,15 @@
     </extensions>
 
     <actions>
-        <action id="Detekt.AutoCorrect" class="io.gitlab.arturbosch.detekt.idea.action.AutoCorrectAction"
-                text="AutoCorrect by Detekt Rules" description="Run AutoCorrect action on the current file">
+        <action id="Detekt.AutoCorrect"
+                class="io.gitlab.arturbosch.detekt.idea.action.AutoCorrectAction"
+                text="AutoCorrect by Detekt Rules"
+                description="Run AutoCorrect action on the current file">
             <add-to-group group-id="RefactoringMenu"/>
         </action>
+        <action id="io.gitlab.arturbosch.detekt.idea.action.EnableAction"
+                class="io.gitlab.arturbosch.detekt.idea.action.EnableAction" text="Enable Detekt"
+                description="Shortcut to enable detekt through an action instead of the settings menu."/>
     </actions>
 
     <change-notes><![CDATA[
