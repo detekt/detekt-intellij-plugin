@@ -2,7 +2,7 @@
 
 #### 1.20.1
 
-- Fix crash when formatting ruleset for used - [#164](https://github.com/detekt/detekt-intellij-plugin/pull/164)
+- Fix crash when formatting rule set was used - [#164](https://github.com/detekt/detekt-intellij-plugin/pull/164)
 - Support for reporting plugin errors - [#162](https://github.com/detekt/detekt-intellij-plugin/pull/162)
 - Allow to enable detekt through the action menu via a toggle action - [#166](https://github.com/detekt/detekt-intellij-plugin/pull/166)
 

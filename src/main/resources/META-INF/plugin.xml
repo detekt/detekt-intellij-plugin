@@ -44,7 +44,7 @@
         <li>1.20.1
             <br>
             <ul>
-                <li>Fix crash when formatting ruleset for used</li>
+                <li>Fix crash when formatting rule set was used</li>
                 <li>Support for reporting plugin errors</li>
                 <li>Allow to enable detekt through the action menu via a toggle action</li>
             </ul>
