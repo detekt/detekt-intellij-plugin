@@ -12,9 +12,10 @@
 
     <depends>com.intellij.modules.lang</depends>
 
-    <idea-version since-build="201"/>
+    <idea-version since-build="203"/>
 
     <extensions defaultExtensionNs="com.intellij">
+        <errorHandler implementation="io.gitlab.arturbosch.detekt.idea.util.GitHubErrorReporting"/>
         <externalAnnotator language="kotlin"
                            implementationClass="io.gitlab.arturbosch.detekt.idea.DetektAnnotator"/>
 
