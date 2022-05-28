@@ -7,6 +7,7 @@ import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
 import io.gitlab.arturbosch.detekt.idea.ConfiguredService
 import io.gitlab.arturbosch.detekt.idea.KOTLIN_FILE_EXTENSIONS
@@ -31,20 +32,24 @@ class AutoCorrectAction : AnAction() {
     override fun actionPerformed(event: AnActionEvent) {
         val virtualFile = event.getData(CommonDataKeys.VIRTUAL_FILE)
         val project = event.getData(CommonDataKeys.PROJECT)
-
         if (virtualFile != null && project != null) {
-            val service = ConfiguredService(project)
-            val problems = service.validate()
-            if (problems.isEmpty()) {
-                forceUpdateFile(project, virtualFile)
-                val psiFile = PsiManager.getInstance(project).findFile(virtualFile)
-                if (psiFile != null) {
-                    service.execute(psiFile, autoCorrect = true)
-                    virtualFile.refresh(false, false)
-                }
-            } else {
-                showNotification(problems, project)
+            val psiFile = PsiManager.getInstance(project).findFile(virtualFile)
+            if (psiFile != null) {
+                runAction(project, psiFile)
             }
+        }
+    }
+
+    internal fun runAction(project: Project, psiFile: PsiFile) {
+        val virtualFile = psiFile.virtualFile
+        val service = ConfiguredService(project)
+        val problems = service.validate()
+        if (problems.isEmpty()) {
+            forceUpdateFile(project, virtualFile)
+            service.execute(psiFile, autoCorrect = true)
+            virtualFile.refresh(false, false)
+        } else {
+            showNotification(problems, project)
         }
     }
 
@@ -53,7 +58,9 @@ class AutoCorrectAction : AnAction() {
             val documentManager = FileDocumentManager.getInstance()
             val document = documentManager.getDocument(virtualFile)
             if (document != null) {
-                documentManager.saveDocument(document)
+                if (documentManager.isDocumentUnsaved(document)) {
+                    documentManager.saveDocument(document)
+                }
             }
         }
     }

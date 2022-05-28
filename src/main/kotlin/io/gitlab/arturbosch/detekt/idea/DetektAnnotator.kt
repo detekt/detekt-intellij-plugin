@@ -5,9 +5,11 @@ import com.intellij.lang.annotation.ExternalAnnotator
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiFile
+import io.gitlab.arturbosch.detekt.api.CorrectableCodeSmell
 import io.gitlab.arturbosch.detekt.api.Finding
 import io.gitlab.arturbosch.detekt.api.TextLocation
 import io.gitlab.arturbosch.detekt.idea.config.DetektConfigStorage
+import io.gitlab.arturbosch.detekt.idea.intention.AutoCorrectIntention
 import io.gitlab.arturbosch.detekt.idea.util.isDetektEnabled
 import io.gitlab.arturbosch.detekt.idea.util.showNotification
 
@@ -45,9 +47,14 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
                 append(finding.messageOrDescription())
             }
             val severity = if (configuration.treatAsError) HighlightSeverity.ERROR else HighlightSeverity.WARNING
-            holder.newAnnotation(severity, message)
+            val annotationBuilder = holder.newAnnotation(severity, message)
                 .range(textRange)
-                .create()
+
+            if (finding is CorrectableCodeSmell) {
+                annotationBuilder.withFix(AutoCorrectIntention())
+            }
+
+            annotationBuilder.create()
         }
     }
 
