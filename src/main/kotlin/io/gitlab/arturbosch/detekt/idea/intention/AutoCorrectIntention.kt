@@ -11,7 +11,7 @@ class AutoCorrectIntention : IntentionAction {
 
     override fun startInWriteAction(): Boolean = true
 
-    override fun getText(): String = "Format with $DETEKT"
+    override fun getText(): String = "Auto-correct with $DETEKT"
 
     override fun getFamilyName(): String = DETEKT
 
