@@ -1,5 +1,7 @@
 package io.gitlab.arturbosch.detekt.idea
 
+import com.intellij.openapi.application.runReadAction
+import com.intellij.openapi.application.runWriteAction
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
 import com.intellij.psi.PsiFile
@@ -84,7 +86,8 @@ class ConfiguredService(private val project: Project) {
         val pathToAnalyze = file.virtualFile
             ?.canonicalPath
             ?: return emptyList()
-        return execute(file.text, pathToAnalyze, autoCorrect)
+        val content = runReadAction { file.text }
+        return execute(content, pathToAnalyze, autoCorrect)
     }
 
     @OptIn(UnstableApi::class)
@@ -95,7 +98,11 @@ class ConfiguredService(private val project: Project) {
 
         val spec: ProcessingSpec = settings(filename, autoCorrect)
         val detekt = DetektProvider.load().get(spec)
-        val result = detekt.run(fileContent, filename)
+        val result = if (autoCorrect) {
+            runWriteAction { detekt.run(fileContent, filename) }
+        } else {
+            detekt.run(fileContent, filename)
+        }
 
         when (val error = result.error) {
             is UnexpectedError -> throw error.cause
