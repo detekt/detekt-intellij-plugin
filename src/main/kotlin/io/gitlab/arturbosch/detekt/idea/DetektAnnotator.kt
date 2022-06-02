@@ -11,6 +11,7 @@ import io.gitlab.arturbosch.detekt.api.TextLocation
 import io.gitlab.arturbosch.detekt.idea.config.DetektConfigStorage
 import io.gitlab.arturbosch.detekt.idea.intention.AutoCorrectIntention
 import io.gitlab.arturbosch.detekt.idea.util.isDetektEnabled
+import io.gitlab.arturbosch.detekt.idea.util.isKotlinFile
 import io.gitlab.arturbosch.detekt.idea.util.showNotification
 
 class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
@@ -21,6 +22,10 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
         if (!collectedInfo.project.isDetektEnabled()) {
             return emptyList()
         }
+        if (collectedInfo.isKotlinFile()) {
+            return emptyList()
+        }
+
         val service = ConfiguredService(collectedInfo.project)
 
         val problems = service.validate()
