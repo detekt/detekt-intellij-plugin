@@ -55,6 +55,10 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
             val annotationBuilder = holder.newAnnotation(severity, message)
                 .range(textRange)
 
+            if (textRange == file.textRange) {
+                annotationBuilder.fileLevel()
+            }
+
             if (finding is CorrectableCodeSmell) {
                 annotationBuilder.withFix(AutoCorrectIntention())
             }
