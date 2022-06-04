@@ -14,13 +14,13 @@ import com.intellij.util.xmlb.annotations.Tag
 class DetektConfigStorage : PersistentStateComponent<DetektConfigStorage> {
 
     @Tag
-    var enableDetekt: Boolean = false
+    var enableDetekt: Boolean = true
 
     @Tag
     var enableFormatting: Boolean = false
 
     @Tag
-    var buildUponDefaultConfig: Boolean = false
+    var buildUponDefaultConfig: Boolean = true
 
     @Tag
     var enableAllRules: Boolean = false
