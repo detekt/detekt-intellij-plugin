@@ -4,7 +4,6 @@ import io.github.detekt.test.utils.readResourceContent
 import io.github.detekt.test.utils.resourceAsPath
 import io.gitlab.arturbosch.detekt.idea.config.DetektConfigStorage
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.assertThatCode
 import org.junit.jupiter.api.Test
 
 class ConfiguredServiceTest : DetektPluginTestCase() {
@@ -58,22 +57,13 @@ class ConfiguredServiceTest : DetektPluginTestCase() {
     fun `expect detekt runs successfully`() {
         val service = ConfiguredService(project)
 
-        // If a NoSuchMethodError is thrown, it means detekt-core was called and creating a KotlinEnvironment
-        // failed due to conflicted compiler vs embedded-compiler dependency.
-        // IntelliJ isolates plugins in an own classloader so detekt runs fine.
-        // In the testcase this is not possible but it is enough to prove detekt runs and does not crash due to
-        // regressions in this plugin.
-        assertThatCode {
+        assertThat(
             service.execute(
                 readResourceContent("testData/Poko.kt"),
                 resourceAsPath("testData/Poko.kt").toString(),
                 autoCorrect = false
             )
-        }
-            .isInstanceOf(ClassCastException::class.java)
-            .hasMessageContaining(
-                "class org.jetbrains.kotlin.idea.KotlinFileType cannot be cast"
-            )
+        ).isNotEmpty
     }
 
     @Test

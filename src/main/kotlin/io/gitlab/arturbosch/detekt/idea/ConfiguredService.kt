@@ -13,12 +13,14 @@ import io.github.detekt.tooling.api.spec.RulesSpec
 import io.gitlab.arturbosch.detekt.api.Finding
 import io.gitlab.arturbosch.detekt.api.UnstableApi
 import io.gitlab.arturbosch.detekt.idea.config.DetektConfigStorage
-import io.gitlab.arturbosch.detekt.idea.util.DirectExecuter
+import io.gitlab.arturbosch.detekt.idea.util.DirectExecutor
+import io.gitlab.arturbosch.detekt.idea.util.PluginUtils
 import io.gitlab.arturbosch.detekt.idea.util.absolutePath
 import io.gitlab.arturbosch.detekt.idea.util.extractPaths
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import java.util.ServiceLoader
 
 class ConfiguredService(private val project: Project) {
 
@@ -70,7 +72,7 @@ class ConfiguredService(private val project: Project) {
             }
         }
         execution {
-            executorService = DirectExecuter()
+            executorService = DirectExecutor()
         }
     }
 
@@ -97,7 +99,7 @@ class ConfiguredService(private val project: Project) {
         }
 
         val spec: ProcessingSpec = settings(filename, autoCorrect)
-        val detekt = DetektProvider.load().get(spec)
+        val detekt = loadProviderConsiderStubbed().get(spec)
         val result = if (autoCorrect) {
             runWriteAction { detekt.run(fileContent, filename) }
         } else {
@@ -112,4 +114,11 @@ class ConfiguredService(private val project: Project) {
 
         return result.container?.findings?.flatMap { it.value } ?: emptyList()
     }
+}
+
+fun loadProviderConsiderStubbed(): DetektProvider {
+    val providers = ServiceLoader.load(DetektProvider::class.java, PluginUtils::class.java.classLoader).toList()
+    return providers
+        .find { it.javaClass.simpleName == "StubDetektProvider" }
+        ?: providers.first()
 }
