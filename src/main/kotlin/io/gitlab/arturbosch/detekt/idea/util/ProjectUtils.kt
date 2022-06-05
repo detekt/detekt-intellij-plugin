@@ -7,19 +7,15 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.options.newEditor.SettingsDialog
 import com.intellij.openapi.project.Project
-import com.intellij.psi.PsiFile
 import io.gitlab.arturbosch.detekt.idea.DETEKT
 import io.gitlab.arturbosch.detekt.idea.config.DetektConfig
 import io.gitlab.arturbosch.detekt.idea.config.DetektConfigStorage
-import org.jetbrains.kotlin.idea.KotlinLanguage
 import java.io.File
 import java.nio.file.Path
 import java.nio.file.Paths
 
 fun Project.isDetektEnabled(): Boolean =
     DetektConfigStorage.instance(this).enableDetekt
-
-fun PsiFile.isKotlinFile(): Boolean = language == KotlinLanguage.INSTANCE
 
 fun absolutePath(project: Project, path: String): String =
     if (path.isBlank() || File(path).isAbsolute) {
