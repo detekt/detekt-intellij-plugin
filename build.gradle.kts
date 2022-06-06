@@ -4,7 +4,7 @@ import org.jetbrains.intellij.tasks.RunPluginVerifierTask.FailureLevel.INVALID_P
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 project.group = "io.gitlab.arturbosch.detekt"
-project.version = "1.20.1"
+project.version = libs.versions.detekt.get()
 
 repositories {
     mavenCentral()
@@ -13,15 +13,14 @@ repositories {
 plugins {
     id("org.jetbrains.intellij").version("1.6.0")
     id("com.github.ben-manes.versions").version("0.42.0")
-    kotlin("jvm").version("1.6.20")
-    id("com.github.breadmoirai.github-release").version("2.2.12")
+    kotlin("jvm").version("1.6.21")
+    id("com.github.breadmoirai.github-release").version("2.3.7")
 }
 
 dependencies {
     implementation(libs.detekt.api)
     implementation(libs.detekt.tooling)
 
-    runtimeOnly(libs.slf4j.nop)
     runtimeOnly(libs.detekt.core)
     runtimeOnly(libs.detekt.rules)
     runtimeOnly(libs.detekt.formatting)
