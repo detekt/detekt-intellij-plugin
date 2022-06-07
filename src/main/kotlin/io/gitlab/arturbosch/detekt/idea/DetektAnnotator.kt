@@ -11,8 +11,8 @@ import io.gitlab.arturbosch.detekt.api.TextLocation
 import io.gitlab.arturbosch.detekt.idea.config.DetektConfigStorage
 import io.gitlab.arturbosch.detekt.idea.intention.AutoCorrectIntention
 import io.gitlab.arturbosch.detekt.idea.util.isDetektEnabled
-import io.gitlab.arturbosch.detekt.idea.util.isKotlinFile
 import io.gitlab.arturbosch.detekt.idea.util.showNotification
+import org.jetbrains.kotlin.idea.KotlinLanguage
 
 class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
 
@@ -22,7 +22,7 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
         if (!collectedInfo.project.isDetektEnabled()) {
             return emptyList()
         }
-        if (collectedInfo.isKotlinFile()) {
+        if (collectedInfo.language.id != KotlinLanguage.INSTANCE.id) {
             return emptyList()
         }
 

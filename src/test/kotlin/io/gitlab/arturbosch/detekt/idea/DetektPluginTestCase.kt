@@ -15,6 +15,12 @@ import org.junit.jupiter.api.TestInstance
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 open class DetektPluginTestCase : BasePlatformTestCase() {
 
+    init {
+        // necessary in tests up from 2021.3
+        // https://plugins.jetbrains.com/docs/intellij/api-changes-list-2021.html#20213
+        System.setProperty("idea.force.use.core.classloader", "true")
+    }
+
     override fun getTestDataPath(): String = resourceAsPath("testData").toString()
 
     override fun isWriteActionRequired(): Boolean = true

@@ -3,7 +3,7 @@ package io.gitlab.arturbosch.detekt.idea.util
 import java.util.concurrent.AbstractExecutorService
 import java.util.concurrent.TimeUnit
 
-class DirectExecuter : AbstractExecutorService() {
+class DirectExecutor : AbstractExecutorService() {
 
     override fun isTerminated(): Boolean = true
 
