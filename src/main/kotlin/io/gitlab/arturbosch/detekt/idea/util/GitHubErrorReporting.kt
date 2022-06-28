@@ -31,17 +31,16 @@ class GitHubErrorReporting : ErrorReportSubmitter() {
             .addParameter("body", formatIssueBody(additionalInfo))
             .build()
 
-        runCatching {
+        return runCatching {
             BrowserUtil.browse(uri)
             ApplicationManager.getApplication()
                 .invokeLater { openStacktraceScratchFile(parentComponent, formatStacktrace(events)) }
-        }.onFailure {
-            consumer.consume(SubmittedReportInfo(SubmittedReportInfo.SubmissionStatus.FAILED))
-            return false
-        }.onSuccess {
             consumer.consume(SubmittedReportInfo(SubmittedReportInfo.SubmissionStatus.NEW_ISSUE))
+            true
+        }.getOrElse {
+            consumer.consume(SubmittedReportInfo(SubmittedReportInfo.SubmissionStatus.FAILED))
+            false
         }
-        return true
     }
 
     private fun openStacktraceScratchFile(parentComponent: Component, stacktrace: String) {
