@@ -39,6 +39,12 @@ gradlew buildPlugin
 ```
 
 To test your development, use task `runIde` which will automatically run an Intellij instance to test your new version of detekt plugin.
+```bash
+# linux & macOS
+./gradlew runIde
+# windows
+gradlew runIde
+```
 
 ## License
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Farturbosch%2Fdetekt-intellij-plugin.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Farturbosch%2Fdetekt-intellij-plugin?ref=badge_large)

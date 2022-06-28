@@ -32,10 +32,8 @@ class AutoCorrectAction : AnAction() {
     override fun actionPerformed(event: AnActionEvent) {
         val virtualFile = event.getData(CommonDataKeys.VIRTUAL_FILE) ?: return
         val project = event.getData(CommonDataKeys.PROJECT) ?: return
-        val psiFile = PsiManager.getInstance(project).findFile(virtualFile)
-        if (psiFile != null) {
-            runAction(project, psiFile)
-        }
+        val psiFile = PsiManager.getInstance(project).findFile(virtualFile) ?: return
+        runAction(project, psiFile)
     }
 
     internal fun runAction(project: Project, psiFile: PsiFile) {
@@ -54,7 +52,7 @@ class AutoCorrectAction : AnAction() {
     private fun forceUpdateFile(project: Project, virtualFile: VirtualFile) {
         WriteCommandAction.runWriteCommandAction(project) {
             val documentManager = FileDocumentManager.getInstance()
-            val document = documentManager.getDocument(virtualFile) ?: return
+            val document = documentManager.getDocument(virtualFile) ?: return@runWriteCommandAction
             if (documentManager.isDocumentUnsaved(document)) {
                 documentManager.saveDocument(document)
             }
