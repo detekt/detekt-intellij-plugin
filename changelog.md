@@ -7,6 +7,7 @@
 - Introduce file level annotations to not mark the whole file - [173](https://github.com/detekt/detekt-intellij-plugin/issues/173)
 - Introduce an autoCorrect action - [142](https://github.com/detekt/detekt-intellij-plugin/issues/142)
 - Fix some errors when reading or writing source code - [159](https://github.com/detekt/detekt-intellij-plugin/issues/159)
+- More finding position fixes from detekt core
 
 #### 1.20.1
 

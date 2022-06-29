@@ -49,6 +49,7 @@
                 <li>Introduce file level annotations to not mark the whole file - [173](https://github.com/detekt/detekt-intellij-plugin/issues/173)</li>
                 <li>Introduce an autoCorrect action - [142](https://github.com/detekt/detekt-intellij-plugin/issues/142)</li>
                 <li>Fix some errors when reading or writing source code - [159](https://github.com/detekt/detekt-intellij-plugin/issues/159)</li>
+                <li>More finding position fixes from detekt core</li>
             </ul>
         </li>
         <li>1.20.1
