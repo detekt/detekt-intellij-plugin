@@ -20,7 +20,6 @@ import io.gitlab.arturbosch.detekt.idea.util.extractPaths
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.util.ServiceLoader
 
 class ConfiguredService(private val project: Project) {
 
@@ -99,7 +98,7 @@ class ConfiguredService(private val project: Project) {
         }
 
         val spec: ProcessingSpec = settings(filename, autoCorrect)
-        val detekt = loadProviderConsiderStubbed().get(spec)
+        val detekt = DetektProvider.load(PluginUtils::class.java.classLoader).get(spec)
         val result = if (autoCorrect) {
             runWriteAction { detekt.run(fileContent, filename) }
         } else {
@@ -114,11 +113,4 @@ class ConfiguredService(private val project: Project) {
 
         return result.container?.findings?.flatMap { it.value } ?: emptyList()
     }
-}
-
-fun loadProviderConsiderStubbed(): DetektProvider {
-    val providers = ServiceLoader.load(DetektProvider::class.java, PluginUtils::class.java.classLoader).toList()
-    return providers
-        .find { it.javaClass.simpleName == "StubDetektProvider" }
-        ?: providers.first()
 }

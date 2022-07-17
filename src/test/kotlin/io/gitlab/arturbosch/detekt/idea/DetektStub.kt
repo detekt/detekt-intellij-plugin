@@ -27,6 +27,8 @@ import java.nio.file.Paths
 
 class DetektProviderStub : DetektProvider {
 
+    override val priority: Int = 1
+
     override fun get(processingSpec: ProcessingSpec): Detekt = DetektStub()
 }
 
