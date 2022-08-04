@@ -11,7 +11,7 @@ repositories {
 }
 
 plugins {
-    id("org.jetbrains.intellij").version("1.6.0")
+    id("org.jetbrains.intellij").version("1.7.0")
     id("com.github.ben-manes.versions").version("0.42.0")
     kotlin("jvm").version("1.7.10")
     id("com.github.breadmoirai.github-release").version("2.4.1")
@@ -68,13 +68,14 @@ tasks.publishPlugin {
 
 intellij {
     pluginName.set("Detekt IntelliJ Plugin")
-    version.set("2022.1")
+    version.set("2022.2")
     updateSinceUntilBuild.set(false)
     plugins.set(listOf("IntelliLang", "Kotlin"))
+
 }
 
 tasks.runPluginVerifier {
-    ideVersions.set(listOf("2020.3.4", "2021.1.3", "2021.2.3", "2021.3.3"))
+    ideVersions.set(listOf("2020.3.4", "2021.1.3", "2021.2.4", "2021.3.3", "2022.1.4", "2022.2"))
     failureLevel.set(listOf(DEPRECATED_API_USAGES, INVALID_PLUGIN))
 }
 
