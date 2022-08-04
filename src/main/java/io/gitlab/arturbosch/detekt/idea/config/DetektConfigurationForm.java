@@ -9,15 +9,19 @@ import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.IdeBorderFactory;
+import com.intellij.util.PathUtil;
+import io.gitlab.arturbosch.detekt.idea.DetektBundle;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
+import javax.swing.*;
 import java.io.File;
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class DetektConfigurationForm {
+
+    private final DetektBundle detektBundle = DetektBundle.INSTANCE;
 
     private JCheckBox enableDetekt;
     private JCheckBox buildUponDefaultConfig;
@@ -28,12 +32,22 @@ public class DetektConfigurationForm {
     private JCheckBox enableFormatting;
     private TextFieldWithBrowseButton baselineFilePath;
     private TextFieldWithBrowseButton pluginPaths;
+    private JPanel configurationFilesPanel;
+    private JPanel baselineFilePanel;
+    private JPanel pluginJarsPanel;
 
     private DetektConfigStorage detektConfigStorage;
     private final Project project;
 
     public DetektConfigurationForm(Project project) {
         this.project = project;
+
+        configurationFilesPanel.setBorder(IdeBorderFactory.createTitledBorder(
+            detektBundle.message("detekt.configuration.configurationFiles.title")));
+        baselineFilePanel.setBorder(IdeBorderFactory.createTitledBorder(
+            detektBundle.message("detekt.configuration.baselineFile.title")));
+        pluginJarsPanel.setBorder(IdeBorderFactory.createTitledBorder(
+            detektBundle.message("detekt.configuration.pluginJars.title")));
     }
 
     @NotNull
@@ -62,16 +76,16 @@ public class DetektConfigurationForm {
                 false);
 
         configurationFilePath.addBrowseFolderListener(
-                "",
-                "detekt rules file",
+                detektBundle.message("detekt.configuration.configurationFiles.dialog.title"),
+                detektBundle.message("detekt.configuration.configurationFiles.dialog.description"),
                 project,
                 fileChooserDescriptor,
                 TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT
         );
 
         baselineFilePath.addBrowseFolderListener(
-                "",
-                "detekt baseline file",
+            detektBundle.message("detekt.configuration.baselineFile.dialog.title"),
+            detektBundle.message("detekt.configuration.baselineFile.dialog.description"),
                 project,
                 fileChooserDescriptor,
                 TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT
