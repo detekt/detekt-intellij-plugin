@@ -4,7 +4,7 @@ import org.jetbrains.intellij.tasks.RunPluginVerifierTask.FailureLevel.INVALID_P
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 project.group = "io.gitlab.arturbosch.detekt"
-project.version = libs.versions.detekt.get()
+project.version = "1.99.0-SEB"//libs.versions.detekt.get()
 
 repositories {
     mavenCentral()
@@ -71,7 +71,6 @@ intellij {
     version.set("2022.2")
     updateSinceUntilBuild.set(false)
     plugins.set(listOf("IntelliLang", "Kotlin"))
-
 }
 
 tasks.runPluginVerifier {

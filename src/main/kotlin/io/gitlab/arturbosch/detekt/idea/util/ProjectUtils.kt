@@ -5,24 +5,26 @@ import com.intellij.notification.NotificationType
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.components.service
 import com.intellij.openapi.options.newEditor.SettingsDialog
 import com.intellij.openapi.project.Project
 import io.gitlab.arturbosch.detekt.idea.DETEKT
 import io.gitlab.arturbosch.detekt.idea.config.DetektConfig
-import io.gitlab.arturbosch.detekt.idea.config.DetektConfigStorage
+import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
 import java.io.File
 import java.nio.file.Path
 import java.nio.file.Paths
+import kotlin.io.path.absolute
 
 fun Project.isDetektEnabled(): Boolean =
-    DetektConfigStorage.instance(this).enableDetekt
+    service<DetektPluginSettings>().enableDetekt
 
-fun absolutePath(project: Project, path: String): String =
-    if (path.isBlank() || File(path).isAbsolute) {
-        path
-    } else {
-        project.basePath + "/" + path
-    }
+fun absolutePath(project: Project, path: String): String {
+    if (path.isBlank() || File(path).isAbsolute) return path
+
+    return project.basePath?.let { Path.of(it, path).absolute().toString() }
+        ?: path
+}
 
 fun extractPaths(path: String, project: Project): List<Path> =
     path.trim()
@@ -46,6 +48,8 @@ fun showNotification(title: String, content: String, project: Project) {
         content,
         NotificationType.WARNING
     )
+
+    @Suppress("DialogTitleCapitalization")
     notification.addAction(object : AnAction("Open Detekt projects settings") {
         override fun actionPerformed(e: AnActionEvent) {
             val dialog = SettingsDialog(

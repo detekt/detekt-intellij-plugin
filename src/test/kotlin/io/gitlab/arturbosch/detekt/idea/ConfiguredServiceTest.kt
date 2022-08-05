@@ -1,8 +1,9 @@
 package io.gitlab.arturbosch.detekt.idea
 
+import com.intellij.openapi.components.service
 import io.github.detekt.test.utils.readResourceContent
 import io.github.detekt.test.utils.resourceAsPath
-import io.gitlab.arturbosch.detekt.idea.config.DetektConfigStorage
+import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -19,8 +20,8 @@ class ConfiguredServiceTest : DetektPluginTestCase() {
 
     @Test
     fun `invalid config found`() {
-        val config = DetektConfigStorage.instance(project)
-        config.configPaths = "asadadasdas"
+        val settings = project.service<DetektPluginSettings>()
+        settings.configurationFilePaths = mutableSetOf("example")
 
         val problems = ConfiguredService(project).validate()
 
@@ -31,8 +32,8 @@ class ConfiguredServiceTest : DetektPluginTestCase() {
 
     @Test
     fun `invalid baseline file found`() {
-        val config = DetektConfigStorage.instance(project)
-        config.baselinePath = "asadadasdas"
+        val settings = project.service<DetektPluginSettings>()
+        settings.baselinePath = "example"
 
         val problems = ConfiguredService(project).validate()
 
@@ -43,8 +44,8 @@ class ConfiguredServiceTest : DetektPluginTestCase() {
 
     @Test
     fun `invalid plugin found`() {
-        val config = DetektConfigStorage.instance(project)
-        config.pluginPaths = "asadadasdas"
+        val settings = project.service<DetektPluginSettings>()
+        settings.pluginJarPaths = mutableSetOf("example")
 
         val problems = ConfiguredService(project).validate()
 
