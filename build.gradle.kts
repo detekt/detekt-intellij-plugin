@@ -4,7 +4,7 @@ import org.jetbrains.intellij.tasks.RunPluginVerifierTask.FailureLevel.INVALID_P
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 project.group = "io.gitlab.arturbosch.detekt"
-project.version = libs.versions.detekt.get()
+project.version = "1.99.0-SEB"//libs.versions.detekt.get()
 
 repositories {
     mavenCentral()
@@ -74,7 +74,7 @@ intellij {
 }
 
 tasks.runPluginVerifier {
-    ideVersions.set(listOf("2020.3.4", "2021.1.3", "2021.2.4", "2021.3.3", "2022.1.4", "2022.2"))
+    ideVersions.set(listOf("2020.3", "2020.3.4", "2021.1.3", "2021.2.4", "2021.3.3", "2022.1.4", "2022.2"))
     failureLevel.set(listOf(DEPRECATED_API_USAGES, INVALID_PLUGIN))
 }
 
