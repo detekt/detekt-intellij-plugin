@@ -12,6 +12,7 @@ import javax.swing.AbstractListModel
 import javax.swing.JPanel
 import javax.swing.ListSelectionModel
 
+@Suppress("UnstableApiUsage") // For NlsContexts annotations
 internal class FilesListPanel(
     private val listModel: ListModel,
     private val project: Project,
@@ -100,14 +101,6 @@ internal class FilesListPanel(
             fireIntervalAdded(this, index, index + newItems.size - 1)
         }
 
-        fun removeRange(range: IntRange): List<String> {
-            if (range.isEmpty()) return emptyList()
-            val removed = range.reversed()
-                .map { indexToRemove -> _items.removeAt(indexToRemove) }
-            fireIntervalRemoved(this, range.first, range.last)
-            return removed
-        }
-
         fun removeAt(indices: Collection<Int>): List<String> {
             if (indices.isEmpty()) return emptyList()
             val removed = indices.reversed()
@@ -117,12 +110,6 @@ internal class FilesListPanel(
                     removed
                 }
             return removed
-        }
-
-        fun clear() {
-            val formerLastIndex = _items.lastIndex
-            _items.clear()
-            fireIntervalRemoved(this, 0, formerLastIndex)
         }
     }
 }

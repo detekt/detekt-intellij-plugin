@@ -40,7 +40,9 @@ internal class NewDetektConfigUiProvider(
             .enabledIf(detektEnabledCheckbox.selected)
     }
 
-    @Suppress("UnstableApiUsage") // TODO replace with newer overload once the min IJ version is >= 22.1
+    // TODO replace with newer overload once the min IJ version is >= 22.1
+    // MissingRecentApi: this is only meant to be used on IJ 21.3 and later
+    @Suppress("UnstableApiUsage", "MissingRecentApi", "Deprecation")
     private fun Panel.rulesGroup() =
         group(
             title = DetektBundle.message("detekt.configuration.rulesGroup.title"),
@@ -61,7 +63,9 @@ internal class NewDetektConfigUiProvider(
             }
         }
 
-    @Suppress("UnstableApiUsage") // TODO replace with newer overload once the min IJ version is >= 22.1
+    // TODO replace with newer overload once the min IJ version is >= 22.1
+    // MissingRecentApi: this is only meant to be used on IJ 21.3 and later
+    @Suppress("UnstableApiUsage", "MissingRecentApi", "Deprecation")
     private fun Panel.filesGroup() =
         group(
             title = DetektBundle.message("detekt.configuration.filesGroup.title"),
