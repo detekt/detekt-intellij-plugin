@@ -12,7 +12,7 @@
 
     <depends>com.intellij.modules.lang</depends>
 
-    <idea-version since-build="203.5981.155" />
+    <idea-version since-build="213.*" />
 
     <extensions defaultExtensionNs="com.intellij">
         <errorHandler implementation="io.gitlab.arturbosch.detekt.idea.util.GitHubErrorReporting" />

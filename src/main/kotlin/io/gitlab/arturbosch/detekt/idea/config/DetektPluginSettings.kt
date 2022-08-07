@@ -10,7 +10,7 @@ import com.intellij.openapi.project.Project
 import java.io.File
 
 @Service(Service.Level.PROJECT)
-@State(name = "DetektProjectConfiguration", storages = [Storage("detekt.xml")])
+@State(name = "DetektPluginSettings", storages = [Storage("detekt.xml")])
 class DetektPluginSettings(
     private val project: Project
 ) : SimplePersistentStateComponent<DetektPluginSettings.State>(State()) {
@@ -87,13 +87,15 @@ class DetektPluginSettings(
         return migrated
     }
 
+    fun isModified() = stateModificationCount > 0
+
     class State : BaseState() {
 
         var enableDetekt by property(true)
         var enableFormatting by property(false)
         var enableAllRules by property(false)
         var buildUponDefaultConfig by property(true)
-        var treatAsErrors by property(true)
+        var treatAsErrors by property(false)
 
         var configurationFilePaths by stringSet()
         var baselinePath by string()
