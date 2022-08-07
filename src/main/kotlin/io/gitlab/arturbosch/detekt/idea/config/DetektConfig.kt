@@ -23,7 +23,7 @@ class DetektConfig(private val project: Project) : BoundSearchableConfigurable(
         val ui = if (PluginUtils.isAtLeastIJBuild(MIN_KOTLIN_DSL_V2_IJ_VERSION)) {
             NewDetektConfigUiProvider(settings, project)
         } else {
-            LegacyDetektConfigUiProvider(settings)
+            LegacyDetektConfigUiProvider(settings, project)
         }
         return ui.createPanel()
     }

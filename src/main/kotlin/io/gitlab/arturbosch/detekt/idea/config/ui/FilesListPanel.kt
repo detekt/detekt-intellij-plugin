@@ -2,10 +2,12 @@ package io.gitlab.arturbosch.detekt.idea.config.ui
 
 import com.intellij.CommonBundle
 import com.intellij.openapi.fileChooser.FileChooser
-import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory
+import com.intellij.openapi.fileChooser.FileChooserDescriptor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.NlsContexts.DialogTitle
 import com.intellij.openapi.util.NlsContexts.Label
+import com.intellij.openapi.vcs.changes.ui.VirtualFileListCellRenderer
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.ToolbarDecorator
 import com.intellij.ui.components.JBList
 import javax.swing.AbstractListModel
@@ -18,12 +20,14 @@ internal class FilesListPanel(
     private val project: Project,
     @DialogTitle private val fileChooserTitle: String,
     @Label private val fileChooserDescription: String,
-    private val onDataChanged: (newData: List<String>) -> Unit
+    private val descriptorProvider: () -> FileChooserDescriptor,
+    private val onDataChanged: (newData: List<VirtualFile>) -> Unit
 ) {
 
     private val list = JBList(listModel).apply {
         dragEnabled = false
         selectionModel.selectionMode = ListSelectionModel.MULTIPLE_INTERVAL_SELECTION
+        cellRenderer = VirtualFileListCellRenderer(project)
     }
 
     fun decorated(): JPanel =
@@ -35,11 +39,12 @@ internal class FilesListPanel(
                 onRemoveFileClick(listModel) { onDataChanged(it) }
             }
             .setButtonComparator(CommonBundle.message("button.add"), CommonBundle.message("button.remove"))
+            .disableUpDownActions()
             .createPanel()
 
     private fun onRemoveFileClick(
         listModel: ListModel,
-        onDataChanged: (List<String>) -> Unit
+        onDataChanged: (List<VirtualFile>) -> Unit
     ) {
         val changed = listModel.removeAt(list.selectedIndices.toList()).isNotEmpty()
         if (changed) onDataChanged(listModel.items)
@@ -47,17 +52,17 @@ internal class FilesListPanel(
 
     private fun onAddFileClick(
         listModel: ListModel,
-        onDataChanged: (List<String>) -> Unit
+        onDataChanged: (List<VirtualFile>) -> Unit
     ) {
-        val descriptor = FileChooserDescriptorFactory.createMultipleFilesNoJarsDescriptor()
+        val descriptor = descriptorProvider()
         descriptor.title = fileChooserTitle
         descriptor.description = fileChooserDescription
 
         val files = FileChooser.chooseFiles(descriptor, list, project, null)
         var changed = false
         for (file in files) {
-            if (file != null) {
-                listModel += file.path
+            if (file != null && !listModel.items.contains(file)) {
+                listModel += file
                 changed = true
             }
         }
@@ -65,11 +70,11 @@ internal class FilesListPanel(
     }
 
     @Suppress("TooManyFunctions") // Required functionality
-    class ListModel(initialItems: List<String> = emptyList()) : AbstractListModel<String>() {
+    class ListModel(initialItems: List<VirtualFile> = emptyList()) : AbstractListModel<VirtualFile>() {
 
-        private val _items: MutableList<String> = initialItems.toMutableList()
+        private val _items: MutableList<VirtualFile> = initialItems.toMutableList()
 
-        val items: List<String> = _items
+        val items: List<VirtualFile> = _items
 
         override fun getSize() = items.size
 
@@ -77,31 +82,31 @@ internal class FilesListPanel(
 
         operator fun get(index: Int) = _items[index]
 
-        operator fun set(index: Int, value: String) {
+        operator fun set(index: Int, value: VirtualFile) {
             _items[index] = value
             fireContentsChanged(this, index, index)
         }
 
-        operator fun plusAssign(newItem: String) {
+        operator fun plusAssign(newItem: VirtualFile) {
             add(newItem = newItem)
         }
 
-        operator fun plusAssign(newItems: Collection<String>) {
+        operator fun plusAssign(newItems: Collection<VirtualFile>) {
             addAll(newItems = newItems)
         }
 
-        fun add(index: Int = _items.size - 1, newItem: String) {
+        fun add(index: Int = _items.size, newItem: VirtualFile) {
             _items.add(index, newItem)
             fireIntervalAdded(this, index, index)
         }
 
-        fun addAll(index: Int = _items.lastIndex + 1, newItems: Collection<String>) {
+        fun addAll(index: Int = _items.size, newItems: Collection<VirtualFile>) {
             if (newItems.isEmpty()) return
             _items.addAll(index, newItems)
             fireIntervalAdded(this, index, index + newItems.size - 1)
         }
 
-        fun removeAt(indices: Collection<Int>): List<String> {
+        fun removeAt(indices: Collection<Int>): List<VirtualFile> {
             if (indices.isEmpty()) return emptyList()
             val removed = indices.reversed()
                 .map { indexToRemove ->

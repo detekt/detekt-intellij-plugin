@@ -72,6 +72,7 @@ class DetektPluginSettings(
         val migrationSettings = project.service<DetektSettingsMigration>()
         if (migrationSettings.state.stateVersion == CURRENT_VERSION) return state
 
+        @Suppress("Deprecation") // TODO remove the migration from v0 settings storage at some point
         val oldSettings = DetektConfigStorage.instance(project)
         val migrated = State().apply {
             enableDetekt = oldSettings.enableDetekt

@@ -4,6 +4,8 @@ import com.intellij.ide.plugins.PluginManagerCore
 import com.intellij.openapi.application.ApplicationInfo
 import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.util.BuildNumber
+import com.intellij.openapi.vfs.LocalFileSystem
+import com.intellij.openapi.vfs.VirtualFile
 import io.gitlab.arturbosch.detekt.idea.DETEKT
 
 object PluginUtils {
@@ -20,4 +22,10 @@ object PluginUtils {
 
     fun isAtLeastIJBuild(minBuild: String): Boolean =
         ApplicationInfo.getInstance().build > BuildNumber.fromString(minBuild)!!
+
+    fun Set<String>.toVirtualFilesList(): List<VirtualFile> {
+        val fs = LocalFileSystem.getInstance()
+        return mapNotNull { fs.findFileByPath(it) }
+            .sortedBy { it.presentableUrl }
+    }
 }
