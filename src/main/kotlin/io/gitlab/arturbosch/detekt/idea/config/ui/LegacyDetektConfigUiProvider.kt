@@ -130,7 +130,7 @@ class LegacyDetektConfigUiProvider(
                 DetektBundle.message("detekt.configuration.pluginJarFiles.dialog.description"),
                 descriptorProvider = { FileChooserDescriptorUtil.createJarsChooserDescriptor() }
             ) { virtualFiles ->
-                settings.configurationFilePaths = virtualFiles.map { it.path }.toMutableSet()
+                settings.pluginJarPaths = virtualFiles.map { it.path }.toMutableSet()
             }
                 .decorated()
                 .hackEnabledIf(enabled)

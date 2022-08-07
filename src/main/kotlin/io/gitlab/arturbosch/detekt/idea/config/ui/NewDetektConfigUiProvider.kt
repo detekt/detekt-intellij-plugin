@@ -4,11 +4,15 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogPanel
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.ui.dsl.builder.BottomGap
+import com.intellij.ui.dsl.builder.Cell
 import com.intellij.ui.dsl.builder.Panel
+import com.intellij.ui.dsl.builder.Row
 import com.intellij.ui.dsl.builder.bindSelected
 import com.intellij.ui.dsl.builder.bindText
 import com.intellij.ui.dsl.builder.panel
 import com.intellij.ui.dsl.gridLayout.HorizontalAlign
+import com.intellij.ui.dsl.gridLayout.VerticalAlign
+import com.intellij.ui.layout.ComponentPredicate
 import com.intellij.ui.layout.selected
 import io.gitlab.arturbosch.detekt.idea.DetektBundle
 import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
@@ -34,17 +38,15 @@ internal class NewDetektConfigUiProvider(
                 .enabledIf(detektEnabledCheckbox.selected)
         }
 
-        rulesGroup()
-            .enabledIf(detektEnabledCheckbox.selected)
+        rulesGroup(detektEnabledCheckbox.selected)
 
-        filesGroup()
-            .enabledIf(detektEnabledCheckbox.selected)
+        filesGroup(detektEnabledCheckbox.selected)
     }
 
     // TODO replace with newer overload once the min IJ version is >= 22.1
     // MissingRecentApi: this is only meant to be used on IJ 21.3 and later
     @Suppress("UnstableApiUsage", "MissingRecentApi", "Deprecation")
-    private fun Panel.rulesGroup() =
+    private fun Panel.rulesGroup(enabled: ComponentPredicate) =
         group(
             title = DetektBundle.message("detekt.configuration.rulesGroup.title"),
             indent = false,
@@ -62,30 +64,32 @@ internal class NewDetektConfigUiProvider(
                 checkBox(DetektBundle.message("detekt.configuration.enableAllRules"))
                     .bindSelected(settings::enableAllRules)
             }
-        }
+        }.enabledIf(enabled)
 
     // TODO replace with newer overload once the min IJ version is >= 22.1
     // MissingRecentApi: this is only meant to be used on IJ 21.3 and later
     // UnstableApiUsage: some calls have a newer overload in IJ 22.1+
     @Suppress("UnstableApiUsage", "MissingRecentApi", "Deprecation")
-    private fun Panel.filesGroup() =
+    private fun Panel.filesGroup(enabled: ComponentPredicate) =
         group(
             title = DetektBundle.message("detekt.configuration.filesGroup.title"),
             indent = false,
             topGroupGap = false
         ) {
-            configurationFilesRow()
+            configurationFilesRow(enabled)
 
-            baselineFileRow()
+            baselineFileRow(enabled)
 
-            pluginJarsRow()
+            pluginJarsRow(enabled)
         }
 
     // MissingRecentApi: this is only meant to be used on IJ 21.3 and later
     // UnstableApiUsage: some calls have a newer overload in IJ 22.1+
     @Suppress("MissingRecentApi", "UnstableApiUsage")
-    private fun Panel.configurationFilesRow() {
+    private fun Panel.configurationFilesRow(enabled: ComponentPredicate) {
         row(DetektBundle.message("detekt.configuration.configurationFiles.title")) {
+            setLabelVerticalAlignment(VerticalAlign.TOP)
+
             val listModel = FilesListPanel.ListModel(settings.configurationFilePaths.toVirtualFilesList())
             val filesListPanel = FilesListPanel(
                 listModel = listModel,
@@ -102,14 +106,18 @@ internal class NewDetektConfigUiProvider(
             cell(filesListPanel, filesListPanel)
                 .horizontalAlign(HorizontalAlign.FILL)
                 .resizableColumn()
-                .comment(DetektBundle.message("detekt.configuration.configurationFiles.comment"))
+                .enabledIf(enabled)
+        }
+
+        row("") {
+            comment(DetektBundle.message("detekt.configuration.configurationFiles.comment"))
         }.bottomGap(BottomGap.MEDIUM)
     }
 
-    // -> MissingRecentApi: this is only meant to be used on IJ 21.3 and later
-    // -> UnstableApiUsage: some calls have a newer overload in IJ 22.1+
+    // MissingRecentApi: this is only meant to be used on IJ 21.3 and later
+    // UnstableApiUsage: some calls have a newer overload in IJ 22.1 and later
     @Suppress("MissingRecentApi", "UnstableApiUsage")
-    private fun Panel.baselineFileRow() {
+    private fun Panel.baselineFileRow(enabled: ComponentPredicate) {
         row(DetektBundle.message("detekt.configuration.baselineFile.title")) {
             textFieldWithBrowseButton(
                 DetektBundle.message("detekt.configuration.baselineFile.dialog.title"),
@@ -124,15 +132,21 @@ internal class NewDetektConfigUiProvider(
                 )
                 .horizontalAlign(HorizontalAlign.FILL)
                 .resizableColumn()
-                .comment(DetektBundle.message("detekt.configuration.baselineFile.comment"))
+                .enabledIf(enabled)
+        }
+
+        row("") {
+            comment(DetektBundle.message("detekt.configuration.baselineFile.comment"))
         }.bottomGap(BottomGap.MEDIUM)
     }
 
     // MissingRecentApi: this is only meant to be used on IJ 21.3 and later
-    // UnstableApiUsage: some calls have a newer overload in IJ 22.1+
+    // UnstableApiUsage: some calls have a newer overload in IJ 22.1 and later
     @Suppress("MissingRecentApi", "UnstableApiUsage")
-    private fun Panel.pluginJarsRow() {
+    private fun Panel.pluginJarsRow(enabled: ComponentPredicate) {
         row(DetektBundle.message("detekt.configuration.pluginJarFiles.title")) {
+            setLabelVerticalAlignment(VerticalAlign.TOP)
+
             val listModel = FilesListPanel.ListModel(settings.pluginJarPaths.toVirtualFilesList())
             val filesListPanel = FilesListPanel(
                 listModel = listModel,
@@ -142,14 +156,34 @@ internal class NewDetektConfigUiProvider(
                 DetektBundle.message("detekt.configuration.pluginJarFiles.dialog.description"),
                 descriptorProvider = { FileChooserDescriptorUtil.createJarsChooserDescriptor() }
             ) { virtualFiles ->
-                settings.configurationFilePaths = virtualFiles.map { it.path }.toMutableSet()
+                settings.pluginJarPaths = virtualFiles.map { it.path }.toMutableSet()
             }.decorated()
 
             @Suppress("DEPRECATION") // TODO replace with newer overload once the min IJ version is >= 22.1
             cell(filesListPanel, filesListPanel)
                 .horizontalAlign(HorizontalAlign.FILL)
                 .resizableColumn()
-                .comment(DetektBundle.message("detekt.configuration.pluginJarFiles.comment"))
+                .enabledIf(enabled)
+        }
+
+        row("") {
+            comment(DetektBundle.message("detekt.configuration.pluginJarFiles.comment"))
+        }
+    }
+
+    // TODO get rid of this hack once there is a way to do this cleanly
+    // MissingRecentApi: this is only meant to be used on IJ 21.3 and later
+    @Suppress("MissingRecentApi")
+    private fun Row.setLabelVerticalAlignment(alignment: VerticalAlign) {
+        val cellsGetter = this::class.java.getMethod("getCells")
+        checkNotNull(cellsGetter) { "Cannot find cells list" }
+        val oldAccessible = cellsGetter.isAccessible
+        try {
+            cellsGetter.isAccessible = true
+            val cells = cellsGetter.invoke(this) as List<Cell<*>>
+            cells.first().verticalAlign(alignment)
+        } finally {
+            cellsGetter.isAccessible = oldAccessible
         }
     }
 }
