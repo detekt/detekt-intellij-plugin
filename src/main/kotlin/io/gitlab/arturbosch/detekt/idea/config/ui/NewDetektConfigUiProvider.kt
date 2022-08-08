@@ -3,13 +3,7 @@ package io.gitlab.arturbosch.detekt.idea.config.ui
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogPanel
 import com.intellij.openapi.vfs.LocalFileSystem
-import com.intellij.ui.dsl.builder.BottomGap
-import com.intellij.ui.dsl.builder.Cell
-import com.intellij.ui.dsl.builder.Panel
-import com.intellij.ui.dsl.builder.Row
-import com.intellij.ui.dsl.builder.bindSelected
-import com.intellij.ui.dsl.builder.bindText
-import com.intellij.ui.dsl.builder.panel
+import com.intellij.ui.dsl.builder.*
 import com.intellij.ui.dsl.gridLayout.HorizontalAlign
 import com.intellij.ui.dsl.gridLayout.VerticalAlign
 import com.intellij.ui.layout.ComponentPredicate
@@ -87,7 +81,9 @@ internal class NewDetektConfigUiProvider(
     // UnstableApiUsage: some calls have a newer overload in IJ 22.1+
     @Suppress("MissingRecentApi", "UnstableApiUsage")
     private fun Panel.configurationFilesRow(enabled: ComponentPredicate) {
-        row(DetektBundle.message("detekt.configuration.configurationFiles.title")) {
+        row {
+            val label = label(DetektBundle.message("detekt.configuration.configurationFiles.title"))
+                .component
             setLabelVerticalAlignment(VerticalAlign.TOP)
 
             val listModel = FilesListPanel.ListModel(settings.configurationFilePaths.toVirtualFilesList())
@@ -107,7 +103,9 @@ internal class NewDetektConfigUiProvider(
                 .horizontalAlign(HorizontalAlign.FILL)
                 .resizableColumn()
                 .enabledIf(enabled)
-        }
+
+            label.labelFor = filesListPanel
+        }.layout(RowLayout.LABEL_ALIGNED)
 
         row("") {
             comment(DetektBundle.message("detekt.configuration.configurationFiles.comment"))
@@ -144,8 +142,10 @@ internal class NewDetektConfigUiProvider(
     // UnstableApiUsage: some calls have a newer overload in IJ 22.1 and later
     @Suppress("MissingRecentApi", "UnstableApiUsage")
     private fun Panel.pluginJarsRow(enabled: ComponentPredicate) {
-        row(DetektBundle.message("detekt.configuration.pluginJarFiles.title")) {
-            setLabelVerticalAlignment(VerticalAlign.TOP)
+        row {
+            val label = label(DetektBundle.message("detekt.configuration.pluginJarFiles.title"))
+                .component
+//            setLabelVerticalAlignment(VerticalAlign.TOP)
 
             val listModel = FilesListPanel.ListModel(settings.pluginJarPaths.toVirtualFilesList())
             val filesListPanel = FilesListPanel(
@@ -164,7 +164,9 @@ internal class NewDetektConfigUiProvider(
                 .horizontalAlign(HorizontalAlign.FILL)
                 .resizableColumn()
                 .enabledIf(enabled)
-        }
+
+            label.labelFor = filesListPanel
+        }.layout(RowLayout.LABEL_ALIGNED)
 
         row("") {
             comment(DetektBundle.message("detekt.configuration.pluginJarFiles.comment"))
@@ -173,7 +175,9 @@ internal class NewDetektConfigUiProvider(
 
     // TODO get rid of this hack once there is a way to do this cleanly
     // MissingRecentApi: this is only meant to be used on IJ 21.3 and later
-    @Suppress("MissingRecentApi")
+    // Deprecation: the isAccessible property doesn't have a substitute
+    // UncheckedCast: it's a side effect of type erasure via reflection
+    @Suppress("MissingRecentApi", "Unchecked_Cast", "Deprecation")
     private fun Row.setLabelVerticalAlignment(alignment: VerticalAlign) {
         val cellsGetter = this::class.java.getMethod("getCells")
         checkNotNull(cellsGetter) { "Cannot find cells list" }
