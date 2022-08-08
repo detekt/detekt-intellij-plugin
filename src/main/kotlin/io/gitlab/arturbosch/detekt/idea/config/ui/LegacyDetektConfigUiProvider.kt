@@ -3,15 +3,10 @@ package io.gitlab.arturbosch.detekt.idea.config.ui
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogPanel
 import com.intellij.openapi.vfs.LocalFileSystem
-import com.intellij.ui.layout.CellBuilder
-import com.intellij.ui.layout.ComponentPredicate
-import com.intellij.ui.layout.LayoutBuilder
-import com.intellij.ui.layout.Row
-import com.intellij.ui.layout.panel
-import com.intellij.ui.layout.selected
+import com.intellij.ui.layout.*
 import io.gitlab.arturbosch.detekt.idea.DetektBundle
 import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
-import io.gitlab.arturbosch.detekt.idea.util.PluginUtils.toVirtualFilesList
+import io.gitlab.arturbosch.detekt.idea.util.toVirtualFilesList
 import javax.swing.JCheckBox
 import javax.swing.JComponent
 import javax.swing.JLabel

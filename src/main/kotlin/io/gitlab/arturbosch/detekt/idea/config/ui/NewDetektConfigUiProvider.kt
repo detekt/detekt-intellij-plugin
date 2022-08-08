@@ -10,7 +10,7 @@ import com.intellij.ui.layout.ComponentPredicate
 import com.intellij.ui.layout.selected
 import io.gitlab.arturbosch.detekt.idea.DetektBundle
 import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
-import io.gitlab.arturbosch.detekt.idea.util.PluginUtils.toVirtualFilesList
+import io.gitlab.arturbosch.detekt.idea.util.toVirtualFilesList
 import javax.swing.JCheckBox
 
 @Suppress("DialogTitleCapitalization") // It gets tripped up by the capitalization of Detekt's name

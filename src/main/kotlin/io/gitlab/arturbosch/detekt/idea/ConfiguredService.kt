@@ -21,12 +21,13 @@ import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import kotlin.io.path.Path
 
 class ConfiguredService(private val project: Project) {
 
     private val settings = project.service<DetektPluginSettings>()
 
-    private val projectBasePath = project.basePath?.let { Paths.get(it) }
+    private val projectBasePath = project.basePath?.let(::Path)
 
     fun validate(): List<String> {
         val messages = mutableListOf<String>()

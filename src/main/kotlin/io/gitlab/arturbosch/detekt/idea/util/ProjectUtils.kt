@@ -8,12 +8,14 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.service
 import com.intellij.openapi.options.newEditor.SettingsDialog
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.vfs.LocalFileSystem
+import com.intellij.openapi.vfs.VirtualFile
 import io.gitlab.arturbosch.detekt.idea.DETEKT
+import io.gitlab.arturbosch.detekt.idea.DetektBundle
 import io.gitlab.arturbosch.detekt.idea.config.DetektConfig
 import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
 import java.io.File
 import java.nio.file.Path
-import java.nio.file.Paths
 import kotlin.io.path.absolute
 
 fun Project.isDetektEnabled(): Boolean =
@@ -26,18 +28,18 @@ fun absolutePath(project: Project, path: String): String {
         ?: path
 }
 
-fun extractPaths(path: String, project: Project): List<Path> =
-    path.trim()
-        .split(File.pathSeparator)
-        .filter { it.isNotEmpty() }
-        .map { absolutePath(project, it) }
-        .map { Paths.get(it) }
+fun Set<String>.toVirtualFilesList(): List<VirtualFile> {
+    val fs = LocalFileSystem.getInstance()
+    return mapNotNull { fs.findFileByPath(it) }
+        .sortedBy { it.presentableUrl }
+}
 
 fun showNotification(problems: List<String>, project: Project) {
     showNotification(
-        "detekt plugin noticed some problems",
-        problems.joinToString(System.lineSeparator()) + "Skipping detekt run.",
-        project
+        title = DetektBundle.message("detekt.notifications.message.problemsFound"),
+        content = problems.joinToString(System.lineSeparator()) +
+                DetektBundle.message("detekt.notifications.content.skippingRun"),
+        project = project
     )
 }
 
@@ -49,12 +51,11 @@ fun showNotification(title: String, content: String, project: Project) {
         NotificationType.WARNING
     )
 
-    @Suppress("DialogTitleCapitalization")
-    notification.addAction(object : AnAction("Open Detekt projects settings") {
+    notification.addAction(object : AnAction(DetektBundle.message("detekt.notifications.actions.openSettings")) {
         override fun actionPerformed(e: AnActionEvent) {
             val dialog = SettingsDialog(
                 project,
-                "Detekt project settings",
+                "detekt-settings",
                 DetektConfig(project),
                 true,
                 true
