@@ -78,13 +78,13 @@ internal class NewDetektConfigUiProvider(
         }
 
     // MissingRecentApi: this is only meant to be used on IJ 21.3 and later
-    // UnstableApiUsage: some calls have a newer overload in IJ 22.1+
+    // UnstableApiUsage: some calls have a newer overload in IJ 22.1 and later
     @Suppress("MissingRecentApi", "UnstableApiUsage")
     private fun Panel.configurationFilesRow(enabled: ComponentPredicate) {
         row {
             val label = label(DetektBundle.message("detekt.configuration.configurationFiles.title"))
+                .verticalAlign(VerticalAlign.TOP)
                 .component
-            setLabelVerticalAlignment(VerticalAlign.TOP)
 
             val listModel = FilesListPanel.ListModel(settings.configurationFilePaths.toVirtualFilesList())
             val filesListPanel = FilesListPanel(
@@ -144,8 +144,8 @@ internal class NewDetektConfigUiProvider(
     private fun Panel.pluginJarsRow(enabled: ComponentPredicate) {
         row {
             val label = label(DetektBundle.message("detekt.configuration.pluginJarFiles.title"))
+                .verticalAlign(VerticalAlign.TOP)
                 .component
-//            setLabelVerticalAlignment(VerticalAlign.TOP)
 
             val listModel = FilesListPanel.ListModel(settings.pluginJarPaths.toVirtualFilesList())
             val filesListPanel = FilesListPanel(
@@ -170,24 +170,6 @@ internal class NewDetektConfigUiProvider(
 
         row("") {
             comment(DetektBundle.message("detekt.configuration.pluginJarFiles.comment"))
-        }
-    }
-
-    // TODO get rid of this hack once there is a way to do this cleanly
-    // MissingRecentApi: this is only meant to be used on IJ 21.3 and later
-    // Deprecation: the isAccessible property doesn't have a substitute
-    // UncheckedCast: it's a side effect of type erasure via reflection
-    @Suppress("MissingRecentApi", "Unchecked_Cast", "Deprecation")
-    private fun Row.setLabelVerticalAlignment(alignment: VerticalAlign) {
-        val cellsGetter = this::class.java.getMethod("getCells")
-        checkNotNull(cellsGetter) { "Cannot find cells list" }
-        val oldAccessible = cellsGetter.isAccessible
-        try {
-            cellsGetter.isAccessible = true
-            val cells = cellsGetter.invoke(this) as List<Cell<*>>
-            cells.first().verticalAlign(alignment)
-        } finally {
-            cellsGetter.isAccessible = oldAccessible
         }
     }
 }
