@@ -15,15 +15,17 @@
     <idea-version since-build="203.5981.155" />
 
     <extensions defaultExtensionNs="com.intellij">
-        <errorHandler implementation="io.gitlab.arturbosch.detekt.idea.util.GitHubErrorReporting" />
-        <externalAnnotator language="kotlin" implementationClass="io.gitlab.arturbosch.detekt.idea.DetektAnnotator" />
+        <errorHandler implementation="io.gitlab.arturbosch.detekt.idea.util.GitHubErrorReporting"/>
+        <externalAnnotator language="kotlin" implementationClass="io.gitlab.arturbosch.detekt.idea.DetektAnnotator"/>
 
-        <projectService serviceImplementation="io.gitlab.arturbosch.detekt.idea.config.DetektConfigStorage" />
-        <projectService serviceImplementation="io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings" />
-        <projectService serviceImplementation="io.gitlab.arturbosch.detekt.idea.config.DetektSettingsMigration" />
+        <projectService serviceImplementation="io.gitlab.arturbosch.detekt.idea.config.DetektConfigStorage"/>
+        <projectService serviceImplementation="io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings"/>
+        <projectService serviceImplementation="io.gitlab.arturbosch.detekt.idea.config.DetektSettingsMigration"/>
 
-        <projectConfigurable groupId="tools" displayName="Detekt" id="preferences.detekt"
-            instance="io.gitlab.arturbosch.detekt.idea.config.DetektConfig" />
+        <projectConfigurable groupId="tools"
+                             displayName="Detekt"
+                             id="preferences.detekt"
+                             instance="io.gitlab.arturbosch.detekt.idea.config.DetektConfig"/>
     </extensions>
 
     <actions>
