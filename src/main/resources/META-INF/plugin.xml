@@ -42,6 +42,15 @@
 
     <change-notes><![CDATA[
       <ul>
+        <li>1.21.1
+            <br>
+            <ul>
+                <li>Settings UI overhaul - [#240](https://github.com/detekt/detekt-intellij-plugin/pull/240)</li>
+                <li>File paths should be platform-independent - [#231](https://github.com/detekt/detekt-intellij-plugin/issues/231)</li>
+                <li>Store configuration file path as relative to the project root - [#135](https://github.com/detekt/detekt-intellij-plugin/issues/135)</li>
+                <li>Multiple configuration files are not supported - [#117](https://github.com/detekt/detekt-intellij-plugin/issues/117)</li>
+            </ul>
+        </li>
         <li>1.21.0
             <br>
             <ul>

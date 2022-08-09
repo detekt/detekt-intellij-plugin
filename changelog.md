@@ -1,5 +1,12 @@
 ### Changelog
 
+#### 1.21.1
+
+- Settings UI overhaul - [#240](https://github.com/detekt/detekt-intellij-plugin/pull/240)
+- File paths should be platform-independent - [#231](https://github.com/detekt/detekt-intellij-plugin/issues/231)
+- Store configuration file path as relative to the project root - [#135](https://github.com/detekt/detekt-intellij-plugin/issues/135)
+- Multiple configuration files are not supported - [#117](https://github.com/detekt/detekt-intellij-plugin/issues/117)
+
 #### 1.21.0
 
 - Update to detekt 1.21.0 - [#155](https://github.com/detekt/detekt-intellij-plugin/pull/175)
