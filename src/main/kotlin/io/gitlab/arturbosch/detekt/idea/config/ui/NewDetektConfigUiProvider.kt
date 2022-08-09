@@ -19,6 +19,7 @@ import io.gitlab.arturbosch.detekt.idea.DetektBundle
 import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
 import io.gitlab.arturbosch.detekt.idea.util.toPathsSet
 import io.gitlab.arturbosch.detekt.idea.util.toVirtualFilesList
+import java.io.File
 import javax.swing.JCheckBox
 import javax.swing.JPanel
 import kotlin.reflect.KMutableProperty0
@@ -134,7 +135,11 @@ internal class NewDetektConfigUiProvider(
                 .bindText(
                     getter = { LocalFileSystem.getInstance().extractPresentableUrl(settings.baselinePath) },
                     setter = {
-                        settings.baselinePath = LocalFileSystem.getInstance().findFileByPath(it)?.path.orEmpty()
+                        if (File(it).isFile) {
+                            settings.baselinePath = LocalFileSystem.getInstance().findFileByPath(it)?.path.orEmpty()
+                        } else {
+                            settings.baselinePath = ""
+                        }
                     }
                 )
                 .horizontalAlign(HorizontalAlign.FILL)
