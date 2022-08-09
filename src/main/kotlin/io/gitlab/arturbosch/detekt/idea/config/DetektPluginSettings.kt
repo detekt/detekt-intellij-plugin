@@ -88,8 +88,6 @@ class DetektPluginSettings(
         return migrated
     }
 
-    fun isModified() = stateModificationCount > 0
-
     class State : BaseState() {
 
         var enableDetekt by property(true)

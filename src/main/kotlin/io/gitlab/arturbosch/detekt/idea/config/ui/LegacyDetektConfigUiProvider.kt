@@ -3,13 +3,21 @@ package io.gitlab.arturbosch.detekt.idea.config.ui
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogPanel
 import com.intellij.openapi.vfs.LocalFileSystem
-import com.intellij.ui.layout.*
+import com.intellij.ui.layout.CellBuilder
+import com.intellij.ui.layout.ComponentPredicate
+import com.intellij.ui.layout.LayoutBuilder
+import com.intellij.ui.layout.PropertyBinding
+import com.intellij.ui.layout.Row
+import com.intellij.ui.layout.panel
+import com.intellij.ui.layout.selected
 import io.gitlab.arturbosch.detekt.idea.DetektBundle
 import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
+import io.gitlab.arturbosch.detekt.idea.util.toPathsSet
 import io.gitlab.arturbosch.detekt.idea.util.toVirtualFilesList
 import javax.swing.JCheckBox
 import javax.swing.JComponent
 import javax.swing.JLabel
+import kotlin.reflect.KMutableProperty0
 
 @Suppress("DialogTitleCapitalization") // It gets tripped up by the capitalization of Detekt's name
 class LegacyDetektConfigUiProvider(
@@ -75,15 +83,14 @@ class LegacyDetektConfigUiProvider(
                 fileChooserDescription =
                 DetektBundle.message("detekt.configuration.configurationFiles.dialog.description"),
                 descriptorProvider = { FileChooserDescriptorUtil.createYamlChooserDescriptor() }
-            ) { virtualFiles ->
-                settings.configurationFilePaths = virtualFiles.map { it.path }.toMutableSet()
-            }
+            )
                 .decorated()
                 .hackEnabledIf(enabled)
 
             filesListPanel()
                 .constraints(growX)
                 .enableIf(enabled)
+                .bindItems(settings::configurationFilePaths, listModel)
         }
 
         row("") {
@@ -124,15 +131,14 @@ class LegacyDetektConfigUiProvider(
                 fileChooserDescription =
                 DetektBundle.message("detekt.configuration.pluginJarFiles.dialog.description"),
                 descriptorProvider = { FileChooserDescriptorUtil.createJarsChooserDescriptor() }
-            ) { virtualFiles ->
-                settings.pluginJarPaths = virtualFiles.map { it.path }.toMutableSet()
-            }
+            )
                 .decorated()
                 .hackEnabledIf(enabled)
 
             filesListPanel()
                 .constraints(growX)
                 .enableIf(enabled)
+                .bindItems(settings::pluginJarPaths, listModel)
         }
 
         row("") {
@@ -161,5 +167,19 @@ class LegacyDetektConfigUiProvider(
         setChildrenEnabled(isEnabledNow)
 
         enabled.addListener { newEnabled -> setChildrenEnabled(newEnabled) }
+    }
+
+    private fun CellBuilder<JComponent>.bindItems(
+        fileSetProperty: KMutableProperty0<MutableSet<String>>,
+        listModel: FilesListPanel.ListModel
+    ) {
+        withBinding(
+            { listModel.items },
+            { _, virtualFiles -> listModel.clear(); listModel += virtualFiles },
+            PropertyBinding(
+                { fileSetProperty.get().toVirtualFilesList() },
+                { fileSetProperty.set(it.toPathsSet().toMutableSet()) }
+            )
+        )
     }
 }

@@ -20,8 +20,7 @@ internal class FilesListPanel(
     private val project: Project,
     @DialogTitle private val fileChooserTitle: String,
     @Label private val fileChooserDescription: String,
-    private val descriptorProvider: () -> FileChooserDescriptor,
-    private val onDataChanged: (newData: List<VirtualFile>) -> Unit
+    private val descriptorProvider: () -> FileChooserDescriptor
 ) {
 
     private val list = JBList(listModel).apply {
@@ -33,10 +32,10 @@ internal class FilesListPanel(
     fun decorated(): JPanel =
         ToolbarDecorator.createDecorator(list)
             .setAddAction {
-                onAddFileClick(listModel) { onDataChanged(it) }
+                onAddFileClick(listModel) { TODO() }
             }
             .setRemoveAction {
-                onRemoveFileClick(listModel) { onDataChanged(it) }
+                onRemoveFileClick(listModel) { TODO() }
             }
             .setButtonComparator(CommonBundle.message("button.add"), CommonBundle.message("button.remove"))
             .disableUpDownActions()
@@ -88,19 +87,19 @@ internal class FilesListPanel(
         }
 
         operator fun plusAssign(newItem: VirtualFile) {
-            add(newItem = newItem)
+            add(newItem)
         }
 
         operator fun plusAssign(newItems: Collection<VirtualFile>) {
-            addAll(newItems = newItems)
+            addAll(newItems)
         }
 
-        fun add(index: Int = _items.size, newItem: VirtualFile) {
+        fun add(newItem: VirtualFile, index: Int = _items.size) {
             _items.add(index, newItem)
             fireIntervalAdded(this, index, index)
         }
 
-        fun addAll(index: Int = _items.size, newItems: Collection<VirtualFile>) {
+        fun addAll(newItems: Collection<VirtualFile>, index: Int = _items.size) {
             if (newItems.isEmpty()) return
             _items.addAll(index, newItems)
             fireIntervalAdded(this, index, index + newItems.size - 1)
@@ -115,6 +114,12 @@ internal class FilesListPanel(
                     removed
                 }
             return removed
+        }
+
+        fun clear() {
+            val formerSize = items.size
+            _items.clear()
+            fireIntervalRemoved(this, 0, formerSize)
         }
     }
 }

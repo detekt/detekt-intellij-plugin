@@ -28,8 +28,6 @@ class DetektConfig(private val project: Project) : BoundSearchableConfigurable(
         return ui.createPanel()
     }
 
-    override fun isModified(): Boolean = settings.isModified()
-
     companion object {
 
         private const val MIN_KOTLIN_DSL_V2_IJ_VERSION = "213.5744.223"

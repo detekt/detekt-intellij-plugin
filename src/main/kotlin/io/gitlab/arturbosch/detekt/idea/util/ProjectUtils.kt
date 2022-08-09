@@ -34,6 +34,11 @@ fun Set<String>.toVirtualFilesList(): List<VirtualFile> {
         .sortedBy { it.presentableUrl }
 }
 
+fun List<VirtualFile>.toPathsSet(): Set<String> =
+    filter { it.exists() }
+        .map { it.path }
+        .toSet()
+
 fun showNotification(problems: List<String>, project: Project) {
     showNotification(
         title = DetektBundle.message("detekt.notifications.message.problemsFound"),
