@@ -1,5 +1,6 @@
 package io.gitlab.arturbosch.detekt.idea.config
 
+import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer
 import com.intellij.openapi.components.service
 import com.intellij.openapi.options.BoundSearchableConfigurable
 import com.intellij.openapi.project.Project
@@ -17,7 +18,6 @@ class DetektConfig(private val project: Project) : BoundSearchableConfigurable(
 
     private val settings = project.service<DetektPluginSettings>()
 
-    // TODO Switch to new group() overload once the minimum IJ version is >= 221.3427.89
     override fun createPanel(): DialogPanel {
         // The Kotlin V2 UI DSL is only available on platform versions 2021.3 and onwards
         val ui = if (PluginUtils.isAtLeastIJBuild(MIN_KOTLIN_DSL_V2_IJ_VERSION)) {
@@ -26,6 +26,11 @@ class DetektConfig(private val project: Project) : BoundSearchableConfigurable(
             LegacyDetektConfigUiProvider(settings, project)
         }
         return ui.createPanel()
+    }
+
+    override fun apply() {
+        super.apply()
+        DaemonCodeAnalyzer.getInstance(project).restart()
     }
 
     companion object {
