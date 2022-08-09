@@ -14,6 +14,7 @@ import io.gitlab.arturbosch.detekt.idea.DetektBundle
 import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
 import io.gitlab.arturbosch.detekt.idea.util.toPathsSet
 import io.gitlab.arturbosch.detekt.idea.util.toVirtualFilesList
+import io.gitlab.arturbosch.detekt.idea.util.validateAsFilePath
 import java.io.File
 import javax.swing.JCheckBox
 import javax.swing.JComponent
@@ -115,6 +116,8 @@ class LegacyDetektConfigUiProvider(
                 FileChooserDescriptorUtil.createSingleXmlChooserDescriptor(),
             )
                 .enableIf(enabled)
+                .withValidationOnInput { validateAsFilePath(it.text, isWarning = true) }
+                .withValidationOnApply { validateAsFilePath(it.text) }
         }
 
         row("") {

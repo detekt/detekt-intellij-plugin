@@ -19,6 +19,7 @@ import io.gitlab.arturbosch.detekt.idea.DetektBundle
 import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
 import io.gitlab.arturbosch.detekt.idea.util.toPathsSet
 import io.gitlab.arturbosch.detekt.idea.util.toVirtualFilesList
+import io.gitlab.arturbosch.detekt.idea.util.validateAsFilePath
 import java.io.File
 import javax.swing.JCheckBox
 import javax.swing.JPanel
@@ -145,6 +146,8 @@ internal class NewDetektConfigUiProvider(
                 .horizontalAlign(HorizontalAlign.FILL)
                 .resizableColumn()
                 .enabledIf(enabled)
+                .validationOnInput { validateAsFilePath(it.text, isWarning = true) }
+                .validationOnApply { validateAsFilePath(it.text) }
         }
 
         row("") {

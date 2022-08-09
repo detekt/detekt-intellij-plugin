@@ -10,6 +10,7 @@ import com.intellij.openapi.options.newEditor.SettingsDialog
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.ui.layout.ValidationInfoBuilder
 import io.gitlab.arturbosch.detekt.idea.DETEKT
 import io.gitlab.arturbosch.detekt.idea.DetektBundle
 import io.gitlab.arturbosch.detekt.idea.config.DetektConfig
@@ -31,7 +32,7 @@ fun absolutePath(project: Project, path: String): String {
 fun Set<String>.toVirtualFilesList(): List<VirtualFile> {
     val fs = LocalFileSystem.getInstance()
     return mapNotNull { fs.findFileByPath(it) }
-        .sortedBy { it.presentableUrl }
+        .sortedBy { it.name }
 }
 
 fun List<VirtualFile>.toPathsSet(): Set<String> =
@@ -43,7 +44,7 @@ fun showNotification(problems: List<String>, project: Project) {
     showNotification(
         title = DetektBundle.message("detekt.notifications.message.problemsFound"),
         content = problems.joinToString(System.lineSeparator()) +
-                DetektBundle.message("detekt.notifications.content.skippingRun"),
+            DetektBundle.message("detekt.notifications.content.skippingRun"),
         project = project
     )
 }
@@ -70,3 +71,14 @@ fun showNotification(title: String, content: String, project: Project) {
     })
     notification.notify(project)
 }
+
+internal fun ValidationInfoBuilder.validateAsFilePath(text: String, isWarning: Boolean = false) =
+    if (text.isNotEmpty() && !File(text).isFile) {
+        if (isWarning) {
+            warning(DetektBundle.message("detekt.configuration.validationError.filePath"))
+        } else {
+            error(DetektBundle.message("detekt.configuration.validationError.filePath"))
+        }
+    } else {
+        null
+    }
