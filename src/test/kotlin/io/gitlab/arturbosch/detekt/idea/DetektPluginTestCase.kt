@@ -1,8 +1,9 @@
 package io.gitlab.arturbosch.detekt.idea
 
+import com.intellij.openapi.components.service
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import io.github.detekt.test.utils.resourceAsPath
-import io.gitlab.arturbosch.detekt.idea.config.DetektConfigStorage
+import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
@@ -27,8 +28,8 @@ open class DetektPluginTestCase : BasePlatformTestCase() {
 
     @BeforeEach
     open fun clearConfig() {
-        val config = DetektConfigStorage.instance(project)
-        config.loadState(DetektConfigStorage())
+        val config = project.service<DetektPluginSettings>()
+        config.loadState(DetektPluginSettings.State())
     }
 
     @BeforeAll

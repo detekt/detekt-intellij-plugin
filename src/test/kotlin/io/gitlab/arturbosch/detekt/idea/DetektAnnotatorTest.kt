@@ -1,9 +1,10 @@
 package io.gitlab.arturbosch.detekt.idea
 
 import com.intellij.openapi.application.WriteAction
+import com.intellij.openapi.components.service
 import com.intellij.psi.PsiFile
 import io.gitlab.arturbosch.detekt.api.Finding
-import io.gitlab.arturbosch.detekt.idea.config.DetektConfigStorage
+import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -20,7 +21,7 @@ class DetektAnnotatorTest : DetektPluginTestCase() {
     }
 
     private fun runAnnotator(enabled: Boolean): List<Finding> {
-        DetektConfigStorage.instance(project).enableDetekt = enabled
+        project.service<DetektPluginSettings>().enableDetekt = enabled
         val file = myFixture.copyFileToProject("Poko.kt")
         val psi = WriteAction.computeAndWait<PsiFile, Throwable> { psiManager.findFile(file)!! }
         return DetektAnnotator().doAnnotate(psi)

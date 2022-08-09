@@ -6,6 +6,7 @@ import com.intellij.openapi.components.Storage
 import com.intellij.openapi.project.Project
 import com.intellij.util.xmlb.annotations.Tag
 
+@Deprecated("Provided for migration purposes only, use DetektPluginSettings instead.")
 @State(
     name = "DetektProjectConfiguration",
     storages = [Storage("detekt.xml")]
@@ -26,6 +27,9 @@ class DetektConfigStorage : PersistentStateComponent<DetektConfigStorage> {
 
     @Tag
     var treatAsError: Boolean = false
+
+    @Tag
+    var isMigratedOffV1: Boolean = false
 
     @Tag
     var configPaths: String = ""
