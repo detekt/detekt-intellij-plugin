@@ -32,40 +32,30 @@ internal class FilesListPanel(
     fun decorated(): JPanel =
         ToolbarDecorator.createDecorator(list)
             .setAddAction {
-                onAddFileClick(listModel) { TODO() }
+                onAddFileClick(listModel)
             }
             .setRemoveAction {
-                onRemoveFileClick(listModel) { TODO() }
+                onRemoveFileClick(listModel)
             }
             .setButtonComparator(CommonBundle.message("button.add"), CommonBundle.message("button.remove"))
             .disableUpDownActions()
             .createPanel()
 
-    private fun onRemoveFileClick(
-        listModel: ListModel,
-        onDataChanged: (List<VirtualFile>) -> Unit
-    ) {
-        val changed = listModel.removeAt(list.selectedIndices.toList()).isNotEmpty()
-        if (changed) onDataChanged(listModel.items)
+    private fun onRemoveFileClick(listModel: ListModel) {
+        listModel.removeAt(list.selectedIndices.toList()).isNotEmpty()
     }
 
-    private fun onAddFileClick(
-        listModel: ListModel,
-        onDataChanged: (List<VirtualFile>) -> Unit
-    ) {
+    private fun onAddFileClick(listModel: ListModel) {
         val descriptor = descriptorProvider()
         descriptor.title = fileChooserTitle
         descriptor.description = fileChooserDescription
 
         val files = FileChooser.chooseFiles(descriptor, list, project, null)
-        var changed = false
         for (file in files) {
             if (file != null && !listModel.items.contains(file)) {
                 listModel += file
-                changed = true
             }
         }
-        if (changed) onDataChanged(listModel.items)
     }
 
     @Suppress("TooManyFunctions") // Required functionality
