@@ -68,13 +68,13 @@ tasks.publishPlugin {
 
 intellij {
     pluginName.set("Detekt IntelliJ Plugin")
-    version.set("2022.2")
+    version.set("2021.2.1")
     updateSinceUntilBuild.set(false)
     plugins.set(listOf("IntelliLang", "Kotlin"))
 }
 
 tasks.runPluginVerifier {
-    ideVersions.set(listOf("2020.3", "2020.3.4", "2021.1.3", "2021.2.4", "2021.3.3", "2022.1.4", "2022.2"))
+    ideVersions.set(listOf("2021.2.1", "2021.3.1"))
     failureLevel.set(listOf(DEPRECATED_API_USAGES, INVALID_PLUGIN))
 }
 

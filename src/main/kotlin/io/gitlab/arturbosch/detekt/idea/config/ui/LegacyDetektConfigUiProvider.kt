@@ -27,7 +27,6 @@ class LegacyDetektConfigUiProvider(
     private val project: Project
 ) : DetektConfigUiProvider {
 
-    @Suppress("DEPRECATION") // This legacy UI is only used on IJ < 21.3 where the v2 DSL is unavailable
     override fun createPanel(): DialogPanel = panel {
         lateinit var detektEnabledCheckbox: JCheckBox
         row {
