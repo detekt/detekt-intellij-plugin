@@ -7,3 +7,9 @@
 - Visit [Marketplace](https://plugins.jetbrains.com/plugin/10761-detekt) to verify the plugin is approved and released
 - Run `./gradlew githubRelease` (Required gradle property `github.token`)
 - Visit [Github](https://github.com/detekt/detekt-intellij-plugin) to verify the release is created on Github
+
+# Android
+
+- Check out `2021.2.1-android-branch`
+- Add `-android` suffix to the version
+- Repeat releasing steps
