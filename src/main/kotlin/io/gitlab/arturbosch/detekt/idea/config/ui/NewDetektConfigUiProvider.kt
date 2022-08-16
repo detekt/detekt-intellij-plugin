@@ -28,7 +28,7 @@ import kotlin.reflect.KMutableProperty0
 @Suppress("DialogTitleCapitalization") // It gets tripped up by the capitalization of Detekt's name
 internal class NewDetektConfigUiProvider(
     private val settings: DetektPluginSettings,
-    private val project: Project
+    private val project: Project,
 ) : DetektConfigUiProvider {
 
     override fun createPanel(): DialogPanel = panel {
@@ -49,14 +49,10 @@ internal class NewDetektConfigUiProvider(
         filesGroup(detektEnabledCheckbox.selected)
     }
 
-    // TODO replace with newer overload once the min IJ version is >= 22.1
-    // MissingRecentApi: this is only meant to be used on IJ 21.3 and later
-    @Suppress("UnstableApiUsage", "MissingRecentApi", "Deprecation")
     private fun Panel.rulesGroup(enabled: ComponentPredicate) =
         group(
             title = DetektBundle.message("detekt.configuration.rulesGroup.title"),
             indent = false,
-            topGroupGap = false
         ) {
             row {
                 checkBox(DetektBundle.message("detekt.configuration.buildUponDefaultConfig"))
@@ -72,15 +68,10 @@ internal class NewDetektConfigUiProvider(
             }
         }.enabledIf(enabled)
 
-    // TODO replace with newer overload once the min IJ version is >= 22.1
-    // MissingRecentApi: this is only meant to be used on IJ 21.3 and later
-    // UnstableApiUsage: some calls have a newer overload in IJ 22.1+
-    @Suppress("UnstableApiUsage", "MissingRecentApi", "Deprecation")
     private fun Panel.filesGroup(enabled: ComponentPredicate) =
         group(
             title = DetektBundle.message("detekt.configuration.filesGroup.title"),
             indent = false,
-            topGroupGap = false
         ) {
             configurationFilesRow(enabled)
 
@@ -89,9 +80,6 @@ internal class NewDetektConfigUiProvider(
             pluginJarsRow(enabled)
         }
 
-    // MissingRecentApi: this is only meant to be used on IJ 21.3 and later
-    // UnstableApiUsage: some calls have a newer overload in IJ 22.1 and later
-    @Suppress("MissingRecentApi", "UnstableApiUsage")
     private fun Panel.configurationFilesRow(enabled: ComponentPredicate) {
         row {
             val label = label(DetektBundle.message("detekt.configuration.configurationFiles.title"))
@@ -108,8 +96,7 @@ internal class NewDetektConfigUiProvider(
                 descriptorProvider = { FileChooserDescriptorUtil.createYamlChooserDescriptor() }
             ).decorated()
 
-            @Suppress("DEPRECATION") // TODO replace with newer overload once the min IJ version is >= 22.1
-            cell(filesListPanel, filesListPanel)
+            cell(filesListPanel)
                 .horizontalAlign(HorizontalAlign.FILL)
                 .resizableColumn()
                 .enabledIf(enabled)
@@ -123,9 +110,6 @@ internal class NewDetektConfigUiProvider(
         }.bottomGap(BottomGap.MEDIUM)
     }
 
-    // MissingRecentApi: this is only meant to be used on IJ 21.3 and later
-    // UnstableApiUsage: some calls have a newer overload in IJ 22.1 and later
-    @Suppress("MissingRecentApi", "UnstableApiUsage")
     private fun Panel.baselineFileRow(enabled: ComponentPredicate) {
         row(DetektBundle.message("detekt.configuration.baselineFile.title")) {
             textFieldWithBrowseButton(
@@ -155,9 +139,6 @@ internal class NewDetektConfigUiProvider(
         }.bottomGap(BottomGap.MEDIUM)
     }
 
-    // MissingRecentApi: this is only meant to be used on IJ 21.3 and later
-    // UnstableApiUsage: some calls have a newer overload in IJ 22.1 and later
-    @Suppress("MissingRecentApi", "UnstableApiUsage")
     private fun Panel.pluginJarsRow(enabled: ComponentPredicate) {
         row {
             val label = label(DetektBundle.message("detekt.configuration.pluginJarFiles.title"))
@@ -174,8 +155,7 @@ internal class NewDetektConfigUiProvider(
                 descriptorProvider = { FileChooserDescriptorUtil.createJarsChooserDescriptor() }
             ).decorated()
 
-            @Suppress("DEPRECATION") // TODO replace with newer overload once the min IJ version is >= 22.1
-            cell(filesListPanel, filesListPanel)
+            cell(filesListPanel)
                 .horizontalAlign(HorizontalAlign.FILL)
                 .resizableColumn()
                 .enabledIf(enabled)
@@ -189,11 +169,9 @@ internal class NewDetektConfigUiProvider(
         }
     }
 
-    // MissingRecentApi: this is only meant to be used on IJ 21.3 and later
-    @Suppress("MissingRecentApi")
     private fun Cell<JPanel>.bindItems(
         fileSetProperty: KMutableProperty0<MutableSet<String>>,
-        listModel: FilesListPanel.ListModel
+        listModel: FilesListPanel.ListModel,
     ) {
         bind(
             { listModel.items },
