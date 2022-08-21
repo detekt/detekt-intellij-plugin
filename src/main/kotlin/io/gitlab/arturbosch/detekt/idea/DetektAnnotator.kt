@@ -4,6 +4,7 @@ import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.ExternalAnnotator
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.components.service
+import com.intellij.openapi.diagnostic.logger
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiFile
 import io.gitlab.arturbosch.detekt.api.CorrectableCodeSmell
@@ -16,6 +17,8 @@ import io.gitlab.arturbosch.detekt.idea.util.showNotification
 import org.jetbrains.kotlin.idea.KotlinLanguage
 
 class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
+
+    private val logger = logger<DetektAnnotator>()
 
     override fun collectInformation(file: PsiFile): PsiFile = file
 
@@ -35,7 +38,9 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
             return emptyList()
         }
 
-        return service.execute(collectedInfo, autoCorrect = false)
+        return runCatching { service.execute(collectedInfo, autoCorrect = false) }
+            .onFailure { logger.error("Unexpected error while running detekt service", it) }
+            .getOrThrow()
     }
 
     override fun apply(
