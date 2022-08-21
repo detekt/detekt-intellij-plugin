@@ -17,6 +17,7 @@ import io.gitlab.arturbosch.detekt.idea.config.DetektConfig
 import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
 import java.io.File
 import java.nio.file.Path
+import kotlin.io.path.Path
 import kotlin.io.path.absolute
 
 fun Project.isDetektEnabled(): Boolean =
@@ -25,9 +26,14 @@ fun Project.isDetektEnabled(): Boolean =
 fun absolutePath(project: Project, path: String): String {
     if (path.isBlank() || File(path).isAbsolute) return path
 
-    return project.basePath?.let { Path.of(it, path).absolute().toString() }
+    return project.basePath?.let { Path(it, path).absolute().toString() }
         ?: path
 }
+
+fun absoluteBaselinePath(project: Project, settings: DetektPluginSettings): Path? =
+    settings.baselinePath.trim()
+        .takeIf { it.isNotEmpty() }
+        ?.let { Path(absolutePath(project, settings.baselinePath)) }
 
 fun Set<String>.toVirtualFilesList(): List<VirtualFile> {
     val fs = LocalFileSystem.getInstance()
@@ -45,7 +51,7 @@ fun showNotification(problems: List<String>, project: Project) {
     showNotification(
         title = DetektBundle.message("detekt.notifications.message.problemsFound"),
         content = problems.joinToString(System.lineSeparator()) +
-            DetektBundle.message("detekt.notifications.content.skippingRun"),
+                DetektBundle.message("detekt.notifications.content.skippingRun"),
         project = project
     )
 }
