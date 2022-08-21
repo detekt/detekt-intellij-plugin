@@ -3,6 +3,7 @@ package io.gitlab.arturbosch.detekt.idea
 import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.application.runWriteAction
 import com.intellij.openapi.components.service
+import com.intellij.openapi.diagnostic.logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
 import com.intellij.psi.PsiFile
@@ -25,6 +26,7 @@ import kotlin.io.path.Path
 
 class ConfiguredService(private val project: Project) {
 
+    private val logger = logger<ConfiguredService>()
     private val settings = project.service<DetektPluginSettings>()
 
     private val projectBasePath = project.basePath?.let(::Path)
@@ -103,8 +105,12 @@ class ConfiguredService(private val project: Project) {
         val pathToAnalyze = file.virtualFile
             ?.canonicalPath
             ?: return emptyList()
-        val content = runReadAction { file.text }
-        return execute(content, pathToAnalyze, autoCorrect)
+        val content = runCatching { runReadAction { file.text } }
+            .onFailure { logger.error("Unexpected error while reading file content: ${file.virtualFile.path}", it) }
+            .getOrThrow()
+        return runCatching { execute(content, pathToAnalyze, autoCorrect) }
+            .onFailure { logger.error("Unexpected error while running detekt analysis", it) }
+            .getOrDefault(emptyList())
     }
 
     @OptIn(UnstableApi::class)
