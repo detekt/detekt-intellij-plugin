@@ -42,6 +42,13 @@
 
     <change-notes><![CDATA[
       <ul>
+        <li>1.21.2
+            <br>
+            <ul>
+                <li>Do not allow autocorrect action on read-only files</li>
+                <li>Introduce some debug logging to find out if stack traces without detekt package are thrown by our plugin</li>
+            </ul>
+        </li>
         <li>1.21.1
             <br>
             <ul>

@@ -1,5 +1,10 @@
 ### Changelog
 
+#### 1.21.2
+
+- Do not allow autocorrect action on read-only files - [#268](https://github.com/detekt/detekt-intellij-plugin/pull/268)
+- Introduce some debug logging to find out if stack traces without detekt package are thrown by our plugin - [#268](https://github.com/detekt/detekt-intellij-plugin/pull/268)
+
 #### 1.21.1
 
 - Settings UI overhaul - [#240](https://github.com/detekt/detekt-intellij-plugin/pull/240)
