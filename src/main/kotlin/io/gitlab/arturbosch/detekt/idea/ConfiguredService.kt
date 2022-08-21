@@ -18,7 +18,7 @@ import io.gitlab.arturbosch.detekt.api.UnstableApi
 import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
 import io.gitlab.arturbosch.detekt.idea.util.DirectExecutor
 import io.gitlab.arturbosch.detekt.idea.util.PluginUtils
-import io.gitlab.arturbosch.detekt.idea.util.absolutePath
+import io.gitlab.arturbosch.detekt.idea.util.absoluteBaselinePath
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
@@ -100,9 +100,7 @@ class ConfiguredService(private val project: Project) {
         map { it.replace('/', File.separatorChar) }
             .map { projectBasePath?.resolve(it) ?: Paths.get(it) }
 
-    private fun baseline(): Path? = settings.baselinePath.trim()
-        .takeIf { it.isNotEmpty() }
-        ?.let { Paths.get(absolutePath(project, settings.baselinePath)) }
+    private fun baseline(): Path? = absoluteBaselinePath(project, settings)
 
     fun execute(file: PsiFile, autoCorrect: Boolean): List<Finding> {
         val pathToAnalyze = file.virtualFile
