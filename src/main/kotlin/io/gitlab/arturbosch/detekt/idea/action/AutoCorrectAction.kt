@@ -23,8 +23,8 @@ class AutoCorrectAction : AnAction() {
         val file: VirtualFile = event.getData(CommonDataKeys.VIRTUAL_FILE) ?: return
         val project = event.getData(CommonDataKeys.PROJECT) ?: return
 
-        if (file.extension in KOTLIN_FILE_EXTENSIONS) {
-            // enable auto correct option only when plugin is enabled
+        if (!file.fileSystem.isReadOnly && file.extension in KOTLIN_FILE_EXTENSIONS) {
+            // enable autocorrect option only when plugin is enabled
             event.presentation.isEnabledAndVisible = project.isDetektEnabled()
         } else {
             // hide action for non-Kotlin source files
@@ -36,6 +36,10 @@ class AutoCorrectAction : AnAction() {
         val virtualFile = event.getData(CommonDataKeys.VIRTUAL_FILE) ?: return
         val project = event.getData(CommonDataKeys.PROJECT) ?: return
         val psiFile = PsiManager.getInstance(project).findFile(virtualFile) ?: return
+        if (virtualFile.fileSystem.isReadOnly) {
+            logger.trace("Skipping readOnly file: ${virtualFile.path}")
+            return
+        }
         runCatching { runAction(project, psiFile) }
             .onFailure { logger.error("Unexpected error while performing auto correct action", it) }
             .getOrThrow()
