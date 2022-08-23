@@ -31,7 +31,8 @@ fun absolutePath(project: Project, path: String): String {
 
 fun Set<String>.toVirtualFilesList(): List<VirtualFile> {
     val fs = LocalFileSystem.getInstance()
-    return mapNotNull { fs.findFileByPath(it) }
+    return filter { it.isNotBlank() }
+        .mapNotNull { fs.findFileByPath(it) }
         .sortedBy { it.name }
 }
 
