@@ -79,8 +79,14 @@ class DetektPluginSettings(
             enableFormatting = oldSettings.enableFormatting
             buildUponDefaultConfig = oldSettings.buildUponDefaultConfig
             enableAllRules = oldSettings.enableAllRules
-            configurationFilePaths = oldSettings.configPaths.split(File.pathSeparator).toMutableSet()
-            pluginJarPaths = oldSettings.pluginPaths.split(File.pathSeparator).toMutableSet()
+            configurationFilePaths = oldSettings.configPaths
+                .split(File.pathSeparator)
+                .filter { it.isNotBlank() }
+                .toMutableSet()
+            pluginJarPaths = oldSettings.pluginPaths
+                .split(File.pathSeparator)
+                .filter { it.isNotBlank() }
+                .toMutableSet()
             baselinePath = oldSettings.baselinePath
         }
 
