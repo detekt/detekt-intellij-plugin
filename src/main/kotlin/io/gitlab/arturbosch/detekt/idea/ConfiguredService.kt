@@ -84,12 +84,14 @@ class ConfiguredService(private val project: Project) {
     private fun configPaths(): List<Path> =
         settings.configurationFilePaths
             .asSequence()
+            .filter { it.isNotBlank() }
             .asAbsolutePaths()
             .toList()
 
     private fun pluginPaths(): List<Path> =
         settings.pluginJarPaths
             .asSequence()
+            .filter { it.isNotBlank() }
             .asAbsolutePaths()
             .toList()
 
