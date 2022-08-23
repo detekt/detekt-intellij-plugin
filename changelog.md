@@ -1,5 +1,12 @@
 ### Changelog
 
+#### 1.21.3
+
+Please do not report issues anymore where IntelliJ/Android Studio blames the detekt plugin for an exception 
+without any detekt stacktrace. This is a known issue and will take some time to investigate - [#271](https://github.com/detekt/detekt-intellij-plugin/issues/271)
+
+- Fix a situation where it could happen that the config or plugin jar paths got corrupt and reference the containing directory - [#272](https://github.com/detekt/detekt-intellij-plugin/pull/272)
+
 #### 1.21.2
 
 - Do not allow autocorrect action on read-only files - [#268](https://github.com/detekt/detekt-intellij-plugin/pull/268)
