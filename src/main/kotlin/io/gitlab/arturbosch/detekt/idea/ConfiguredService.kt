@@ -34,13 +34,13 @@ class ConfiguredService(private val project: Project) {
     fun validate(): List<String> {
         val messages = mutableListOf<String>()
 
-        pluginPaths()
-            .filter { Files.notExists(it) }
-            .forEach { messages += "Plugin jar <b>$it</b> does not exist." }
+        fun checkPaths(paths: List<Path>, messagePrefix: String) {
+            paths.filter { Files.notExists(it) }.forEach { messages += "$messagePrefix <b>$it</b> does not exist." }
+            paths.filter { Files.isDirectory(it) }.forEach { messages += "$messagePrefix <b>$it</b> is a directory." }
+        }
 
-        configPaths()
-            .filter { Files.notExists(it) }
-            .forEach { messages += "Configuration file <b>$it</b> does not exist." }
+        checkPaths(pluginPaths(), "Plugin jar")
+        checkPaths(configPaths(), "Configuration file")
 
         val baseline = baseline()
         if (baseline != null && !baseline.exists()) {
