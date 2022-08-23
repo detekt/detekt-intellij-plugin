@@ -74,19 +74,17 @@ class DetektPluginSettings(
 
         @Suppress("Deprecation") // TODO remove the migration from v0 settings storage at some point
         val oldSettings = DetektConfigStorage.instance(project)
+
+        fun migratePaths(pathsString: String): MutableSet<String> =
+            pathsString.split(File.pathSeparator).filter { it.isNotBlank() }.toMutableSet()
+
         val migrated = State().apply {
             enableDetekt = oldSettings.enableDetekt
             enableFormatting = oldSettings.enableFormatting
             buildUponDefaultConfig = oldSettings.buildUponDefaultConfig
             enableAllRules = oldSettings.enableAllRules
-            configurationFilePaths = oldSettings.configPaths
-                .split(File.pathSeparator)
-                .filter { it.isNotBlank() }
-                .toMutableSet()
-            pluginJarPaths = oldSettings.pluginPaths
-                .split(File.pathSeparator)
-                .filter { it.isNotBlank() }
-                .toMutableSet()
+            configurationFilePaths = migratePaths(oldSettings.configPaths)
+            pluginJarPaths = migratePaths(oldSettings.pluginPaths)
             baselinePath = oldSettings.baselinePath
         }
 
