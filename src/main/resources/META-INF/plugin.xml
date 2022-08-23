@@ -42,6 +42,15 @@
 
     <change-notes><![CDATA[
       <ul>
+        <li>1.21.3
+            <br>
+            <span>Please do not report issues anymore where IntelliJ/Android Studio blames the detekt plugin for an exception without any detekt stacktrace.</span>
+            <br>
+            <span>This is a known issue and will take some time to investigate - https://github.com/detekt/detekt-intellij-plugin/issues/271</span>
+            <ul>
+                <li>Fix a situation where it could happen that the config or plugin jar paths got corrupt and reference the containing directory - [#272](https://github.com/detekt/detekt-intellij-plugin/pull/272)</li>
+            </ul>
+        </li>
         <li>1.21.2
             <br>
             <ul>
