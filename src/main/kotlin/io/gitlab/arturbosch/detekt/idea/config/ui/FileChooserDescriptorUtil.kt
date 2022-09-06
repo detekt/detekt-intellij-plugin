@@ -9,7 +9,9 @@ object FileChooserDescriptorUtil {
         createMultipleFilesChooserDescriptor(allowJars = true) { it.extension.equals("jar", ignoreCase = true) }
 
     fun createYamlChooserDescriptor() =
-        createMultipleFilesChooserDescriptor { it.extension.equals("yml", ignoreCase = true) }
+        createMultipleFilesChooserDescriptor {
+            it.extension.equals("yml", ignoreCase = true) || it.extension.equals("yaml", ignoreCase = true)
+        }
 
     private fun createMultipleFilesChooserDescriptor(
         allowFiles: Boolean = true,
