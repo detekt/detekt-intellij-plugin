@@ -4,6 +4,7 @@ import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.application.runWriteAction
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.logger
+import com.intellij.openapi.progress.ProcessCanceledException
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
 import com.intellij.psi.PsiFile
@@ -108,11 +109,23 @@ class ConfiguredService(private val project: Project) {
             ?.canonicalPath
             ?: return emptyList()
         val content = runCatching { runReadAction { file.text } }
-            .onFailure { logger.error("Unexpected error while reading file content: ${file.virtualFile.path}", it) }
+            .onFailure {
+                logErrorIfAllowed(
+                    it,
+                    "Unexpected error while reading file content: ${file.virtualFile.path}"
+                )
+            }
             .getOrThrow()
         return runCatching { execute(content, pathToAnalyze, autoCorrect) }
-            .onFailure { logger.error("Unexpected error while running detekt analysis", it) }
+            .onFailure { logErrorIfAllowed(it, "Unexpected error while running detekt analysis") }
             .getOrDefault(emptyList())
+    }
+
+    private fun logErrorIfAllowed(error: Throwable, message: String) {
+        if (error is ProcessCanceledException) {
+            return // process cancellation is not allowed to be logged and will throw
+        }
+        logger.error(message, error)
     }
 
     @OptIn(UnstableApi::class)
