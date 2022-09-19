@@ -1,5 +1,10 @@
 ### Changelog
 
+#### 1.22.0-RC1
+
+- Update to detekt 1.22.0-RC1
+- Fix logging process cancellation exceptions - [#311](https://github.com/detekt/detekt-intellij-plugin/issues/311)
+
 #### 1.21.3
 
 Please do not report issues anymore where IntelliJ/Android Studio blames the detekt plugin for an exception 
