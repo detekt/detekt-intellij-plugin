@@ -10,14 +10,10 @@ The plugin can be downloaded from the [Jetbrains plugin repository](https://plug
 
 ## Enabling the plugin
 
-- Install the plugin
-- Navigate to Settings/Preferences -> Tools -> Detekt
-- Check `Enable Detekt` 
+- `Settings -> Plugins -> Marketplace -> Search for Detekt -> Install`
+- Configure the plugin via `Settings -> Tools -> Detekt`
 
-## Customization
-- Configuration file: Path to custom detekt.yml config file (optional)
-- Baseline file: Path to custom baseline.xml file (optional)
-- Plugin jars: Path to jar file that has the 'custom rules', if you want them to be reported as well (optional)
+## Configuration Options
 
 ![detekt in action](./img/detekt.png "detekt in action")
 
@@ -45,6 +41,8 @@ To test your development, use task `runIde` which will automatically run an Inte
 # windows
 gradlew runIde
 ```
+
+Also install the current `Detekt` IntelliJ plugin version  to verify you do not introduce new issues.
 
 ## License
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Farturbosch%2Fdetekt-intellij-plugin.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Farturbosch%2Fdetekt-intellij-plugin?ref=badge_large)
