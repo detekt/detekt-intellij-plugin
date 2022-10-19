@@ -42,6 +42,14 @@
 
     <change-notes><![CDATA[
       <ul>
+        <li>1.22.0
+            <br>
+            <ul>
+                <li>Update to detekt 1.22.0</li>
+                <li>Fix logging process cancellation exceptions</li>
+                <li>Allow configuration files with yaml extension</li>
+            </ul>
+        </li>
         <li>1.21.3
             <br>
             <span>Please do not report issues anymore where IntelliJ/Android Studio blames the detekt plugin for an exception without any detekt stacktrace.</span>

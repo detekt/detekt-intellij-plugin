@@ -1,9 +1,10 @@
 ### Changelog
 
-#### 1.22.0-RC1
+#### 1.22.0
 
-- Update to detekt 1.22.0-RC1
+- Update to detekt 1.22.0
 - Fix logging process cancellation exceptions - [#311](https://github.com/detekt/detekt-intellij-plugin/issues/311)
+- Allow configuration files with yaml extension - [#300](https://github.com/detekt/detekt-intellij-plugin/issues/300)
 
 #### 1.21.3
 
