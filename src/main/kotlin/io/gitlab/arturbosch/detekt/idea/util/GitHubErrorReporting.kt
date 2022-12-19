@@ -15,6 +15,7 @@ import com.intellij.util.Consumer
 import org.apache.http.client.utils.URIBuilder
 import java.awt.Component
 
+// Turn off error reporting for now due to https://github.com/detekt/detekt-intellij-plugin/issues/271
 class GitHubErrorReporting : ErrorReportSubmitter() {
 
     override fun getReportActionText(): String = "Open GitHub Issue"
