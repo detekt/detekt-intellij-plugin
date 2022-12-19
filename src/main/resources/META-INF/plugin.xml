@@ -15,7 +15,8 @@
     <idea-version since-build="212.4746.92" until-build="221.*" />
 
     <extensions defaultExtensionNs="com.intellij">
-        <errorHandler implementation="io.gitlab.arturbosch.detekt.idea.util.GitHubErrorReporting"/>
+        <!-- Turn off error reporting for now due to https://github.com/detekt/detekt-intellij-plugin/issues/271 -->
+        <!-- <errorHandler implementation="io.gitlab.arturbosch.detekt.idea.util.GitHubErrorReporting"/>-->
         <externalAnnotator language="kotlin" implementationClass="io.gitlab.arturbosch.detekt.idea.DetektAnnotator"/>
 
         <projectService serviceImplementation="io.gitlab.arturbosch.detekt.idea.config.DetektConfigStorage"/>
