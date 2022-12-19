@@ -1,5 +1,9 @@
 ### Changelog
 
+#### 1.22.1
+
+- Deactivate error reporting for now due to unsolved unrelated reporting of Kotlin issues - [#271](https://github.com/detekt/detekt-intellij-plugin/issues/271)
+
 #### 1.22.0
 
 - Update to detekt 1.22.0
