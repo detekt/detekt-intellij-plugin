@@ -35,17 +35,15 @@ fun absoluteBaselinePath(project: Project, settings: DetektPluginSettings): Path
         .takeIf { it.isNotEmpty() }
         ?.let { Path(absolutePath(project, settings.baselinePath)) }
 
-fun Set<String>.toVirtualFilesList(): List<VirtualFile> {
+fun List<String>.toVirtualFilesList(): List<VirtualFile> {
     val fs = LocalFileSystem.getInstance()
     return filter { it.isNotBlank() }
         .mapNotNull { fs.findFileByPath(it) }
-        .sortedBy { it.name }
 }
 
-fun List<VirtualFile>.toPathsSet(): Set<String> =
+fun List<VirtualFile>.toPathsList(): List<String> =
     filter { it.exists() }
         .map { it.path }
-        .toSet()
 
 fun showNotification(problems: List<String>, project: Project) {
     showNotification(

@@ -10,7 +10,7 @@ import com.intellij.openapi.vcs.changes.ui.VirtualFileListCellRenderer
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.ToolbarDecorator
 import com.intellij.ui.components.JBList
-import javax.swing.AbstractListModel
+import javax.swing.DefaultListModel
 import javax.swing.JPanel
 import javax.swing.ListSelectionModel
 
@@ -24,7 +24,7 @@ internal class FilesListPanel(
 ) {
 
     private val list = JBList(listModel).apply {
-        dragEnabled = false
+        dragEnabled = true
         selectionModel.selectionMode = ListSelectionModel.MULTIPLE_INTERVAL_SELECTION
         cellRenderer = VirtualFileListCellRenderer(project)
     }
@@ -38,11 +38,10 @@ internal class FilesListPanel(
                 onRemoveFileClick(listModel)
             }
             .setButtonComparator(CommonBundle.message("button.add"), CommonBundle.message("button.remove"))
-            .disableUpDownActions()
             .createPanel()
 
     private fun onRemoveFileClick(listModel: ListModel) {
-        listModel.removeAt(list.selectedIndices.toList()).isNotEmpty()
+        listModel.removeAt(list.selectedIndices.toList())
     }
 
     private fun onAddFileClick(listModel: ListModel) {
@@ -59,57 +58,27 @@ internal class FilesListPanel(
     }
 
     @Suppress("TooManyFunctions") // Required functionality
-    class ListModel(initialItems: List<VirtualFile> = emptyList()) : AbstractListModel<VirtualFile>() {
+    class ListModel(initialItems: List<VirtualFile> = emptyList()) : DefaultListModel<VirtualFile>() {
 
-        private val _items: MutableList<VirtualFile> = initialItems.toMutableList()
+        val items: List<VirtualFile>
+            get() = super.elements().toList()
 
-        val items: List<VirtualFile> = _items
-
-        override fun getSize() = items.size
-
-        override fun getElementAt(index: Int) = _items[index]
-
-        operator fun get(index: Int) = _items[index]
-
-        operator fun set(index: Int, value: VirtualFile) {
-            _items[index] = value
-            fireContentsChanged(this, index, index)
+        init {
+            addAll(initialItems)
         }
 
         operator fun plusAssign(newItem: VirtualFile) {
-            add(newItem)
+            addElement(newItem)
         }
 
         operator fun plusAssign(newItems: Collection<VirtualFile>) {
             addAll(newItems)
         }
 
-        fun add(newItem: VirtualFile, index: Int = _items.size) {
-            _items.add(index, newItem)
-            fireIntervalAdded(this, index, index)
-        }
-
-        fun addAll(newItems: Collection<VirtualFile>, index: Int = _items.size) {
-            if (newItems.isEmpty()) return
-            _items.addAll(index, newItems)
-            fireIntervalAdded(this, index, index + newItems.size - 1)
-        }
-
-        fun removeAt(indices: Collection<Int>): List<VirtualFile> {
-            if (indices.isEmpty()) return emptyList()
-            val removed = indices.reversed()
-                .map { indexToRemove ->
-                    val removed = _items.removeAt(indexToRemove)
-                    fireIntervalRemoved(this, indexToRemove, indexToRemove)
-                    removed
-                }
-            return removed
-        }
-
-        fun clear() {
-            val formerSize = items.size
-            _items.clear()
-            fireIntervalRemoved(this, 0, formerSize)
+        fun removeAt(indices: Collection<Int>) {
+            if (indices.isEmpty()) return
+            indices.reversed()
+                .forEach { indexToRemove -> remove(indexToRemove) }
         }
     }
 }
