@@ -6,8 +6,8 @@ import com.intellij.openapi.components.SimplePersistentStateComponent
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
 import com.intellij.openapi.components.service
+import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
-import java.io.File
 
 @Service(Service.Level.PROJECT)
 @State(name = "DetektPluginSettings", storages = [Storage("detekt.xml")])
@@ -45,10 +45,10 @@ class DetektPluginSettings(
             state.treatAsErrors = value
         }
 
-    var configurationFilePaths: MutableSet<String>
-        get() = state.configurationFilePaths
+    var configurationFilePaths: List<String>
+        get() = state.configurationFiles
         set(value) {
-            state.configurationFilePaths = value
+            state.configurationFiles = value.toMutableList()
         }
 
     var baselinePath: String
@@ -57,10 +57,10 @@ class DetektPluginSettings(
             state.baselinePath = value
         }
 
-    var pluginJarPaths: MutableSet<String>
-        get() = state.pluginJarPaths
+    var pluginJarPaths: List<String>
+        get() = state.pluginJars
         set(value) {
-            state.pluginJarPaths = value
+            state.pluginJars = value.toMutableList()
         }
 
     override fun loadState(state: State) {
@@ -70,26 +70,16 @@ class DetektPluginSettings(
 
     private fun loadOrMigrateIfNeeded(state: State): State {
         val migrationSettings = project.service<DetektSettingsMigration>()
-        if (migrationSettings.state.stateVersion == CURRENT_VERSION) return state
 
-        @Suppress("Deprecation") // TODO remove the migration from v0 settings storage at some point
-        val oldSettings = DetektConfigStorage.instance(project)
-
-        fun migratePaths(pathsString: String): MutableSet<String> =
-            pathsString.split(File.pathSeparator).filter { it.isNotBlank() }.toMutableSet()
-
-        val migrated = State().apply {
-            enableDetekt = oldSettings.enableDetekt
-            enableFormatting = oldSettings.enableFormatting
-            buildUponDefaultConfig = oldSettings.buildUponDefaultConfig
-            enableAllRules = oldSettings.enableAllRules
-            configurationFilePaths = migratePaths(oldSettings.configPaths)
-            pluginJarPaths = migratePaths(oldSettings.pluginPaths)
-            baselinePath = oldSettings.baselinePath
+        return when (val stateVersion = migrationSettings.state.stateVersion) {
+            DetektSettingsMigration.CURRENT_VERSION -> state
+            2 -> migrationSettings.migrateFromV2ToCurrent(state)
+            1 -> migrationSettings.migrateFromV1ToCurrent()
+            else -> {
+                thisLogger().error("Unsupported settings value, cannot migrate: $stateVersion. Resetting to defaults.")
+                State()
+            }
         }
-
-        migrationSettings.state.stateVersion = CURRENT_VERSION
-        return migrated
     }
 
     class State : BaseState() {
@@ -100,13 +90,18 @@ class DetektPluginSettings(
         var buildUponDefaultConfig by property(true)
         var treatAsErrors by property(false)
 
-        var configurationFilePaths by stringSet()
+        var configurationFiles by list<String>()
+
         var baselinePath by string()
+        var pluginJars by list<String>()
+
+        //////////////////////////////////
+        //// Deprecated v2 properties ////
+        //////////////////////////////////
+        @Deprecated("Migrated to configurationFiles", ReplaceWith("configurationFiles"))
+        var configurationFilePaths by stringSet()
+
+        @Deprecated("Migrated to pluginJars", ReplaceWith("pluginJars"))
         var pluginJarPaths by stringSet()
-    }
-
-    companion object {
-
-        private const val CURRENT_VERSION = 2
     }
 }

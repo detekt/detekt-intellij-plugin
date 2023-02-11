@@ -21,7 +21,7 @@ class ConfiguredServiceTest : DetektPluginTestCase() {
     @Test
     fun `invalid config found`() {
         val settings = project.service<DetektPluginSettings>()
-        settings.configurationFilePaths = mutableSetOf("example")
+        settings.configurationFilePaths = mutableListOf("example")
 
         val problems = ConfiguredService(project).validate()
 
@@ -45,7 +45,7 @@ class ConfiguredServiceTest : DetektPluginTestCase() {
     @Test
     fun `invalid plugin found`() {
         val settings = project.service<DetektPluginSettings>()
-        settings.pluginJarPaths = mutableSetOf("example")
+        settings.pluginJarPaths = mutableListOf("example")
 
         val problems = ConfiguredService(project).validate()
 
