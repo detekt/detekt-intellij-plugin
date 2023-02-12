@@ -1,11 +1,6 @@
 package io.gitlab.arturbosch.detekt.idea.config
 
-import com.intellij.openapi.components.BaseState
-import com.intellij.openapi.components.Service
-import com.intellij.openapi.components.SimplePersistentStateComponent
-import com.intellij.openapi.components.State
-import com.intellij.openapi.components.Storage
-import com.intellij.openapi.components.StoragePathMacros
+import com.intellij.openapi.components.*
 import com.intellij.openapi.project.Project
 import java.io.File
 
@@ -21,6 +16,11 @@ internal class DetektSettingsMigration(private val project: Project) :
     // v3 changed sets to lists to retain order
     // v2 allowed multiple config files and plugin jars using sets
     // v1 initial version
+    var stateVersion
+        get() = state.stateVersion.takeIf { it > 0 } ?: CURRENT_VERSION
+        set(value) {
+            state.stateVersion = value
+        }
 
     @Suppress("Deprecation") // TODO remove the migration from v2 settings storage at some point
     fun migrateFromV2ToCurrent(v2State: DetektPluginSettings.State): DetektPluginSettings.State {
@@ -61,7 +61,7 @@ internal class DetektSettingsMigration(private val project: Project) :
 
     class State : BaseState() {
 
-        var stateVersion by property(0)
+        var stateVersion by property(-1)
     }
 
     companion object {
