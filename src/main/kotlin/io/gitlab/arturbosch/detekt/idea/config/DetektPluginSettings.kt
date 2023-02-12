@@ -1,11 +1,6 @@
 package io.gitlab.arturbosch.detekt.idea.config
 
-import com.intellij.openapi.components.BaseState
-import com.intellij.openapi.components.Service
-import com.intellij.openapi.components.SimplePersistentStateComponent
-import com.intellij.openapi.components.State
-import com.intellij.openapi.components.Storage
-import com.intellij.openapi.components.service
+import com.intellij.openapi.components.*
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
 
@@ -71,7 +66,7 @@ class DetektPluginSettings(
     private fun loadOrMigrateIfNeeded(state: State): State {
         val migrationSettings = project.service<DetektSettingsMigration>()
 
-        return when (val stateVersion = migrationSettings.state.stateVersion) {
+        return when (val stateVersion = migrationSettings.stateVersion) {
             DetektSettingsMigration.CURRENT_VERSION -> state
             2 -> migrationSettings.migrateFromV2ToCurrent(state)
             1 -> migrationSettings.migrateFromV1ToCurrent()
