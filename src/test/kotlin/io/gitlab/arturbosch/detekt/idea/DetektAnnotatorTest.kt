@@ -6,8 +6,10 @@ import com.intellij.psi.PsiFile
 import io.gitlab.arturbosch.detekt.api.Finding
 import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
+@Disabled("https://github.com/JetBrains/gradle-intellij-plugin/issues/1109")
 class DetektAnnotatorTest : DetektPluginTestCase() {
 
     @Test
