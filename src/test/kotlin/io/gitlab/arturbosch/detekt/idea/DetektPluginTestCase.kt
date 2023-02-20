@@ -2,6 +2,7 @@ package io.gitlab.arturbosch.detekt.idea
 
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.registry.Registry
 import com.intellij.psi.PsiManager
 import com.intellij.testFramework.LightProjectDescriptor
 import com.intellij.testFramework.fixtures.CodeInsightTestFixture
@@ -46,6 +47,9 @@ open class DetektPluginTestCase {
 
     @BeforeAll
     fun setUp() {
+        Registry.get("ide.propagate.context").setValue(false)
+        Registry.get("indexing.filename.over.vfs").setValue(false)
+        Registry.get("ide.propagate.cancellation").setValue(false)
         val factory = IdeaTestFixtureFactory.getFixtureFactory()
         val fixtureBuilder = factory.createLightFixtureBuilder(
             null as LightProjectDescriptor?,
