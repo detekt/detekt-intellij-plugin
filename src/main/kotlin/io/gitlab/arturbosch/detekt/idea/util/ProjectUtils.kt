@@ -49,7 +49,7 @@ fun showNotification(problems: List<String>, project: Project) {
     showNotification(
         title = DetektBundle.message("detekt.notifications.message.problemsFound"),
         content = problems.joinToString(System.lineSeparator()) +
-                DetektBundle.message("detekt.notifications.content.skippingRun"),
+            DetektBundle.message("detekt.notifications.content.skippingRun"),
         project = project
     )
 }
