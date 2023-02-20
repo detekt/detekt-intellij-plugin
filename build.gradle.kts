@@ -11,9 +11,9 @@ repositories {
 }
 
 plugins {
-    id("org.jetbrains.intellij").version("1.6.0")
-    id("com.github.ben-manes.versions").version("0.42.0")
-    kotlin("jvm").version("1.7.20")
+    id("org.jetbrains.intellij").version("1.13.0")
+    kotlin("jvm").version("1.8.10")
+    id("com.github.ben-manes.versions").version("0.46.0")
     id("com.github.breadmoirai.github-release").version("2.4.1")
 }
 
@@ -30,7 +30,7 @@ dependencies {
     testImplementation(libs.junit.jupiter)
 }
 
-val jvmVersion = JavaVersion.VERSION_11
+val jvmVersion = JavaVersion.VERSION_17
 val currentJavaVersion = JavaVersion.current()
 check(currentJavaVersion.isCompatibleWith(jvmVersion)) {
     "the current JVM ($currentJavaVersion) is incompatible with $jvmVersion"
