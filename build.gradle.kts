@@ -1,7 +1,6 @@
-import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.jetbrains.intellij.tasks.RunPluginVerifierTask.FailureLevel.DEPRECATED_API_USAGES
 import org.jetbrains.intellij.tasks.RunPluginVerifierTask.FailureLevel.INVALID_PLUGIN
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 project.group = "io.gitlab.arturbosch.detekt"
 project.version = libs.versions.detektIJ.get()
@@ -11,8 +10,8 @@ repositories {
 }
 
 plugins {
-    id("org.jetbrains.intellij").version("1.13.0")
     kotlin("jvm").version("1.8.10")
+    id("org.jetbrains.intellij").version("1.13.0")
     id("com.github.ben-manes.versions").version("0.46.0")
     id("com.github.breadmoirai.github-release").version("2.4.1")
 }
@@ -30,24 +29,8 @@ dependencies {
     testImplementation(libs.junit.jupiter)
 }
 
-val jvmVersion = JavaVersion.VERSION_17
-val currentJavaVersion = JavaVersion.current()
-check(currentJavaVersion.isCompatibleWith(jvmVersion)) {
-    "the current JVM ($currentJavaVersion) is incompatible with $jvmVersion"
-}
-
-java {
-    sourceCompatibility = jvmVersion
-    targetCompatibility = jvmVersion
-    withJavadocJar()
-    withSourcesJar()
-}
-
-tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions {
-        jvmTarget = jvmVersion.toString()
-        freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
-    }
+kotlin {
+    jvmToolchain(11)
 }
 
 tasks.withType<Test>().configureEach {
@@ -56,7 +39,7 @@ tasks.withType<Test>().configureEach {
         showStandardStreams = true
         showExceptions = true
         showCauses = true
-        exceptionFormat = FULL
+        exceptionFormat = TestExceptionFormat.FULL
     }
 }
 
@@ -68,13 +51,13 @@ tasks.publishPlugin {
 
 intellij {
     pluginName.set("Detekt IntelliJ Plugin")
-    version.set("2022.2.4")
+    version.set("2022.1.1")
     updateSinceUntilBuild.set(false)
     plugins.set(listOf("IntelliLang", "Kotlin"))
 }
 
 tasks.runPluginVerifier {
-    ideVersions.set(listOf("2022.2.4", "2022.3.2"))
+    ideVersions.set(listOf("2022.1.1", "2022.2.4", "2022.3.2"))
     failureLevel.set(listOf(DEPRECATED_API_USAGES, INVALID_PLUGIN))
 }
 
