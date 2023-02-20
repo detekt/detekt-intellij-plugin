@@ -74,7 +74,6 @@ class DetektPluginSettings(
         return when (val stateVersion = migrationSettings.stateVersion) {
             DetektSettingsMigration.CURRENT_VERSION -> state
             2 -> migrationSettings.migrateFromV2ToCurrent(state)
-            1 -> migrationSettings.migrateFromV1ToCurrent()
             else -> {
                 thisLogger().error("Unsupported settings value, cannot migrate: $stateVersion. Resetting to defaults.")
                 State()
