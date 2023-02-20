@@ -2,7 +2,7 @@
     <id>detekt</id>
     <name>Detekt</name>
     <category>Tools Integration</category>
-    <vendor email="arturbosch@gmx.de" url="https://github.com/detekt/detekt">
+    <vendor email="arturbosch@gmx.de" url="https://github.com/detekt">
         detekt
     </vendor>
 
@@ -10,16 +10,15 @@
         Plugin for <a href="https://detekt.github.io/detekt">detekt</a>, static code analysis for kotlin.
     ]]></description>
 
-    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.modules.platform</depends>
 
-    <idea-version since-build="222.4459.24" />
+    <idea-version since-build="221.4842.29" />
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Turn off error reporting for now due to https://github.com/detekt/detekt-intellij-plugin/issues/271 -->
         <!-- <errorHandler implementation="io.gitlab.arturbosch.detekt.idea.util.GitHubErrorReporting"/>-->
         <externalAnnotator language="kotlin" implementationClass="io.gitlab.arturbosch.detekt.idea.DetektAnnotator"/>
 
-        <projectService serviceImplementation="io.gitlab.arturbosch.detekt.idea.config.DetektConfigStorage"/>
         <projectService serviceImplementation="io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings"/>
         <projectService serviceImplementation="io.gitlab.arturbosch.detekt.idea.config.DetektSettingsMigration"/>
 
