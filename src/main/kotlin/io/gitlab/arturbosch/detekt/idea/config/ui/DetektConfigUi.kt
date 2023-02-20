@@ -26,12 +26,12 @@ import javax.swing.JPanel
 import kotlin.reflect.KMutableProperty0
 
 @Suppress("DialogTitleCapitalization") // It gets tripped up by the capitalization of Detekt's name
-internal class NewDetektConfigUiProvider(
+internal class DetektConfigUi(
     private val settings: DetektPluginSettings,
     private val project: Project,
-) : DetektConfigUiProvider {
+) {
 
-    override fun createPanel(): DialogPanel = panel {
+    fun createPanel(): DialogPanel = panel {
         lateinit var detektEnabledCheckbox: JCheckBox
         row {
             detektEnabledCheckbox = checkBox(DetektBundle.message("detekt.configuration.enableDetekt"))

@@ -6,7 +6,7 @@ import com.intellij.openapi.options.BoundSearchableConfigurable
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogPanel
 import io.gitlab.arturbosch.detekt.idea.DetektBundle
-import io.gitlab.arturbosch.detekt.idea.config.ui.NewDetektConfigUiProvider
+import io.gitlab.arturbosch.detekt.idea.config.ui.DetektConfigUi
 
 class DetektConfig(private val project: Project) : BoundSearchableConfigurable(
     displayName = DetektBundle.message("detekt.configuration.title"),
@@ -17,7 +17,7 @@ class DetektConfig(private val project: Project) : BoundSearchableConfigurable(
     private val settings = project.service<DetektPluginSettings>()
 
     override fun createPanel(): DialogPanel {
-        return NewDetektConfigUiProvider(settings, project).createPanel()
+        return DetektConfigUi(settings, project).createPanel()
     }
 
     override fun apply() {
