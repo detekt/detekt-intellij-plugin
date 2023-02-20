@@ -43,7 +43,13 @@
 
     <change-notes><![CDATA[
       <ul>
-        <li>1.22.1
+        <li>1.22.2
+            <br>
+            <ul>
+                <li>Support ordered configuration files to be able to override rules deterministically.</li>
+            </ul>
+        </li>
+       <li>1.22.1
             <br>
             <ul>
                 <li>Deactivate error reporting for now due to unsolved unrelated reporting of Kotlin issues.</li>

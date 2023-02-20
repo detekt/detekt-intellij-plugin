@@ -12,7 +12,7 @@ import com.intellij.ui.layout.panel
 import com.intellij.ui.layout.selected
 import io.gitlab.arturbosch.detekt.idea.DetektBundle
 import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
-import io.gitlab.arturbosch.detekt.idea.util.toPathsSet
+import io.gitlab.arturbosch.detekt.idea.util.toPathsList
 import io.gitlab.arturbosch.detekt.idea.util.toVirtualFilesList
 import io.gitlab.arturbosch.detekt.idea.util.validateAsFilePath
 import java.io.File
@@ -177,15 +177,15 @@ class LegacyDetektConfigUiProvider(
     }
 
     private fun CellBuilder<JComponent>.bindItems(
-        fileSetProperty: KMutableProperty0<MutableSet<String>>,
+        fileListProperty: KMutableProperty0<List<String>>,
         listModel: FilesListPanel.ListModel
     ) {
         withBinding(
             { listModel.items },
             { _, virtualFiles -> listModel.clear(); listModel += virtualFiles },
             PropertyBinding(
-                { fileSetProperty.get().toVirtualFilesList() },
-                { fileSetProperty.set(it.toPathsSet().toMutableSet()) }
+                { fileListProperty.get().toVirtualFilesList() },
+                { fileListProperty.set(it.toPathsList()) }
             )
         )
     }
