@@ -25,7 +25,6 @@ import javax.swing.JCheckBox
 import javax.swing.JPanel
 import kotlin.reflect.KMutableProperty0
 
-@Suppress("DialogTitleCapitalization") // It gets tripped up by the capitalization of Detekt's name
 internal class DetektConfigUi(
     private val settings: DetektPluginSettings,
     private val project: Project,
