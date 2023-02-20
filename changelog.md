@@ -1,5 +1,10 @@
 ### Changelog
 
+#### 1.22.2
+
+- Support ordered configuration files to be able to override rules deterministically - [#385](https://github.com/detekt/detekt-intellij-plugin/issues/385)
+- Make paths sortable, add migration - [#460](https://github.com/detekt/detekt-intellij-plugin/pull/460)
+
 #### 1.22.1
 
 - Deactivate error reporting for now due to unsolved unrelated reporting of Kotlin issues - [#271](https://github.com/detekt/detekt-intellij-plugin/issues/271)
