@@ -7,11 +7,11 @@ import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class ConfiguredServiceTest {
+class ConfiguredServiceTest : MockProjectTestCase() {
 
     @Test
     fun `non configured plugin has no problems`() {
-        val service = ConfiguredService(mockProject())
+        val service = ConfiguredService(project)
 
         val problems = service.validate()
 
@@ -20,7 +20,6 @@ class ConfiguredServiceTest {
 
     @Test
     fun `invalid config found`() {
-        val project = mockProject()
         val settings = project.service<DetektPluginSettings>()
         settings.configurationFilePaths = mutableListOf("example")
 
@@ -33,7 +32,6 @@ class ConfiguredServiceTest {
 
     @Test
     fun `invalid baseline file found`() {
-        val project = mockProject()
         val settings = project.service<DetektPluginSettings>()
         settings.baselinePath = "example"
 
@@ -46,7 +44,6 @@ class ConfiguredServiceTest {
 
     @Test
     fun `invalid plugin found`() {
-        val project = mockProject()
         val settings = project.service<DetektPluginSettings>()
         settings.pluginJarPaths = mutableListOf("example")
 
@@ -59,7 +56,6 @@ class ConfiguredServiceTest {
 
     @Test
     fun `expect detekt runs successfully`() {
-        val project = mockProject()
         val service = ConfiguredService(project)
         val testPath = resourceAsPath("testData/Poko.kt")
 
@@ -74,7 +70,6 @@ class ConfiguredServiceTest {
 
     @Test
     fun `debugging fragments are excluded from analysis`() {
-        val project = mockProject()
         val service = ConfiguredService(project)
 
         val findings = service.execute("", SPECIAL_FILENAME_FOR_DEBUGGING, false)
