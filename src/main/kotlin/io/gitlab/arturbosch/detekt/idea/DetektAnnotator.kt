@@ -21,23 +21,27 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
     override fun collectInformation(file: PsiFile): PsiFile = file
 
     override fun doAnnotate(collectedInfo: PsiFile): List<Finding> {
-        if (!collectedInfo.project.isDetektEnabled()) {
-            return emptyList()
-        }
-        if (collectedInfo.language.id != KotlinLanguage.INSTANCE.id) {
+        if (
+            !collectedInfo.project.isDetektEnabled() ||
+            !isKotlinFile(collectedInfo)
+        ) {
             return emptyList()
         }
 
         val service = ConfiguredService(collectedInfo.project)
-
         val problems = service.validate()
-        if (problems.isNotEmpty()) {
-            showNotification(problems, collectedInfo.project)
-            return emptyList()
-        }
 
-        return service.execute(collectedInfo, autoCorrect = false)
+        return if (problems.isNotEmpty()) {
+            showNotification(problems, collectedInfo.project)
+            emptyList()
+        } else {
+            service.execute(collectedInfo, autoCorrect = false)
+        }
     }
+
+    private fun isKotlinFile(psiFile: PsiFile): Boolean =
+        psiFile.language.id == KotlinLanguage.INSTANCE.id ||
+            psiFile.getUserData(TEST_KOTLIN_LANGUAGE_ID_KEY) == KotlinLanguage.INSTANCE.id
 
     override fun apply(
         file: PsiFile,

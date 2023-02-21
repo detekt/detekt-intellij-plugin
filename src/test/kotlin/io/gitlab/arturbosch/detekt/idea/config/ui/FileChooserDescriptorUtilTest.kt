@@ -16,7 +16,6 @@ class FileChooserDescriptorUtilTest {
         assertThat(descriptor).isFileSelectable("DETEKT.YML")
         assertThat(descriptor).isFileSelectable("DETEKT.YAML")
     }
-
 }
 
 private class DescriptorAssert(actual: FileChooserDescriptor) :
@@ -32,5 +31,4 @@ private class DescriptorAssert(actual: FileChooserDescriptor) :
         }
         return this
     }
-
 }
