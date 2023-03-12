@@ -1,4 +1,5 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.kotlin.dsl.buildSearchableOptions
 import org.jetbrains.intellij.tasks.RunPluginVerifierTask.FailureLevel.DEPRECATED_API_USAGES
 import org.jetbrains.intellij.tasks.RunPluginVerifierTask.FailureLevel.INVALID_PLUGIN
 
@@ -59,6 +60,14 @@ intellij {
 tasks.runPluginVerifier {
     ideVersions.set(listOf("2022.1.1", "2022.2.4", "2022.3.2"))
     failureLevel.set(listOf(DEPRECATED_API_USAGES, INVALID_PLUGIN))
+}
+
+tasks.buildSearchableOptions {
+    enabled = false
+}
+
+tasks.jarSearchableOptions {
+    enabled = false
 }
 
 githubRelease {
