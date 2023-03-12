@@ -26,10 +26,12 @@
                              displayName="Detekt"
                              id="preferences.detekt"
                              instance="io.gitlab.arturbosch.detekt.idea.config.DetektConfig"/>
+
+        <problemsViewPanelProvider implementation="io.gitlab.arturbosch.detekt.idea.problems.FindingsView"/>
     </extensions>
 
     <actions>
-        <action id="Detekt.AutoCorrect"
+        <action id="io.gitlab.arturbosch.detekt.idea.action.AutoCorrect"
                 class="io.gitlab.arturbosch.detekt.idea.action.AutoCorrectAction"
                 text="AutoCorrect by Detekt Rules"
                 description="Run AutoCorrect action on the current file">
@@ -39,6 +41,25 @@
                 class="io.gitlab.arturbosch.detekt.idea.action.EnableBackgroundAnalysisAction"
                 text="Enable Background Analysis"
                 description="Shortcut to enable detekt through an action instead of the settings menu."/>
+
+        <group id="io.gitlab.arturbosch.detekt.idea.action.RunDetektMenuGroup"
+               text="Run Detekt"
+               popup="true"
+               class="io.gitlab.arturbosch.detekt.idea.action.RunDetektMenuGroup">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+            <add-to-group group-id="ChangesViewPopupMenu" anchor="last"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+
+            <action id="io.gitlab.arturbosch.detekt.idea.menu.runfile"
+                    class="io.gitlab.arturbosch.detekt.idea.action.RunAnalysisAction"
+                    popup="true"
+                    text="Analyze File/Directory"/>
+            <action id="io.gitlab.arturbosch.detekt.idea.menu.autocorrect"
+                    class="io.gitlab.arturbosch.detekt.idea.action.AutoCorrectAction"
+                    popup="true"
+                    text="AutoCorrect by Detekt Rules"/>
+        </group>
     </actions>
 
     <change-notes><![CDATA[
