@@ -20,8 +20,11 @@ import java.nio.file.Path
 import kotlin.io.path.Path
 import kotlin.io.path.absolute
 
-fun Project.isDetektEnabled(): Boolean =
-    service<DetektPluginSettings>().enableDetekt
+fun Project.settings(): DetektPluginSettings = service<DetektPluginSettings>()
+
+fun Project.isDetektEnabled(): Boolean = settings().enableDetekt
+
+fun Project.isFormattingEnabled(): Boolean = settings().enableDetekt
 
 fun absolutePath(project: Project, path: String): String {
     if (path.isBlank() || File(path).isAbsolute) return path
