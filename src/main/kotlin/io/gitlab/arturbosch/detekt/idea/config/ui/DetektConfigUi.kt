@@ -13,7 +13,6 @@ import com.intellij.ui.dsl.builder.bindText
 import com.intellij.ui.dsl.builder.panel
 import com.intellij.ui.dsl.gridLayout.HorizontalAlign
 import com.intellij.ui.dsl.gridLayout.VerticalAlign
-import com.intellij.ui.layout.ComponentPredicate
 import com.intellij.ui.layout.selected
 import io.gitlab.arturbosch.detekt.idea.DetektBundle
 import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
@@ -31,24 +30,33 @@ internal class DetektConfigUi(
 ) {
 
     fun createPanel(): DialogPanel = panel {
-        lateinit var detektEnabledCheckbox: JCheckBox
-        row {
-            detektEnabledCheckbox = checkBox(DetektBundle.message("detekt.configuration.enableDetekt"))
-                .bindSelected(settings::enableDetekt)
-                .component
-        }
-        row {
-            checkBox(DetektBundle.message("detekt.configuration.treatAsErrors"))
-                .bindSelected(settings::treatAsErrors)
-                .enabledIf(detektEnabledCheckbox.selected)
-        }
-
-        rulesGroup(detektEnabledCheckbox.selected)
-
-        filesGroup(detektEnabledCheckbox.selected)
+        backgroundAnalysisGroup()
+        rulesGroup()
+        filesGroup()
     }
 
-    private fun Panel.rulesGroup(enabled: ComponentPredicate) =
+    private fun Panel.backgroundAnalysisGroup() {
+        lateinit var detektEnabledCheckbox: JCheckBox
+
+        group(
+            title = DetektBundle.message("detekt.configuration.backgroundAnalysisGroup.title"),
+            indent = false,
+        ) {
+            row {
+                detektEnabledCheckbox = checkBox(DetektBundle.message("detekt.configuration.enableBackgroundAnalysis"))
+                    .applyToComponent { toolTipText = DetektBundle.message("detekt.configuration.enableBackgroundAnalysis.tooltip") }
+                    .bindSelected(settings::enableDetekt)
+                    .component
+            }
+            row {
+                checkBox(DetektBundle.message("detekt.configuration.treatAsErrors"))
+                    .bindSelected(settings::treatAsErrors)
+                    .enabledIf(detektEnabledCheckbox.selected)
+            }
+        }
+    }
+
+    private fun Panel.rulesGroup() =
         group(
             title = DetektBundle.message("detekt.configuration.rulesGroup.title"),
             indent = false,
@@ -65,21 +73,21 @@ internal class DetektConfigUi(
                 checkBox(DetektBundle.message("detekt.configuration.enableAllRules"))
                     .bindSelected(settings::enableAllRules)
             }
-        }.enabledIf(enabled)
+        }
 
-    private fun Panel.filesGroup(enabled: ComponentPredicate) =
+    private fun Panel.filesGroup() =
         group(
             title = DetektBundle.message("detekt.configuration.filesGroup.title"),
             indent = false,
         ) {
-            configurationFilesRow(enabled)
+            configurationFilesRow()
 
-            baselineFileRow(enabled)
+            baselineFileRow()
 
-            pluginJarsRow(enabled)
+            pluginJarsRow()
         }
 
-    private fun Panel.configurationFilesRow(enabled: ComponentPredicate) {
+    private fun Panel.configurationFilesRow() {
         row {
             val label = label(DetektBundle.message("detekt.configuration.configurationFiles.title"))
                 .verticalAlign(VerticalAlign.TOP)
@@ -98,7 +106,6 @@ internal class DetektConfigUi(
             cell(filesListPanel)
                 .horizontalAlign(HorizontalAlign.FILL)
                 .resizableColumn()
-                .enabledIf(enabled)
                 .bindItems(settings::configurationFilePaths, listModel)
 
             label.labelFor = filesListPanel
@@ -109,7 +116,7 @@ internal class DetektConfigUi(
         }.bottomGap(BottomGap.MEDIUM)
     }
 
-    private fun Panel.baselineFileRow(enabled: ComponentPredicate) {
+    private fun Panel.baselineFileRow() {
         row(DetektBundle.message("detekt.configuration.baselineFile.title")) {
             textFieldWithBrowseButton(
                 DetektBundle.message("detekt.configuration.baselineFile.dialog.title"),
@@ -128,7 +135,6 @@ internal class DetektConfigUi(
                 )
                 .horizontalAlign(HorizontalAlign.FILL)
                 .resizableColumn()
-                .enabledIf(enabled)
                 .validationOnInput { validateAsFilePath(it.text, isWarning = true) }
                 .validationOnApply { validateAsFilePath(it.text) }
         }
@@ -138,7 +144,7 @@ internal class DetektConfigUi(
         }.bottomGap(BottomGap.MEDIUM)
     }
 
-    private fun Panel.pluginJarsRow(enabled: ComponentPredicate) {
+    private fun Panel.pluginJarsRow() {
         row {
             val label = label(DetektBundle.message("detekt.configuration.pluginJarFiles.title"))
                 .verticalAlign(VerticalAlign.TOP)
@@ -157,7 +163,6 @@ internal class DetektConfigUi(
             cell(filesListPanel)
                 .horizontalAlign(HorizontalAlign.FILL)
                 .resizableColumn()
-                .enabledIf(enabled)
                 .bindItems(settings::pluginJarPaths, listModel)
 
             label.labelFor = filesListPanel
