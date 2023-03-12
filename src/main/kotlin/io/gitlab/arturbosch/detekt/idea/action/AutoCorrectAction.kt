@@ -12,7 +12,7 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
 import io.gitlab.arturbosch.detekt.idea.ConfiguredService
 import io.gitlab.arturbosch.detekt.idea.KOTLIN_FILE_EXTENSIONS
-import io.gitlab.arturbosch.detekt.idea.util.isDetektEnabled
+import io.gitlab.arturbosch.detekt.idea.util.isFormattingEnabled
 import io.gitlab.arturbosch.detekt.idea.util.showNotification
 
 class AutoCorrectAction : AnAction() {
@@ -25,7 +25,7 @@ class AutoCorrectAction : AnAction() {
 
         if (!file.fileSystem.isReadOnly && file.extension in KOTLIN_FILE_EXTENSIONS) {
             // enable autocorrect option only when plugin is enabled
-            event.presentation.isEnabledAndVisible = project.isDetektEnabled()
+            event.presentation.isEnabledAndVisible = project.isFormattingEnabled()
         } else {
             // hide action for non-Kotlin source files
             event.presentation.isEnabledAndVisible = false
