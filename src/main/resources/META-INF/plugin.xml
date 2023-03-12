@@ -12,7 +12,7 @@
 
     <depends>com.intellij.modules.platform</depends>
 
-    <idea-version since-build="221.4842.29" />
+    <idea-version since-build="221.4842.29"/>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Turn off error reporting for now due to https://github.com/detekt/detekt-intellij-plugin/issues/271 -->
@@ -35,8 +35,9 @@
                 description="Run AutoCorrect action on the current file">
             <add-to-group group-id="RefactoringMenu"/>
         </action>
-        <action id="io.gitlab.arturbosch.detekt.idea.action.EnableAction"
-                class="io.gitlab.arturbosch.detekt.idea.action.EnableAction" text="Enable Detekt"
+        <action id="io.gitlab.arturbosch.detekt.idea.action.EnableBackgroundAnalysisAction"
+                class="io.gitlab.arturbosch.detekt.idea.action.EnableBackgroundAnalysisAction"
+                text="Enable Background Analysis"
                 description="Shortcut to enable detekt through an action instead of the settings menu."/>
     </actions>
 
