@@ -12,10 +12,12 @@ object DetektBundle : DynamicBundle(BUNDLE_NAME) {
     @Nls
     fun message(
         @PropertyKey(resourceBundle = BUNDLE_NAME) key: String,
-        vararg params: Any
+        vararg params: Any,
     ): String = getMessage(key, *params)
 
     @Nls
-    fun messagePointer(@PropertyKey(resourceBundle = BUNDLE_NAME) key: String, vararg params: Any): Supplier<String> =
-        getLazyMessage(key, *params)
+    fun lazy(
+        @PropertyKey(resourceBundle = BUNDLE_NAME) key: String,
+        vararg params: Any,
+    ): Supplier<String> = getLazyMessage(key, *params)
 }

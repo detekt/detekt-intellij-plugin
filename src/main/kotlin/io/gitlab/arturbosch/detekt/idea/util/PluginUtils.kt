@@ -4,9 +4,13 @@ import com.intellij.ide.plugins.PluginManagerCore
 import com.intellij.openapi.application.ApplicationInfo
 import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.util.BuildNumber
+import com.intellij.openapi.util.IconLoader
 import io.gitlab.arturbosch.detekt.idea.DETEKT
+import javax.swing.Icon
 
 object PluginUtils {
+
+    fun pluginIcon(): Icon = IconLoader.getIcon("META-INF/pluginIconSmall.svg", PluginUtils::class.java.classLoader)
 
     fun platformVersion(): String = ApplicationInfo.getInstance().fullVersion
 
