@@ -12,10 +12,11 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
 import io.gitlab.arturbosch.detekt.idea.ConfiguredService
 import io.gitlab.arturbosch.detekt.idea.KOTLIN_FILE_EXTENSIONS
+import io.gitlab.arturbosch.detekt.idea.util.PluginUtils
 import io.gitlab.arturbosch.detekt.idea.util.isFormattingEnabled
 import io.gitlab.arturbosch.detekt.idea.util.showNotification
 
-class AutoCorrectAction : AnAction() {
+class AutoCorrectAction : AnAction(PluginUtils.pluginIcon()) {
 
     private val logger = logger<AutoCorrectAction>()
 

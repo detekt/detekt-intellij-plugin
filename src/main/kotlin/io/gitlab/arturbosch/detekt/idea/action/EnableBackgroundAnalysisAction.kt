@@ -5,8 +5,9 @@ import com.intellij.openapi.actionSystem.ToggleAction
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.DumbAware
 import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
+import io.gitlab.arturbosch.detekt.idea.util.PluginUtils
 
-class EnableBackgroundAnalysisAction : ToggleAction(), DumbAware {
+class EnableBackgroundAnalysisAction : ToggleAction(null, null, PluginUtils.pluginIcon()), DumbAware {
 
     override fun isSelected(e: AnActionEvent): Boolean {
         val project = e.project ?: return false
