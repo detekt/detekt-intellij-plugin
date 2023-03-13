@@ -11,11 +11,19 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiManager
 import io.gitlab.arturbosch.detekt.idea.ConfiguredService
 import io.gitlab.arturbosch.detekt.idea.DetektBundle
+import io.gitlab.arturbosch.detekt.idea.KOTLIN_FILE_EXTENSIONS
 import io.gitlab.arturbosch.detekt.idea.problems.FindingsManager
+import io.gitlab.arturbosch.detekt.idea.util.PluginUtils
 import org.jetbrains.kotlin.backend.common.pop
 import org.jetbrains.kotlin.idea.KotlinLanguage
 
-class RunAnalysisAction : AnAction() {
+class RunAnalysisAction : AnAction(PluginUtils.pluginIcon()) {
+
+    override fun update(event: AnActionEvent) {
+        val selectedFiles = event.getData(PlatformDataKeys.VIRTUAL_FILE_ARRAY) ?: return
+        val isDirectoryOrKotlinFile = selectedFiles.any { it.isDirectory || it.extension in KOTLIN_FILE_EXTENSIONS }
+        event.presentation.isEnabledAndVisible = isDirectoryOrKotlinFile
+    }
 
     override fun actionPerformed(e: AnActionEvent) {
         val selectedFiles = e.getData(PlatformDataKeys.VIRTUAL_FILE_ARRAY)
