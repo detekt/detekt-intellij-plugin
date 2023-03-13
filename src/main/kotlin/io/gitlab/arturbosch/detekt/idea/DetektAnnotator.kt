@@ -52,7 +52,7 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
         for (finding in annotationResult) {
             val textRange = finding.charPosition.toTextRange()
             val message = buildString {
-                append("Detekt - ")
+                append("detekt - ")
                 append(finding.id)
                 append(": ")
                 append(finding.messageOrDescription())

@@ -1,6 +1,6 @@
 <idea-plugin>
     <id>detekt</id>
-    <name>Detekt</name>
+    <name>detekt</name>
     <category>Tools Integration</category>
     <vendor email="arturbosch@gmx.de" url="https://github.com/detekt">
         detekt
@@ -23,7 +23,7 @@
         <projectService serviceImplementation="io.gitlab.arturbosch.detekt.idea.config.DetektSettingsMigration"/>
 
         <projectConfigurable groupId="tools"
-                             displayName="Detekt"
+                             displayName="detekt"
                              id="preferences.detekt"
                              instance="io.gitlab.arturbosch.detekt.idea.config.DetektConfig"/>
 
@@ -33,7 +33,7 @@
     <actions>
         <action id="io.gitlab.arturbosch.detekt.idea.action.AutoCorrect"
                 class="io.gitlab.arturbosch.detekt.idea.action.AutoCorrectAction"
-                text="AutoCorrect by Detekt Rules"
+                text="AutoCorrect by detekt Rules"
                 description="Run AutoCorrect action on the current file">
             <add-to-group group-id="RefactoringMenu"/>
         </action>
@@ -43,7 +43,7 @@
                 description="Shortcut to enable detekt through an action instead of the settings menu."/>
 
         <group id="io.gitlab.arturbosch.detekt.idea.action.RunDetektMenuGroup"
-               text="Run Detekt"
+               text="Run detekt"
                popup="true"
                class="io.gitlab.arturbosch.detekt.idea.action.RunDetektMenuGroup">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
@@ -51,14 +51,14 @@
             <add-to-group group-id="ChangesViewPopupMenu" anchor="last"/>
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
 
-            <action id="io.gitlab.arturbosch.detekt.idea.menu.runfile"
+            <action id="io.gitlab.arturbosch.detekt.idea.menu.analyze"
                     class="io.gitlab.arturbosch.detekt.idea.action.RunAnalysisAction"
                     popup="true"
                     text="Analyze File/Directory"/>
             <action id="io.gitlab.arturbosch.detekt.idea.menu.autocorrect"
                     class="io.gitlab.arturbosch.detekt.idea.action.AutoCorrectAction"
                     popup="true"
-                    text="AutoCorrect by Detekt Rules"/>
+                    text="AutoCorrect by detekt Rules"/>
         </group>
     </actions>
 
