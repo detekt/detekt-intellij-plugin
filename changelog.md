@@ -1,5 +1,16 @@
 ### Changelog
 
+#### 2.0.0
+
+- Based on detekt 1.22.0
+- Support file and directory analysis from project explorer, editor and tool window - [#469](https://github.com/detekt/detekt-intellij-plugin/pull/469)
+- `Enable detekt` was renamed to `Enable background analysis` to make it clearer that it activates the on-the-fly analysis while coding - [#469](https://github.com/detekt/detekt-intellij-plugin/pull/469)
+- Drop support for Android Studio 2021.3. Android Studio 2022.1.1 Patch 2 is the new minimal supported IntelliJ Platform version.
+- Drop support for settings migration from version < 1.21.1. Make sure to update from 1.21.2+ or be prepared to renew your settings - [#469](https://github.com/detekt/detekt-intellij-plugin/pull/469)
+- Drop naming scheme based on included detekt version - [#469](https://github.com/detekt/detekt-intellij-plugin/pull/469)
+  - This makes sure the IntelliJ plugin can make feature release with proper semantic versioning.
+  - The included detekt version will always appear in the current changelog entry for reference.
+
 #### 1.22.2
 
 - Support ordered configuration files to be able to override rules deterministically - [#385](https://github.com/detekt/detekt-intellij-plugin/issues/385)

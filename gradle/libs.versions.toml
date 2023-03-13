@@ -1,6 +1,8 @@
 [versions]
 detekt = "1.22.0"
-detektIJ = "1.22.2"
+detektIJ = "2.0.0-RC"
+assertj = "3.24.2"
+junit5 = "5.9.2"
 
 [libraries]
 detekt-core = { group = "io.gitlab.arturbosch.detekt", name = "detekt-core", version.ref = "detekt" }
@@ -9,5 +11,5 @@ detekt-rules = { group = "io.gitlab.arturbosch.detekt", name = "detekt-rules", v
 detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
 detekt-tooling = { group = "io.gitlab.arturbosch.detekt", name = "detekt-tooling", version.ref = "detekt" }
 detekt-testUtils = { group = "io.gitlab.arturbosch.detekt", name = "detekt-test-utils", version.ref = "detekt" }
-assertj-core = { group = "org.assertj", name = "assertj-core", version = "3.24.2" }
-junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version = "5.9.2" }
+assertj-core = { group = "org.assertj", name = "assertj-core", version.ref = "assertj" }
+junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version = "junit5" }

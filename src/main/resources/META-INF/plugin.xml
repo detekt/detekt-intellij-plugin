@@ -12,7 +12,7 @@
 
     <depends>com.intellij.modules.platform</depends>
 
-    <idea-version since-build="221.4842.29"/>
+    <idea-version since-build="221.6008.13"/>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Turn off error reporting for now due to https://github.com/detekt/detekt-intellij-plugin/issues/271 -->
@@ -64,6 +64,21 @@
 
     <change-notes><![CDATA[
       <ul>
+        <li>2.0.0
+            <br>
+            <ul>
+                <li>Based on detekt 1.22.0</li>
+                <li>Support file and directory analysis from project explorer, editor and tool window.</li>
+                <li>"Enable detekt" was renamed to "Enable background analysis" to make it clearer that it activates the on-the-fly analysis while coding.</li>
+                <li>Drop support for Android Studio 2021.3. Android Studio 2022.1.1 Patch 2 is the new minimal supported IntelliJ Platform version.</li>
+                <li>Drop support for settings migration from version < 1.21.1. Make sure to update from 1.21.2+ or be prepared to renew your settings.</li>
+                <li>Drop naming scheme based on included detekt version</li>
+                <ul>
+                    <li>This makes sure the IntelliJ plugin can make feature release with proper semantic versioning.</li>
+                    <li>The included detekt version will always appear in the current changelog entry for reference.</li>
+                </ul>
+            </ul>
+        </li>
         <li>1.22.2
             <br>
             <ul>
