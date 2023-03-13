@@ -28,6 +28,10 @@
                              instance="io.gitlab.arturbosch.detekt.idea.config.DetektConfig"/>
 
         <problemsViewPanelProvider implementation="io.gitlab.arturbosch.detekt.idea.problems.FindingsView"/>
+        <toolWindow id="detekt doc"
+                    factoryClass="io.gitlab.arturbosch.detekt.idea.webviews.DocumentationToolWindow"
+                    anchor="right"
+                    icon="AllIcons.Actions.Search"/>
     </extensions>
 
     <actions>
@@ -41,7 +45,12 @@
                 class="io.gitlab.arturbosch.detekt.idea.action.EnableBackgroundAnalysisAction"
                 text="Enable Background Analysis"
                 description="Shortcut to enable detekt through an action instead of the settings menu."/>
-
+        <action id="io.gitlab.arturbosch.detekt.idea.webviews.ShowRulesAction"
+                class="io.gitlab.arturbosch.detekt.idea.webviews.ShowRulesAction"
+                text="Show detekt Rules Documentation"/>
+        <action id="io.gitlab.arturbosch.detekt.idea.webviews.ShowChangelogAction"
+                class="io.gitlab.arturbosch.detekt.idea.webviews.ShowChangelogAction"
+                text="Show detekt Changelog"/>
         <group id="io.gitlab.arturbosch.detekt.idea.action.RunDetektMenuGroup"
                text="Run detekt"
                popup="true"
