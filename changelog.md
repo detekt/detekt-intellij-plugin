@@ -5,6 +5,9 @@
 - Based on detekt 1.22.0
 - Support file and directory analysis from project explorer, editor and tool window - [#469](https://github.com/detekt/detekt-intellij-plugin/pull/469)
 - `Enable detekt` was renamed to `Enable background analysis` to make it clearer that it activates the on-the-fly analysis while coding - [#469](https://github.com/detekt/detekt-intellij-plugin/pull/469)
+- Introduce `detekt doc` tool window for quick access to detekt's documentation.
+  - Introduce `Show detekt Rules Documentation` action to open tool window with style rules set pre-selected
+  - Introduce `Show detek Changelog` action to open tool window with the current changelog.
 - Drop support for Android Studio 2021.3. Android Studio 2022.1.1 Patch 2 is the new minimal supported IntelliJ Platform version.
 - Minimal supported IntelliJ version is now 2022.1.4.
 - Drop support for settings migration from version < 1.21.1. Make sure to update from 1.21.2+ or be prepared to renew your settings - [#469](https://github.com/detekt/detekt-intellij-plugin/pull/469)
