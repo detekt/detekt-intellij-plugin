@@ -25,6 +25,7 @@ class RulesBrowserService : Disposable {
     private val isIdeWithFocusProblems = ApplicationInfo.getInstance().shortVersion == "2022.3"
 
     private val browser = JBCefBrowser.createBuilder()
+        .setUrl(DocsPage.Rules.url)
         .applyIf(isIdeWithFocusProblems) { setOffScreenRendering(true) }
         .build()
         .apply {
@@ -51,12 +52,8 @@ class RulesBrowserService : Disposable {
 
     fun getComponent(): JComponent = browser.component
 
-    fun loadRulesPage() {
-        browser.loadURL("https://detekt.dev/docs/rules/style")
-    }
-
-    fun loadChangelog() {
-        browser.loadURL("https://detekt.dev/changelog")
+    fun loadPage(page: DocsPage) {
+        browser.loadURL(page.url)
     }
 
     private fun updateStyles() {

@@ -13,10 +13,6 @@ class DocumentationToolWindow : ToolWindowFactory, DumbAware {
         const val ID = "detekt doc"
     }
 
-    override fun init(toolWindow: ToolWindow) {
-        RulesBrowserService.getInstance().loadRulesPage()
-    }
-
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
         val content = if (JBCefApp.isSupported()) {
             val browser = RulesBrowserService.getInstance()
