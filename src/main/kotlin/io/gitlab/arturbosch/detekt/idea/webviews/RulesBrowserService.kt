@@ -2,11 +2,13 @@ package io.gitlab.arturbosch.detekt.idea.webviews
 
 import com.intellij.ide.ui.LafManagerListener
 import com.intellij.openapi.Disposable
+import com.intellij.openapi.application.ApplicationInfo
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.util.Disposer
 import com.intellij.ui.jcef.JBCefBrowser
+import com.intellij.util.applyIf
 import com.intellij.util.ui.StartupUiUtil
 import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
@@ -20,7 +22,11 @@ class RulesBrowserService : Disposable {
         fun getInstance(): RulesBrowserService = service()
     }
 
-    private val browser = JBCefBrowser()
+    private val isIdeWithFocusProblems = ApplicationInfo.getInstance().shortVersion == "2022.3"
+
+    private val browser = JBCefBrowser.createBuilder()
+        .applyIf(isIdeWithFocusProblems) { setOffScreenRendering(true) }
+        .build()
         .apply {
             jbCefClient.addLoadHandler(
                 object : CefLoadHandlerAdapter() {
