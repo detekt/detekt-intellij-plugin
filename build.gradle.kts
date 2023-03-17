@@ -1,5 +1,4 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import org.gradle.kotlin.dsl.buildSearchableOptions
 import org.jetbrains.intellij.tasks.RunPluginVerifierTask.FailureLevel.DEPRECATED_API_USAGES
 import org.jetbrains.intellij.tasks.RunPluginVerifierTask.FailureLevel.INVALID_PLUGIN
 
@@ -48,6 +47,9 @@ tasks.publishPlugin {
     // This property can be configured via environment variable ORG_GRADLE_PROJECT_intellijPublishToken
     // See: https://docs.gradle.org/current/userguide/build_environment.html#sec:project_properties
     token.set((findProperty("intellijPublishToken") as? String).orEmpty())
+    // https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html#specifying-a-release-channel
+    // "-beta" is used for pre-releases and https://plugins.jetbrains.com/plugins/beta/list as plugin repository.
+    channels.set(listOf(project.version.toString().split('-').getOrElse(1) { "default" }.split('.').first()))
 }
 
 intellij {
