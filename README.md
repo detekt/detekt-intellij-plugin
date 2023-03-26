@@ -4,6 +4,7 @@
 ![Pre Merge Checks](https://github.com/detekt/detekt-intellij-plugin/workflows/Pre%20Merge%20Checks/badge.svg)
 [![JetBrains Plugins](https://img.shields.io/jetbrains/plugin/v/10761-detekt.svg)](https://plugins.jetbrains.com/plugin/10761-detekt)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Farturbosch%2Fdetekt-intellij-plugin.svg?type=small)](https://app.fossa.io/projects/git%2Bgithub.com%2Farturbosch%2Fdetekt-intellij-plugin?ref=badge_large)
+[![License](https://img.shields.io/github/license/detekt/detekt-intellij-plugin.svg)](LICENSE)
 
 Integrates _detekt_, a static code analysis tool for the Kotlin programming language, into IntelliJ.
 
