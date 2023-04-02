@@ -14,3 +14,9 @@ detekt-tooling = { group = "io.gitlab.arturbosch.detekt", name = "detekt-tooling
 detekt-testUtils = { group = "io.gitlab.arturbosch.detekt", name = "detekt-test-utils", version.ref = "detekt" }
 assertj-core = { group = "org.assertj", name = "assertj-core", version.ref = "assertj" }
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version = "junit5" }
+
+[plugins]
+kotlin-jvm = "org.jetbrains.kotlin.jvm:1.8.20"
+versions = "com.github.ben-manes.versions:0.46.0"
+intellij = "org.jetbrains.intellij:1.13.3"
+github-release = "com.github.breadmoirai.github-release:2.4.1"
