@@ -2,7 +2,7 @@
 
 #### 2.0.0
 
-- Based on detekt 1.22.0
+- Based on detekt 1.23.0
 - Support file and directory analysis from project explorer, editor and tool window - [#469](https://github.com/detekt/detekt-intellij-plugin/pull/469)
 - `Enable detekt` was renamed to `Enable background analysis` to make it clearer that it activates the on-the-fly analysis while coding - [#469](https://github.com/detekt/detekt-intellij-plugin/pull/469)
 - Introduce `detekt doc` tool window for quick access to detekt's documentation.

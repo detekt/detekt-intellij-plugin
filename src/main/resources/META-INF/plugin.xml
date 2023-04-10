@@ -76,7 +76,7 @@
         <li>2.0.0
             <br>
             <ul>
-                <li>Based on detekt 1.22.0</li>
+                <li>Based on detekt 1.23.0</li>
                 <li>Support file and directory analysis from project explorer, editor and tool window.</li>
                 <li>"Enable detekt" was renamed to "Enable background analysis" to make it clearer that it activates the on-the-fly analysis while coding.</li>
                 <li>Introduce `detekt doc` tool window for quick access to detekt's documentation.</li>
