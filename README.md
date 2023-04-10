@@ -14,8 +14,8 @@ The plugin can be downloaded from the [Jetbrains plugin repository](https://plug
 
 ## Enabling the plugin
 
-- `Settings -> Plugins -> Marketplace -> Search for Detekt -> Install`
-- Configure the plugin via `Settings -> Tools -> Detekt`
+- `Settings -> Plugins -> Marketplace -> Search for detekt -> Install`
+- Configure the plugin via `Settings -> Tools -> detekt`
 
 ## Configuration Options
 
@@ -23,8 +23,9 @@ The plugin can be downloaded from the [Jetbrains plugin repository](https://plug
 
 That's it. Detekt issues will be annotated on-the-fly while coding.
 
-## Auto correction
-You may optionally click `Refactor` -> `AutoCorrect by Detekt rules` to auto correct detekt violations if possible.
+## Autocorrection
+
+You may optionally click `Refactor` -> `AutoCorrect by detekt rules` to auto correct detekt violations if possible.
 
 ## Building / developing the plugin
 
@@ -46,4 +47,4 @@ To test your development, use task `runIde` which will automatically run an Inte
 gradlew runIde
 ```
 
-Also install the current `Detekt` IntelliJ plugin version  to verify you do not introduce new issues.
+Also install the current `Detekt IntelliJ Plugin` version  to verify you do not introduce new issues.
