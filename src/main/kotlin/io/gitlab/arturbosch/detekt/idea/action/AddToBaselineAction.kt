@@ -6,13 +6,13 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFile
-import com.intellij.util.io.exists
 import io.github.detekt.tooling.api.BaselineProvider
 import io.gitlab.arturbosch.detekt.api.Finding
 import io.gitlab.arturbosch.detekt.idea.DETEKT
 import io.gitlab.arturbosch.detekt.idea.DetektBundle
 import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
 import io.gitlab.arturbosch.detekt.idea.util.absoluteBaselinePath
+import kotlin.io.path.exists
 
 class AddToBaselineAction(private val finding: Finding) : IntentionAction {
 

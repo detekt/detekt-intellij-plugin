@@ -8,7 +8,6 @@ import com.intellij.openapi.progress.ProcessCanceledException
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
 import com.intellij.psi.PsiFile
-import com.intellij.util.io.exists
 import io.github.detekt.tooling.api.DetektProvider
 import io.github.detekt.tooling.api.UnexpectedError
 import io.github.detekt.tooling.api.spec.ProcessingSpec
@@ -24,6 +23,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import kotlin.io.path.Path
+import kotlin.io.path.exists
 
 class ConfiguredService(private val project: Project) {
 

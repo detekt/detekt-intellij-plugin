@@ -60,7 +60,7 @@ intellij {
 }
 
 tasks.runPluginVerifier {
-    ideVersions.set(listOf("2022.1.4", "2022.2.4", "2022.3.2"))
+    ideVersions.set(listOf("2022.1.4", "2022.2.4", "2022.3.2", "2023.1"))
     failureLevel.set(listOf(DEPRECATED_API_USAGES, INVALID_PLUGIN))
 }
 
