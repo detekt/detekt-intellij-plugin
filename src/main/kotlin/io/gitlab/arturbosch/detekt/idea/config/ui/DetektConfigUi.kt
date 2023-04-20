@@ -30,9 +30,30 @@ internal class DetektConfigUi(
 ) {
 
     fun createPanel(): DialogPanel = panel {
+        commonOptionsGroup()
         backgroundAnalysisGroup()
         rulesGroup()
         filesGroup()
+    }
+
+    private fun Panel.commonOptionsGroup() {
+        lateinit var redirectCheckbox: JCheckBox
+
+        group(
+            title = DetektBundle.message("detekt.configuration.commonGroup.title"),
+            indent = false
+        ) {
+            row {
+                redirectCheckbox = checkBox(DetektBundle.message("detekt.configuration.redirect"))
+                    .bindSelected(settings::redirectChannels)
+                    .component
+            }
+            row {
+                checkBox(DetektBundle.message("detekt.configuration.debug"))
+                    .bindSelected(settings::debug)
+                    .enabledIf(redirectCheckbox.selected)
+            }
+        }
     }
 
     private fun Panel.backgroundAnalysisGroup() {
@@ -44,7 +65,9 @@ internal class DetektConfigUi(
         ) {
             row {
                 detektEnabledCheckbox = checkBox(DetektBundle.message("detekt.configuration.enableBackgroundAnalysis"))
-                    .applyToComponent { toolTipText = DetektBundle.message("detekt.configuration.enableBackgroundAnalysis.tooltip") }
+                    .applyToComponent {
+                        toolTipText = DetektBundle.message("detekt.configuration.enableBackgroundAnalysis.tooltip")
+                    }
                     .bindSelected(settings::enableDetekt)
                     .component
             }

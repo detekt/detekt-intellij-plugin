@@ -84,6 +84,7 @@
                     <li>Introduce `Show detekt Rules Documentation` action to open tool window with style rules set pre-selected.</li>
                     <li>Introduce `Show detek Changelog` action to open tool window with the changelog of current detekt version.</li>
                 </ul>
+                <li>Allow to redirect detekt's output to IntelliJ log file.</li>
                 <li>Drop support for Android Studio 2021.3. Android Studio 2022.1.1 Patch 2 is the new minimal supported IntelliJ Platform version.</li>
                 <li>Drop support for settings migration from version < 1.21.1. Make sure to update from 1.21.2+ or be prepared to renew your settings.</li>
                 <li>Drop naming scheme based on included detekt version</li>

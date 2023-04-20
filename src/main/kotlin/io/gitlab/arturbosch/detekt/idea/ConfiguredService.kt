@@ -17,6 +17,7 @@ import io.gitlab.arturbosch.detekt.api.UnstableApi
 import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
 import io.gitlab.arturbosch.detekt.idea.util.DirectExecutor
 import io.gitlab.arturbosch.detekt.idea.util.PluginUtils
+import io.gitlab.arturbosch.detekt.idea.util.SimpleAppendable
 import io.gitlab.arturbosch.detekt.idea.util.absoluteBaselinePath
 import java.io.File
 import java.nio.file.Files
@@ -79,6 +80,13 @@ class ConfiguredService(private val project: Project) {
         }
         execution {
             executorService = DirectExecutor()
+        }
+        if (settings.redirectChannels) {
+            logging {
+                debug = settings.debug
+                outputChannel = SimpleAppendable { logger.info(it) }
+                errorChannel = SimpleAppendable { logger.warn(it) } // print to warn as error will trigger report dialog
+            }
         }
     }
 

@@ -12,7 +12,7 @@ import com.intellij.openapi.project.Project
 @Service(Service.Level.PROJECT)
 @State(name = "DetektPluginSettings", storages = [Storage("detekt.xml")])
 class DetektPluginSettings(
-    private val project: Project
+    private val project: Project,
 ) : SimplePersistentStateComponent<DetektPluginSettings.State>(State()) {
 
     var enableDetekt: Boolean
@@ -63,6 +63,18 @@ class DetektPluginSettings(
             state.pluginJars = value.toMutableList()
         }
 
+    var debug: Boolean
+        get() = state.detektDebugMode
+        set(value) {
+            state.detektDebugMode = value
+        }
+
+    var redirectChannels: Boolean
+        get() = state.redirectChannels
+        set(value) {
+            state.redirectChannels = value
+        }
+
     override fun loadState(state: State) {
         val migrated = loadOrMigrateIfNeeded(state)
         super.loadState(migrated)
@@ -83,6 +95,8 @@ class DetektPluginSettings(
 
     class State : BaseState() {
 
+        var redirectChannels by property(false)
+        var detektDebugMode by property(false)
         var enableDetekt by property(true)
         var enableFormatting by property(false)
         var enableAllRules by property(false)
