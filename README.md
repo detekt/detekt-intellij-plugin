@@ -17,6 +17,12 @@ The plugin can be downloaded from the [Jetbrains plugin repository](https://plug
 - `Settings -> Plugins -> Marketplace -> Search for detekt -> Install`
 - Configure the plugin via `Settings -> Tools -> detekt`
 
+### Help testing beta releases
+
+- `Settings -> Plugins -> Manage Plugin Repositories`
+- Add `https://plugins.jetbrains.com/plugins/beta/list` (check for trailing spaces!)
+- Help test `.beta.x` releases and report bugs
+
 ## Configuration Options
 
 ![configuration](./img/configuration.png "configuration")
