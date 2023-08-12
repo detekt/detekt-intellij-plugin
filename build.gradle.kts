@@ -92,3 +92,7 @@ githubRelease {
         .file("distributions/Detekt IntelliJ Plugin-${project.version}.zip")
     releaseAssets.setFrom(distribution)
 }
+
+tasks.githubRelease.configure {
+    dependsOn(tasks.buildPlugin)
+}
