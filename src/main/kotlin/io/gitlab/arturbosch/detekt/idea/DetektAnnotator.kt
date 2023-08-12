@@ -9,7 +9,7 @@ import com.intellij.psi.PsiFile
 import io.gitlab.arturbosch.detekt.api.CorrectableCodeSmell
 import io.gitlab.arturbosch.detekt.api.Finding
 import io.gitlab.arturbosch.detekt.api.TextLocation
-import io.gitlab.arturbosch.detekt.idea.action.AddToBaselineAction
+import io.gitlab.arturbosch.detekt.idea.intention.AddToBaselineAction
 import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
 import io.gitlab.arturbosch.detekt.idea.intention.AutoCorrectIntention
 import io.gitlab.arturbosch.detekt.idea.util.isDetektEnabled

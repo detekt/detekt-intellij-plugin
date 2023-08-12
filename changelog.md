@@ -3,6 +3,7 @@
 #### 2.0.1
 
 - Based on detekt 1.23.1
+- Plugin intentions/quick fixes have now lower priority - [#487](https://github.com/detekt/detekt-intellij-plugin/issues/487)
 
 #### 2.0.0
 

@@ -77,6 +77,7 @@
             <br>
             <ul>
                 <li>Based on detekt 1.23.1</li>
+                <li>Plugin intentions/quick fixes have now lower priority.</li>
             </ul>
         </li>
         <li>2.0.0

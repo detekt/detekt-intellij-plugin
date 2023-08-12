@@ -1,7 +1,8 @@
-package io.gitlab.arturbosch.detekt.idea.action
+package io.gitlab.arturbosch.detekt.idea.intention
 
 import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer
 import com.intellij.codeInsight.intention.IntentionAction
+import com.intellij.codeInsight.intention.LowPriorityAction
 import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
@@ -14,7 +15,7 @@ import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
 import io.gitlab.arturbosch.detekt.idea.util.absoluteBaselinePath
 import kotlin.io.path.exists
 
-class AddToBaselineAction(private val finding: Finding) : IntentionAction {
+class AddToBaselineAction(private val finding: Finding) : IntentionAction, LowPriorityAction {
 
     override fun startInWriteAction(): Boolean = true
 
