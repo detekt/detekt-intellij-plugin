@@ -24,6 +24,8 @@ dependencies {
     runtimeOnly(libs.detekt.rules)
     runtimeOnly(libs.detekt.formatting)
 
+    testRuntimeOnly(libs.junit.platform)
+
     testImplementation(libs.detekt.testUtils)
     testImplementation(libs.assertj.core)
     testImplementation(libs.junit.jupiter)
@@ -86,7 +88,7 @@ githubRelease {
         changelog = changelog.substring(0, changelog.indexOf("#### 1"))
         changelog.trim()
     }
-    val distribution = project.buildDir
-        .resolve("distributions/Detekt IntelliJ Plugin-${project.version}.zip")
+    val distribution = project.layout.buildDirectory
+        .file("distributions/Detekt IntelliJ Plugin-${project.version}.zip")
     releaseAssets.setFrom(distribution)
 }

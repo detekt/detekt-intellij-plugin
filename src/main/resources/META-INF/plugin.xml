@@ -73,6 +73,12 @@
 
     <change-notes><![CDATA[
       <ul>
+        <li>2.0.1
+            <br>
+            <ul>
+                <li>Based on detekt 1.23.1</li>
+            </ul>
+        </li>
         <li>2.0.0
             <br>
             <ul>
