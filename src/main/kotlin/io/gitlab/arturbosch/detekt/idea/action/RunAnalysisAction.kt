@@ -44,7 +44,7 @@ class RunAnalysisAction : AnAction(PluginUtils.pluginIcon()) {
             override fun run(indicator: ProgressIndicator) {
                 indicator.checkCanceled()
                 val service = ConfiguredService(project)
-                val findingsManager = FindingsManager.getInstance()
+                val findingsManager = FindingsManager.getInstance(project)
                 indicator.checkCanceled()
                 for (psi in psiFiles) {
                     val findings = service.execute(psi, false)

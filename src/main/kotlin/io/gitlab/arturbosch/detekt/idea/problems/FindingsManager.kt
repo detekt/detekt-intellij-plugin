@@ -3,16 +3,17 @@ package io.gitlab.arturbosch.detekt.idea.problems
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import io.gitlab.arturbosch.detekt.api.Finding
 import java.util.concurrent.ConcurrentHashMap
 
-@Service
+@Service(Service.Level.PROJECT)
 class FindingsManager : Disposable {
 
     companion object {
 
-        fun getInstance(): FindingsManager = service()
+        fun getInstance(project: Project): FindingsManager = project.service()
     }
 
     private val listeners = ConcurrentHashMap.newKeySet<() -> Unit>()

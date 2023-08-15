@@ -13,7 +13,7 @@ class FindingsRootNode(private val project: Project, panel: ProblemsViewPanel) :
 
     override fun getFileProblems(file: VirtualFile): Collection<Problem> {
         val provider = project.service<DetektProblemsProvider>()
-        return FindingsManager.getInstance().getFindings(file)
+        return FindingsManager.getInstance(project).getFindings(file)
             .map { DetektProblem(provider, file, it) }
     }
 
@@ -21,7 +21,7 @@ class FindingsRootNode(private val project: Project, panel: ProblemsViewPanel) :
 
     override fun getOtherProblems(): Collection<Problem> = emptyList()
 
-    override fun getProblemCount(): Int = FindingsManager.getInstance().getAllFindingsSize()
+    override fun getProblemCount(): Int = FindingsManager.getInstance(project).getAllFindingsSize()
 
-    override fun getProblemFiles(): Collection<VirtualFile> = FindingsManager.getInstance().getAnalyzedFiles()
+    override fun getProblemFiles(): Collection<VirtualFile> = FindingsManager.getInstance(project).getAnalyzedFiles()
 }

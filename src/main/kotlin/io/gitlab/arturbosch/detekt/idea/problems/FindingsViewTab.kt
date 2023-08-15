@@ -21,7 +21,7 @@ class FindingsViewTab(
 
     init {
         treeModel.root = FindingsRootNode(project, this)
-        FindingsManager.getInstance().register {
+        FindingsManager.getInstance(project).register {
             invokeLater {
                 treeModel.structureChanged(null)
                 ProblemsViewToolWindowUtils.selectTab(project, FINDINGS_TAB_ID)
