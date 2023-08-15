@@ -47,13 +47,13 @@ class AutoCorrectAction : AnAction(PluginUtils.pluginIcon()) {
     }
 
     internal fun runAction(project: Project, psiFile: PsiFile) {
-        val virtualFile = psiFile.virtualFile
         val service = ConfiguredService(project)
         val problems = service.validate()
         if (problems.isEmpty()) {
-            forceUpdateFile(project, virtualFile)
+            val virtualFile: VirtualFile? = psiFile.virtualFile
+            virtualFile?.let { forceUpdateFile(project, it) }
             service.execute(psiFile, autoCorrect = true)
-            virtualFile.refresh(false, false)
+            virtualFile?.refresh(false, false)
         } else {
             showNotification(problems, project)
         }
