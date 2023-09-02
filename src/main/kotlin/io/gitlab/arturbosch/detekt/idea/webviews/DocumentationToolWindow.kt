@@ -13,6 +13,8 @@ class DocumentationToolWindow : ToolWindowFactory, DumbAware {
         const val ID = "detekt doc"
     }
 
+    override fun shouldBeAvailable(project: Project): Boolean = JBCefApp.isSupported()
+
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
         val content = if (JBCefApp.isSupported()) {
             val browser = RulesBrowserService.getInstance()
@@ -21,7 +23,7 @@ class DocumentationToolWindow : ToolWindowFactory, DumbAware {
                 .apply { setDisposer(browser) }
         } else {
             val component = JBPanelWithEmptyText().apply {
-                emptyText.text = "JCEF is not supported. Please make sure to use Jetbrains JDK."
+                emptyText.text = "JCEF is not supported. Please use a (Jetbrains) JDK with JCEF enabled."
             }
             toolWindow.contentManager.factory
                 .createContent(component, null, false)
