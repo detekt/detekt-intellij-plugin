@@ -34,6 +34,11 @@
                     icon="AllIcons.Actions.Search"/>
     </extensions>
 
+    <applicationListeners>
+        <listener class="io.gitlab.arturbosch.detekt.idea.DetektProjectManagerListener"
+                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
+    </applicationListeners>
+
     <actions>
         <action id="io.gitlab.arturbosch.detekt.idea.action.AutoCorrect"
                 class="io.gitlab.arturbosch.detekt.idea.action.AutoCorrectAction"
