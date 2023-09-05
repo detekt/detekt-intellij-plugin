@@ -11,8 +11,8 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.layout.ValidationInfoBuilder
-import io.gitlab.arturbosch.detekt.idea.DETEKT
 import io.gitlab.arturbosch.detekt.idea.DetektBundle
+import io.gitlab.arturbosch.detekt.idea.NOTIFICATION_GROUP_ID
 import io.gitlab.arturbosch.detekt.idea.config.DetektConfig
 import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
 import java.io.File
@@ -59,7 +59,7 @@ fun showNotification(problems: List<String>, project: Project) {
 
 fun showNotification(title: String, content: String, project: Project) {
     val notification = Notification(
-        DETEKT,
+        NOTIFICATION_GROUP_ID,
         title,
         content,
         NotificationType.WARNING

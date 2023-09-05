@@ -1,5 +1,8 @@
 package io.gitlab.arturbosch.detekt.idea.config.ui
 
+import com.intellij.openapi.observable.properties.AtomicBooleanProperty
+import com.intellij.openapi.observable.properties.ObservableProperty
+import com.intellij.openapi.observable.util.bindEnabled
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogPanel
 import com.intellij.openapi.vfs.LocalFileSystem
@@ -30,54 +33,49 @@ internal class DetektConfigUi(
 ) {
 
     fun createPanel(): DialogPanel = panel {
-        commonOptionsGroup()
-        backgroundAnalysisGroup()
-        rulesGroup()
-        filesGroup()
+        lateinit var detektEnabledCheckbox: JCheckBox
+        row {
+            detektEnabledCheckbox = checkBox(DetektBundle.message("detekt.configuration.enableBackgroundAnalysis"))
+                .bindSelected(settings::enableDetekt)
+                .comment(DetektBundle.message("detekt.configuration.enableBackgroundAnalysis.tooltip"))
+                .component
+        }
+
+        pluginOptionsGroup().enabledIf(detektEnabledCheckbox.selected)
+
+        rulesGroup().enabledIf(detektEnabledCheckbox.selected)
+
+        // Passing the "selected" state down shouldn't be necessary, but it looks like
+        // the DSL doesn't pass down the enabled state to custom components (at least
+        // as of today's lowest supported IDE version, 221.6008.13)
+        filesGroup(detektEnabledCheckbox.selectedProperty)
+            .enabledIf(detektEnabledCheckbox.selected)
     }
 
-    private fun Panel.commonOptionsGroup() {
-        lateinit var redirectCheckbox: JCheckBox
-
+    private fun Panel.pluginOptionsGroup() =
         group(
-            title = DetektBundle.message("detekt.configuration.commonGroup.title"),
+            title = DetektBundle.message("detekt.configuration.pluginGroup.title"),
             indent = false
         ) {
+            row {
+                checkBox(DetektBundle.message("detekt.configuration.treatAsErrors"))
+                    .bindSelected(settings::treatAsErrors)
+            }
+
+            lateinit var redirectCheckbox: JCheckBox
             row {
                 redirectCheckbox = checkBox(DetektBundle.message("detekt.configuration.redirect"))
                     .bindSelected(settings::redirectChannels)
                     .component
             }
-            row {
-                checkBox(DetektBundle.message("detekt.configuration.debug"))
-                    .bindSelected(settings::debug)
-                    .enabledIf(redirectCheckbox.selected)
+            indent {
+                row {
+                    checkBox(DetektBundle.message("detekt.configuration.debug"))
+                        .bindSelected(settings::debug)
+                        .enabledIf(redirectCheckbox.selected)
+                }
             }
         }
-    }
-
-    private fun Panel.backgroundAnalysisGroup() {
-        lateinit var detektEnabledCheckbox: JCheckBox
-
-        group(
-            title = DetektBundle.message("detekt.configuration.backgroundAnalysisGroup.title"),
-            indent = false,
-        ) {
-            row {
-                detektEnabledCheckbox = checkBox(DetektBundle.message("detekt.configuration.enableBackgroundAnalysis"))
-                    .applyToComponent {
-                        toolTipText = DetektBundle.message("detekt.configuration.enableBackgroundAnalysis.tooltip")
-                    }
-                    .bindSelected(settings::enableDetekt)
-                    .component
-            }
-            row {
-                checkBox(DetektBundle.message("detekt.configuration.treatAsErrors"))
-                    .bindSelected(settings::treatAsErrors)
-                    .enabledIf(detektEnabledCheckbox.selected)
-            }
-        }
-    }
 
     private fun Panel.rulesGroup() =
         group(
@@ -98,19 +96,19 @@ internal class DetektConfigUi(
             }
         }
 
-    private fun Panel.filesGroup() =
+    private fun Panel.filesGroup(isEnabled: ObservableProperty<Boolean>) =
         group(
             title = DetektBundle.message("detekt.configuration.filesGroup.title"),
             indent = false,
         ) {
-            configurationFilesRow()
+            configurationFilesRow(isEnabled)
 
             baselineFileRow()
 
-            pluginJarsRow()
+            pluginJarsRow(isEnabled)
         }
 
-    private fun Panel.configurationFilesRow() {
+    private fun Panel.configurationFilesRow(isEnabled: ObservableProperty<Boolean>) {
         row {
             val label = label(DetektBundle.message("detekt.configuration.configurationFiles.title"))
                 .verticalAlign(VerticalAlign.TOP)
@@ -125,6 +123,7 @@ internal class DetektConfigUi(
                 DetektBundle.message("detekt.configuration.configurationFiles.dialog.description"),
                 descriptorProvider = { FileChooserDescriptorUtil.createYamlChooserDescriptor() }
             ).decorated()
+                .bindEnabled(isEnabled)
 
             cell(filesListPanel)
                 .horizontalAlign(HorizontalAlign.FILL)
@@ -167,7 +166,7 @@ internal class DetektConfigUi(
         }.bottomGap(BottomGap.MEDIUM)
     }
 
-    private fun Panel.pluginJarsRow() {
+    private fun Panel.pluginJarsRow(isEnabled: ObservableProperty<Boolean>) {
         row {
             val label = label(DetektBundle.message("detekt.configuration.pluginJarFiles.title"))
                 .verticalAlign(VerticalAlign.TOP)
@@ -182,6 +181,7 @@ internal class DetektConfigUi(
                 DetektBundle.message("detekt.configuration.pluginJarFiles.dialog.description"),
                 descriptorProvider = { FileChooserDescriptorUtil.createJarsChooserDescriptor() }
             ).decorated()
+                .bindEnabled(isEnabled)
 
             cell(filesListPanel)
                 .horizontalAlign(HorizontalAlign.FILL)
@@ -202,11 +202,21 @@ internal class DetektConfigUi(
     ) {
         bind(
             { listModel.items },
-            { _, virtualFiles -> listModel.clear(); listModel += virtualFiles },
+            { _, virtualFiles ->
+                listModel.clear()
+                listModel += virtualFiles
+            },
             MutableProperty(
                 { fileListProperty.get().toVirtualFilesList() },
                 { fileListProperty.set(it.toPathsList()) }
             )
         )
     }
+
+    private val JCheckBox.selectedProperty: ObservableProperty<Boolean>
+        get() {
+            val prop = AtomicBooleanProperty(isSelected)
+            addChangeListener { prop.set(isSelected) }
+            return prop
+        }
 }

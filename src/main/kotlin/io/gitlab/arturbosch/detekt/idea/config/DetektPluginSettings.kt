@@ -15,10 +15,19 @@ class DetektPluginSettings(
     private val project: Project,
 ) : SimplePersistentStateComponent<DetektPluginSettings.State>(State()) {
 
+    val shouldShowOptIn: Boolean
+        get() = state.optIn == OptInState.NotSet
+
     var enableDetekt: Boolean
         get() = state.enableDetekt
         set(value) {
             state.enableDetekt = value
+        }
+
+    var optIn: OptInState
+        get() = state.optIn
+        set(value) {
+            state.optIn = value
         }
 
     var enableFormatting: Boolean
@@ -97,11 +106,12 @@ class DetektPluginSettings(
 
         var redirectChannels by property(false)
         var detektDebugMode by property(false)
-        var enableDetekt by property(true)
+        var enableDetekt by property(false)
         var enableFormatting by property(false)
         var enableAllRules by property(false)
         var buildUponDefaultConfig by property(true)
         var treatAsErrors by property(false)
+        var optIn by enum(OptInState.NotSet)
 
         var configurationFiles by list<String>()
 
@@ -116,5 +126,11 @@ class DetektPluginSettings(
 
         @Deprecated("Migrated to pluginJars", ReplaceWith("pluginJars"))
         var pluginJarPaths by stringSet()
+    }
+
+    enum class OptInState {
+        NotSet,
+        OptedIn,
+        OptedOut,
     }
 }
