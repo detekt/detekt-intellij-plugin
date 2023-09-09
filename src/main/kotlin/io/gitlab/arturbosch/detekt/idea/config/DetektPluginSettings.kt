@@ -15,19 +15,19 @@ class DetektPluginSettings(
     private val project: Project,
 ) : SimplePersistentStateComponent<DetektPluginSettings.State>(State()) {
 
-    val shouldShowOptIn: Boolean
-        get() = state.optIn == OptInState.NotSet
-
     var enableDetekt: Boolean
         get() = state.enableDetekt
         set(value) {
             state.enableDetekt = value
         }
 
-    var optIn: OptInState
-        get() = state.optIn
+    val shouldShowPromptToEnable: Boolean
+        get() = state.enableForProjectResult == EnableForProjectPromptResult.NotSet
+
+    var enableForProjectResult: EnableForProjectPromptResult
+        get() = state.enableForProjectResult
         set(value) {
-            state.optIn = value
+            state.enableForProjectResult = value
         }
 
     var enableFormatting: Boolean
@@ -111,7 +111,7 @@ class DetektPluginSettings(
         var enableAllRules by property(false)
         var buildUponDefaultConfig by property(true)
         var treatAsErrors by property(false)
-        var optIn by enum(OptInState.NotSet)
+        var enableForProjectResult by enum(EnableForProjectPromptResult.NotSet)
 
         var configurationFiles by list<String>()
 
@@ -128,9 +128,9 @@ class DetektPluginSettings(
         var pluginJarPaths by stringSet()
     }
 
-    enum class OptInState {
+    enum class EnableForProjectPromptResult {
         NotSet,
-        OptedIn,
-        OptedOut,
+        Declined,
+        Accepted
     }
 }
