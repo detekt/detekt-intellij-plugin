@@ -1,5 +1,10 @@
 ### Changelog
 
+#### 2.1.0
+
+- Based on detekt 1.23.1
+- Make detekt plugin opt-in per-project - [#490](https://github.com/detekt/detekt-intellij-plugin/issues/490)
+
 #### 2.0.1
 
 - Based on detekt 1.23.1

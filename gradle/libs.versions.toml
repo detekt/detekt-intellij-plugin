@@ -1,7 +1,7 @@
 [versions]
 detekt = "1.23.1"
 # Use -beta[.number] for pre-releases
-detektIJ = "2.0.1"
+detektIJ = "2.1.0"
 assertj = "3.24.2"
 junit5 = "5.10.0"
 junit5Platform = "1.10.0"
@@ -18,7 +18,7 @@ junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.r
 junit-platform = { group = "org.junit.platform", name = "junit-platform-launcher", version.ref = "junit5Platform" }
 
 [plugins]
-kotlin-jvm = "org.jetbrains.kotlin.jvm:1.9.0"
-versions = "com.github.ben-manes.versions:0.47.0"
+kotlin-jvm = "org.jetbrains.kotlin.jvm:1.9.10"
+versions = "com.github.ben-manes.versions:0.48.0"
 intellij = "org.jetbrains.intellij:1.15.0"
 github-release = "com.github.breadmoirai.github-release:2.4.1"

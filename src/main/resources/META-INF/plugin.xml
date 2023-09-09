@@ -78,6 +78,13 @@
 
     <change-notes><![CDATA[
       <ul>
+        <li>2.1.0
+            <br>
+            <ul>
+                <li>Based on detekt 1.23.1</li>
+                <li>Make detekt plugin opt-in per-project.</li>
+            </ul>
+        </li>
         <li>2.0.1
             <br>
             <ul>
