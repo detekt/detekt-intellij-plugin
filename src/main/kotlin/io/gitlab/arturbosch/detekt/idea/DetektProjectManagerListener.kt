@@ -2,12 +2,13 @@ package io.gitlab.arturbosch.detekt.idea
 
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
-import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.components.service
+import com.intellij.openapi.project.DumbAwareAction
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManagerListener
 import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
+import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings.EnableForProjectPromptResult
 
 class DetektProjectManagerListener : ProjectManagerListener {
 
@@ -16,7 +17,7 @@ class DetektProjectManagerListener : ProjectManagerListener {
 
         // Only show the prompt if detekt isn't already enabled, and the user hasn't
         // opted out explicitly.
-        if (settings.enableDetekt || !settings.shouldShowOptIn) return
+        if (settings.enableDetekt || !settings.shouldShowPromptToEnable) return
 
         val notification = Notification(
             NOTIFICATION_GROUP_ID,
@@ -25,20 +26,24 @@ class DetektProjectManagerListener : ProjectManagerListener {
             NotificationType.INFORMATION
         )
 
-        notification.addAction(object : AnAction(DetektBundle.message("detekt.notification.enableDetekt.enable")) {
-            override fun actionPerformed(e: AnActionEvent) {
-                settings.optIn = DetektPluginSettings.OptInState.OptedIn
-                settings.enableDetekt = true
-                notification.expire()
+        notification.addAction(
+            object : DumbAwareAction(DetektBundle.message("detekt.notification.enableDetekt.enable")) {
+                override fun actionPerformed(e: AnActionEvent) {
+                    settings.enableForProjectResult = EnableForProjectPromptResult.Accepted
+                    settings.enableDetekt = true
+                    notification.expire()
+                }
             }
-        })
+        )
 
-        notification.addAction(object : AnAction(DetektBundle.message("detekt.notification.enableDetekt.optOut")) {
-            override fun actionPerformed(e: AnActionEvent) {
-                settings.optIn = DetektPluginSettings.OptInState.OptedOut
-                notification.expire()
+        notification.addAction(
+            object : DumbAwareAction(DetektBundle.message("detekt.notification.enableDetekt.optOut")) {
+                override fun actionPerformed(e: AnActionEvent) {
+                    settings.enableForProjectResult = EnableForProjectPromptResult.Declined
+                    notification.expire()
+                }
             }
-        })
+        )
 
         notification.notify(project)
     }
