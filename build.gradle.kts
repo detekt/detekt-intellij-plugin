@@ -1,4 +1,6 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.jetbrains.intellij.tasks.PrepareSandboxTask
 import org.jetbrains.intellij.tasks.RunPluginVerifierTask.FailureLevel.DEPRECATED_API_USAGES
 import org.jetbrains.intellij.tasks.RunPluginVerifierTask.FailureLevel.INVALID_PLUGIN
 
@@ -14,6 +16,7 @@ plugins {
     alias(libs.plugins.intellij)
     alias(libs.plugins.versions)
     alias(libs.plugins.github.release)
+    alias(libs.plugins.shadow)
 }
 
 dependencies {
@@ -52,6 +55,20 @@ tasks.publishPlugin {
     // https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html#specifying-a-release-channel
     // "-beta" is used for pre-releases and https://plugins.jetbrains.com/plugins/beta/list as plugin repository.
     channels.set(listOf(project.version.toString().split('-').getOrElse(1) { "default" }.split('.').first()))
+}
+
+tasks {
+    withType<ShadowJar> {
+        archiveBaseName = "detekt-intellij-plugin-shaded"
+        mergeServiceFiles()
+        relocate("org.jetbrains.kotlin", "detekt.shadow.org.jetbrains.kotlin")
+    }
+}
+
+tasks.withType<PrepareSandboxTask> {
+    pluginJar = project.tasks.withType<ShadowJar>().getByName("shadowJar").archiveFile
+    // disable to collect libraries located in runtime classpath (replace with empty file collection)
+    runtimeClasspathFiles = project.objects.fileCollection()
 }
 
 intellij {
