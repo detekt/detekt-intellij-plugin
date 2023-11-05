@@ -7,6 +7,8 @@
         <option value="$PROJECT_DIR$/config/detekt.yaml" />
       </set>
     </option>
+    <option name="enableDetekt" value="true" />
+    <option name="enableForProjectResult" value="Accepted" />
     <option name="enableFormatting" value="true" />
   </component>
 </project>
