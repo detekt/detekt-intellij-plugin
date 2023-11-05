@@ -1,5 +1,9 @@
 ### Changelog
 
+#### 2.2.0
+
+- Based on detekt 1.23.3
+
 #### 2.1.0
 
 - Based on detekt 1.23.1
