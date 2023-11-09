@@ -57,15 +57,13 @@ tasks.publishPlugin {
     channels.set(listOf(project.version.toString().split('-').getOrElse(1) { "default" }.split('.').first()))
 }
 
-tasks {
-    withType<ShadowJar> {
-        archiveBaseName = "detekt-intellij-plugin-shaded"
-        mergeServiceFiles()
-        relocate("org.jetbrains.kotlin", "detekt.shadow.org.jetbrains.kotlin")
-    }
+tasks.withType<ShadowJar>().configureEach {
+    archiveBaseName = "detekt-intellij-plugin-shaded"
+    mergeServiceFiles()
+    relocate("org.jetbrains.kotlin", "detekt.shadow.org.jetbrains.kotlin")
 }
 
-tasks.withType<PrepareSandboxTask> {
+tasks.withType<PrepareSandboxTask>().configureEach {
     pluginJar = project.tasks.withType<ShadowJar>().getByName("shadowJar").archiveFile
     // disable to collect libraries located in runtime classpath (replace with empty file collection)
     runtimeClasspathFiles = project.objects.fileCollection()
