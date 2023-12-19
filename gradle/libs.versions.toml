@@ -1,5 +1,5 @@
 [versions]
-detekt = "1.23.3"
+detekt = "1.23.4"
 # Use -beta[.number] for pre-releases
 detektIJ = "2.2.0"
 assertj = "3.24.2"
