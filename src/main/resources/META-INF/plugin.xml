@@ -78,6 +78,13 @@
 
     <change-notes><![CDATA[
       <ul>
+        <li>2.3.0
+            <br>
+            <ul>
+                <li>Based on detekt 1.23.4</li>
+                <li>Workaround transitive logging classloader problem by constraining the dependency to a newer fixed version - #501</li>
+            </ul>
+        </li>
         <li>2.2.0
             <br>
             <ul>

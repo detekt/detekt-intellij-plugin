@@ -1,5 +1,10 @@
 ### Changelog
 
+#### 2.3.0
+
+- Based on detekt 1.23.4
+- Workaround transitive logging classloader problem by constraining the dependency to a newer fixed version - [#501](https://github.com/detekt/detekt-intellij-plugin/issues/501)
+
 #### 2.2.0
 
 - Based on detekt 1.23.3
