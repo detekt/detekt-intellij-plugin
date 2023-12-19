@@ -5,6 +5,7 @@ detektIJ = "2.2.0"
 assertj = "3.24.2"
 junit5 = "5.10.0"
 junit5Platform = "1.10.0"
+slfApi = "2.0.9"
 
 [libraries]
 detekt-core = { group = "io.gitlab.arturbosch.detekt", name = "detekt-core", version.ref = "detekt" }
@@ -16,6 +17,7 @@ detekt-testUtils = { group = "io.gitlab.arturbosch.detekt", name = "detekt-test-
 assertj-core = { group = "org.assertj", name = "assertj-core", version.ref = "assertj" }
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit5" }
 junit-platform = { group = "org.junit.platform", name = "junit-platform-launcher", version.ref = "junit5Platform" }
+slf4j-Api = { module = "org.slf4j:slf4j-api",  version.ref = "slfApi"}
 
 [plugins]
 kotlin-jvm = "org.jetbrains.kotlin.jvm:1.9.20"
