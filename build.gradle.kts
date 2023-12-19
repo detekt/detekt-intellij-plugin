@@ -17,6 +17,12 @@ plugins {
 }
 
 dependencies {
+    constraints {
+        runtimeOnly(libs.slf4j.api) {
+            because("transitive ktlint logging dependency (2.0.3) does not use the module classloader in ServiceLoader")
+        }
+    }
+
     implementation(libs.detekt.api)
     implementation(libs.detekt.tooling)
 
