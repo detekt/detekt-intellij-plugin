@@ -20,7 +20,7 @@ junit-platform = { group = "org.junit.platform", name = "junit-platform-launcher
 slf4j-Api = { module = "org.slf4j:slf4j-api",  version.ref = "slfApi"}
 
 [plugins]
-kotlin-jvm = "org.jetbrains.kotlin.jvm:1.9.20"
+kotlin-jvm = "org.jetbrains.kotlin.jvm:1.9.22"
 versions = "com.github.ben-manes.versions:0.50.0"
 intellij = "org.jetbrains.intellij:1.16.1"
 github-release = "com.github.breadmoirai.github-release:2.4.1"
