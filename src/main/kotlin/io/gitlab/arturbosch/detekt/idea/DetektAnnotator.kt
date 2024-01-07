@@ -8,6 +8,7 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiFile
 import io.gitlab.arturbosch.detekt.api.CorrectableCodeSmell
 import io.gitlab.arturbosch.detekt.api.Finding
+import io.gitlab.arturbosch.detekt.api.SeverityLevel
 import io.gitlab.arturbosch.detekt.api.TextLocation
 import io.gitlab.arturbosch.detekt.idea.intention.AddToBaselineAction
 import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
@@ -49,6 +50,7 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
         holder: AnnotationHolder,
     ) {
         val settings = file.project.service<DetektPluginSettings>()
+        val hasCustomConfig = settings.configurationFilePaths.isNotEmpty()
         for (finding in annotationResult) {
             val textRange = finding.charPosition.toTextRange()
             val message = buildString {
@@ -57,7 +59,7 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
                 append(": ")
                 append(finding.messageOrDescription())
             }
-            val severity = if (settings.treatAsErrors) HighlightSeverity.ERROR else HighlightSeverity.WARNING
+            val severity = getSeverity(finding, hasCustomConfig, settings.treatAsErrors)
             val annotationBuilder = holder.newAnnotation(severity, message)
                 .range(textRange)
 
@@ -72,6 +74,22 @@ class DetektAnnotator : ExternalAnnotator<PsiFile, List<Finding>>() {
             }
 
             annotationBuilder.create()
+        }
+    }
+
+    private fun getSeverity(finding: Finding, hasCustomConfig: Boolean, treatAsError: Boolean): HighlightSeverity {
+        if (treatAsError) {
+            return HighlightSeverity.ERROR
+        }
+
+        if (!hasCustomConfig) {
+            return HighlightSeverity.WARNING
+        }
+
+        return when (finding.severity) {
+            SeverityLevel.ERROR -> HighlightSeverity.ERROR
+            SeverityLevel.WARNING -> HighlightSeverity.WARNING
+            SeverityLevel.INFO -> HighlightSeverity.WEAK_WARNING
         }
     }
 
