@@ -12,7 +12,7 @@
 
     <depends>com.intellij.modules.platform</depends>
 
-    <idea-version since-build="221.6008.13"/>
+    <idea-version since-build="222.3345.118"/>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Turn off error reporting for now due to https://github.com/detekt/detekt-intellij-plugin/issues/271 -->
