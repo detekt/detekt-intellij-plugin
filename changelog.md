@@ -1,5 +1,10 @@
 ### Changelog
 
+#### 2.4.0
+
+- Add support for IntelliJ 2024.1
+- Drop support for IntelliJ 2022.1
+
 #### 2.3.0
 
 - Based on detekt 1.23.4

@@ -9,12 +9,12 @@ import com.intellij.openapi.fileTypes.FileTypeManager
 import com.intellij.openapi.util.Disposer
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
-import com.intellij.util.io.readText
 import org.jetbrains.kotlin.idea.KotlinLanguage
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.TestInstance
 import java.nio.file.Path
+import kotlin.io.path.readText
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 open class KotlinParsingTestCase : MockProjectTestCase() {

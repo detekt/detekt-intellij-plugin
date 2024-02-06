@@ -1,5 +1,6 @@
 package io.gitlab.arturbosch.detekt.idea.action
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
@@ -68,4 +69,6 @@ class AutoCorrectAction : AnAction(PluginUtils.pluginIcon()) {
             }
         }
     }
+
+    override fun getActionUpdateThread() = ActionUpdateThread.EDT
 }

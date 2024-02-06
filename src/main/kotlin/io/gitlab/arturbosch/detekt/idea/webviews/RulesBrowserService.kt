@@ -9,11 +9,11 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.util.Disposer
 import com.intellij.ui.jcef.JBCefBrowser
 import com.intellij.util.applyIf
-import com.intellij.util.ui.StartupUiUtil
 import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
 import org.cef.handler.CefLoadHandlerAdapter
 import javax.swing.JComponent
+import javax.swing.UIManager
 
 @Service
 class RulesBrowserService : Disposable {
@@ -57,7 +57,7 @@ class RulesBrowserService : Disposable {
     }
 
     private fun updateStyles() {
-        val ideTheme = if (StartupUiUtil.isUnderDarcula()) "dark" else "light"
+        val ideTheme = if (isDarkTheme) "dark" else "light"
         browser.cefBrowser.executeJavaScript(
             """
                 if (localStorage.theme !== "$ideTheme") {
@@ -72,6 +72,15 @@ class RulesBrowserService : Disposable {
             0,
         )
     }
+
+    // Copied from StartupUiUtil - we can't use it directly because it's @Internal
+    private val isDarkTheme: Boolean
+        get() {
+            // Do not use UIManager.getLookAndFeel().defaults because it won't work.
+            // We use UIManager.getLookAndFeelDefaults() in installTheme in com.intellij.ide.ui.laf.LafManagerImpl.doSetLaF
+            val lookAndFeelDefaults = UIManager.getLookAndFeelDefaults()
+            return lookAndFeelDefaults == null || lookAndFeelDefaults.getBoolean("ui.theme.is.dark")
+        }
 
     override fun dispose() {
         browser.dispose()
