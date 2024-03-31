@@ -2,6 +2,7 @@
 
 #### 2.4.0
 
+- Based on detekt 1.23.6
 - Add support for IntelliJ 2024.1
 - Drop support for IntelliJ 2022.1
 

@@ -78,6 +78,14 @@
 
     <change-notes><![CDATA[
       <ul>
+        <li>2.4.0
+            <br>
+            <ul>
+                <li>Based on detekt 1.23.6</li>
+                <li>Add support for IntelliJ 2024.1</li>
+                <li>Drop support for IntelliJ 2022.1</li>
+            </ul>
+        </li>
         <li>2.3.0
             <br>
             <ul>
