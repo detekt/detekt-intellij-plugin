@@ -77,7 +77,8 @@ class RulesBrowserService : Disposable {
     private val isDarkTheme: Boolean
         get() {
             // Do not use UIManager.getLookAndFeel().defaults because it won't work.
-            // We use UIManager.getLookAndFeelDefaults() in installTheme in com.intellij.ide.ui.laf.LafManagerImpl.doSetLaF
+            // We use UIManager.getLookAndFeelDefaults() in installTheme
+            // in com.intellij.ide.ui.laf.LafManagerImpl.doSetLaF.
             val lookAndFeelDefaults = UIManager.getLookAndFeelDefaults()
             return lookAndFeelDefaults == null || lookAndFeelDefaults.getBoolean("ui.theme.is.dark")
         }
