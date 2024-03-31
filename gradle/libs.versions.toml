@@ -1,10 +1,10 @@
 [versions]
-detekt = "1.23.4"
+detekt = "1.23.6"
 # Use -beta[.number] for pre-releases
 detektIJ = "2.3.0"
 assertj = "3.24.2"
-junit5 = "5.10.1"
-junit5Platform = "1.10.1"
+junit5 = "5.10.2"
+junit5Platform = "1.10.2"
 slfApi = "2.0.9"
 
 [libraries]
@@ -20,7 +20,7 @@ junit-platform = { group = "org.junit.platform", name = "junit-platform-launcher
 slf4j-Api = { module = "org.slf4j:slf4j-api",  version.ref = "slfApi"}
 
 [plugins]
-kotlin-jvm = "org.jetbrains.kotlin.jvm:1.9.22"
-versions = "com.github.ben-manes.versions:0.50.0"
-intellij = "org.jetbrains.intellij:1.17.0"
+kotlin-jvm = "org.jetbrains.kotlin.jvm:1.9.23"
+versions = "com.github.ben-manes.versions:0.51.0"
+intellij = "org.jetbrains.intellij:1.17.3"
 github-release = "com.github.breadmoirai.github-release:2.4.1"
