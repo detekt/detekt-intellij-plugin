@@ -1,5 +1,6 @@
 package io.gitlab.arturbosch.detekt.idea.action
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.PlatformDataKeys
@@ -18,6 +19,8 @@ import org.jetbrains.kotlin.backend.common.pop
 import org.jetbrains.kotlin.idea.KotlinLanguage
 
 class RunAnalysisAction : AnAction(PluginUtils.pluginIcon()) {
+
+    override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
 
     override fun update(event: AnActionEvent) {
         val selectedFiles = event.getData(PlatformDataKeys.VIRTUAL_FILE_ARRAY) ?: return
