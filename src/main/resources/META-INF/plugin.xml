@@ -78,6 +78,13 @@
 
     <change-notes><![CDATA[
       <ul>
+        <li>2.4.1
+            <br>
+            <ul>
+                <li>Based on detekt 1.23.6</li>
+                <li>Fix error notifications showing detekt does not override update thread function</li>
+            </ul>
+        </li>
         <li>2.4.0
             <br>
             <ul>

@@ -1,5 +1,10 @@
 ### Changelog
 
+#### 2.4.1
+
+- Based on detekt 1.23.6
+- Fix error notifications showing detekt does not override update thread function - [#513](https://github.com/detekt/detekt-intellij-plugin/issues/513)
+
 #### 2.4.0
 
 - Based on detekt 1.23.6
