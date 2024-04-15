@@ -21,6 +21,8 @@ class AutoCorrectAction : AnAction(PluginUtils.pluginIcon()) {
 
     private val logger = logger<AutoCorrectAction>()
 
+    override fun getActionUpdateThread() = ActionUpdateThread.BGT
+
     override fun update(event: AnActionEvent) {
         val file: VirtualFile = event.getData(CommonDataKeys.VIRTUAL_FILE) ?: return
         val project = event.getData(CommonDataKeys.PROJECT) ?: return
@@ -69,6 +71,4 @@ class AutoCorrectAction : AnAction(PluginUtils.pluginIcon()) {
             }
         }
     }
-
-    override fun getActionUpdateThread() = ActionUpdateThread.EDT
 }

@@ -1,12 +1,15 @@
 package io.gitlab.arturbosch.detekt.idea.action
 
 import com.intellij.openapi.actionSystem.ActionPlaces
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.fileEditor.FileEditorManager
 import io.gitlab.arturbosch.detekt.idea.util.PluginUtils
 
 class RunDetektMenuGroup : DefaultActionGroup(null, null, PluginUtils.pluginIcon()) {
+
+    override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
 
     override fun update(e: AnActionEvent) {
         val project = e.project

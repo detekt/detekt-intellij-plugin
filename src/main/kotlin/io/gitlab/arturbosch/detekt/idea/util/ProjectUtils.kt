@@ -2,6 +2,7 @@ package io.gitlab.arturbosch.detekt.idea.util
 
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.application.ApplicationManager
@@ -66,6 +67,7 @@ fun showNotification(title: String, content: String, project: Project) {
     )
 
     notification.addAction(object : AnAction(DetektBundle.message("detekt.notifications.actions.openSettings")) {
+        override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
         override fun actionPerformed(e: AnActionEvent) {
             val dialog = SettingsDialog(
                 project,
