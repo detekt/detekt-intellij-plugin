@@ -1,5 +1,14 @@
 ### Changelog
 
+#### 2.4.3
+
+- Based on detekt 1.23.8
+- Ignore AI snippets - #528
+
+#### 2.4.2
+
+- Based on detekt 1.23.7
+
 #### 2.4.1
 
 - Based on detekt 1.23.6
