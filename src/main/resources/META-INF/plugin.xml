@@ -78,6 +78,19 @@
 
     <change-notes><![CDATA[
       <ul>
+        <li>2.4.3
+            <br>
+            <ul>
+                <li>Based on detekt 1.23.8</li>
+                <li>Ignore AI snippets - #528</li>
+            </ul>
+        </li>
+        <li>2.4.2
+            <br>
+            <ul>
+                <li>Based on detekt 1.23.7</li>
+            </ul>
+        </li>
         <li>2.4.1
             <br>
             <ul>
