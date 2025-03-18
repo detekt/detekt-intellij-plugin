@@ -69,11 +69,10 @@ class ConfiguredServiceTest : MockProjectTestCase() {
     }
 
     @Test
-    fun `debugging fragments are excluded from analysis`() {
+    fun `special fragments are excluded from analysis`() {
         val service = ConfiguredService(project)
 
-        val findings = service.execute("", SPECIAL_FILENAME_FOR_DEBUGGING, false)
-
-        assertThat(findings).isEmpty()
+        assertThat(service.execute("", SPECIAL_FILENAME_FOR_DEBUGGING, false)).isEmpty()
+        assertThat(service.execute("", SPECIAL_FILENAME_AI_SNIPPED, false)).isEmpty()
     }
 }
