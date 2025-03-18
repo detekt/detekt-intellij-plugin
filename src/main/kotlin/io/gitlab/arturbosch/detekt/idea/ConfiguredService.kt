@@ -136,7 +136,7 @@ class ConfiguredService(private val project: Project) {
 
     @OptIn(UnstableApi::class)
     fun execute(fileContent: String, filename: String, autoCorrect: Boolean): List<Finding> {
-        if (filename == SPECIAL_FILENAME_FOR_DEBUGGING) {
+        if (filename in SPECIAL_FILES_TO_IGNORE) {
             return emptyList()
         }
 
