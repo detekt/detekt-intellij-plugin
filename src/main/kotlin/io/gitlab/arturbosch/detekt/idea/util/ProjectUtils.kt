@@ -51,7 +51,7 @@ fun List<VirtualFile>.toPathsList(): List<String> =
 fun showNotification(problems: List<String>, project: Project) {
     showNotification(
         title = DetektBundle.message("detekt.notifications.message.problemsFound"),
-        content = problems.joinToString(System.lineSeparator()) +
+        content = problems.joinToString(System.lineSeparator()) + System.lineSeparator() +
             DetektBundle.message("detekt.notifications.content.skippingRun"),
         project = project
     )
