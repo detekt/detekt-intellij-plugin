@@ -75,6 +75,7 @@ Temporary Items
 *.ipr
 *.iws
 /.idea/*
+.intellijPlatform/
 
 # Exclude non-user-specific stuff
 !.idea/.name

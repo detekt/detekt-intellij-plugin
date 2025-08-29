@@ -1,18 +1,19 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import org.jetbrains.intellij.tasks.RunPluginVerifierTask.FailureLevel.DEPRECATED_API_USAGES
-import org.jetbrains.intellij.tasks.RunPluginVerifierTask.FailureLevel.INVALID_PLUGIN
 
 project.group = "io.gitlab.arturbosch.detekt"
 project.version = libs.versions.detektIJ.get()
 
 repositories {
     mavenCentral()
+
+    intellijPlatform {
+        defaultRepositories()
+    }
 }
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.intellij)
-    alias(libs.plugins.versions)
     alias(libs.plugins.github.release)
 }
 
@@ -21,6 +22,11 @@ dependencies {
         runtimeOnly(libs.slf4j.api) {
             because("transitive ktlint logging dependency (2.0.3) does not use the module classloader in ServiceLoader")
         }
+    }
+
+    intellijPlatform {
+        intellijIdeaCommunity("2022.2.5")
+        bundledPlugins("org.intellij.intelliLang", "org.jetbrains.kotlin")
     }
 
     implementation(libs.detekt.api)
@@ -38,7 +44,7 @@ dependencies {
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
 }
 
 tasks.withType<Test>().configureEach {
@@ -60,16 +66,16 @@ tasks.publishPlugin {
     channels.set(listOf(project.version.toString().split('-').getOrElse(1) { "default" }.split('.').first()))
 }
 
-intellij {
-    pluginName.set("Detekt IntelliJ Plugin")
-    version.set("2022.2.5")
-    updateSinceUntilBuild.set(false)
-    plugins.set(listOf("org.intellij.intelliLang", "Kotlin"))
-}
-
-tasks.runPluginVerifier {
-    ideVersions.set(listOf("2022.2.5", "2022.3.3", "2023.1.5", "2023.2.5", "2023.3.3", "241-EAP-SNAPSHOT"))
-    failureLevel.set(listOf(DEPRECATED_API_USAGES, INVALID_PLUGIN))
+intellijPlatform {
+    pluginConfiguration {
+        name.set("Detekt IntelliJ Plugin")
+        version.set(project.version.toString())
+    }
+    pluginVerification {
+        ides {
+            recommended()
+        }
+    }
 }
 
 tasks.buildSearchableOptions {
