@@ -124,3 +124,9 @@ hs_err_pid*
 
 # Cache of project
 .gradletasknamecache
+
+# Ignore Kotlin compiler sessions
+/.kotlin/sessions
+
+# Ignore IJPL Gradle plugin cache
+/.intellijPlatform

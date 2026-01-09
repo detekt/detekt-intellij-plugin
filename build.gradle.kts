@@ -1,19 +1,21 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import org.jetbrains.intellij.tasks.RunPluginVerifierTask.FailureLevel.DEPRECATED_API_USAGES
-import org.jetbrains.intellij.tasks.RunPluginVerifierTask.FailureLevel.INVALID_PLUGIN
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+
+plugins {
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.intellijPlatform)
+    alias(libs.plugins.versions)
+    alias(libs.plugins.github.release)
+}
 
 project.group = "io.gitlab.arturbosch.detekt"
 project.version = libs.versions.detektIJ.get()
 
 repositories {
     mavenCentral()
-}
-
-plugins {
-    alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.intellij)
-    alias(libs.plugins.versions)
-    alias(libs.plugins.github.release)
+    intellijPlatform {
+        defaultRepositories()
+    }
 }
 
 dependencies {
@@ -30,11 +32,24 @@ dependencies {
     runtimeOnly(libs.detekt.rules)
     runtimeOnly(libs.detekt.formatting)
 
-    testRuntimeOnly(libs.junit.platform)
-
     testImplementation(libs.detekt.testUtils)
     testImplementation(libs.assertj.core)
     testImplementation(libs.junit.jupiter)
+    
+    testRuntimeOnly(libs.junit.platform)
+    testRuntimeOnly(libs.junit4)
+
+    intellijPlatform {
+        intellijIdeaCommunity("2022.3")
+
+        bundledPlugin("com.intellij.java")
+        bundledPlugin("org.intellij.intelliLang")
+        bundledPlugin("org.jetbrains.kotlin")
+
+        testFramework(TestFrameworkType.Platform)
+
+        pluginVerifier()
+    }
 }
 
 kotlin {
@@ -60,24 +75,18 @@ tasks.publishPlugin {
     channels.set(listOf(project.version.toString().split('-').getOrElse(1) { "default" }.split('.').first()))
 }
 
-intellij {
-    pluginName.set("Detekt IntelliJ Plugin")
-    version.set("2022.2.5")
-    updateSinceUntilBuild.set(false)
-    plugins.set(listOf("org.intellij.intelliLang", "Kotlin"))
-}
+intellijPlatform {
+    pluginConfiguration {
+        name.set("Detekt IntelliJ Plugin")
 
-tasks.runPluginVerifier {
-    ideVersions.set(listOf("2022.2.5", "2022.3.3", "2023.1.5", "2023.2.5", "2023.3.3", "241-EAP-SNAPSHOT"))
-    failureLevel.set(listOf(DEPRECATED_API_USAGES, INVALID_PLUGIN))
-}
+        ideaVersion {
+            untilBuild = provider { null }
+        }
+    }
 
-tasks.buildSearchableOptions {
-    enabled = false
-}
-
-tasks.jarSearchableOptions {
-    enabled = false
+    pluginVerification {
+        ides { recommended() }
+    }
 }
 
 githubRelease {
@@ -87,13 +96,15 @@ githubRelease {
     targetCommitish.set("main")
     overwrite.set(true)
     dryRun.set(false)
-    body {
-        var changelog = project.file("changelog.md").readText()
-        val sectionStart = "#### ${project.version}"
-        changelog = changelog.substring(changelog.indexOf(sectionStart) + sectionStart.length)
-        changelog = changelog.substring(0, changelog.indexOf("#### 1"))
-        changelog.trim()
-    }
+    body.set(
+        provider {
+            var changelog = project.file("changelog.md").readText()
+            val sectionStart = "#### ${project.version}"
+            changelog = changelog.substring(changelog.indexOf(sectionStart) + sectionStart.length)
+            changelog = changelog.substring(0, changelog.indexOf("#### 1"))
+            changelog.trim()
+        }
+    )
     val distribution = project.layout.buildDirectory
         .file("distributions/Detekt IntelliJ Plugin-${project.version}.zip")
     releaseAssets.setFrom(distribution)
