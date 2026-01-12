@@ -32,7 +32,9 @@
         <toolWindow id="detekt doc"
                     factoryClass="io.gitlab.arturbosch.detekt.idea.webviews.DocumentationToolWindow"
                     anchor="right"
-                    icon="AllIcons.Actions.Search"/>
+                    icon="DetektIcons.DocsToolWindow"/>
+
+        <iconMapper mappingFile="DetektIconMappings.json"/>
     </extensions>
 
     <applicationListeners>

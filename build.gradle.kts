@@ -35,7 +35,7 @@ dependencies {
     testImplementation(libs.detekt.testUtils)
     testImplementation(libs.assertj.core)
     testImplementation(libs.junit.jupiter)
-    
+
     testRuntimeOnly(libs.junit.platform)
     testRuntimeOnly(libs.junit4)
 
