@@ -59,13 +59,7 @@ class ConfiguredServiceTest : MockProjectTestCase() {
         val service = ConfiguredService(project)
         val testPath = resourceAsPath("testData/Poko.kt")
 
-        assertThat(
-            service.execute(
-                testPath.readText(),
-                testPath.toString(),
-                autoCorrect = false
-            )
-        ).isNotEmpty
+        assertThat(service.execute(testPath.readText(), testPath.toString(), autoCorrect = false)).isNotEmpty
     }
 
     @Test
@@ -74,5 +68,19 @@ class ConfiguredServiceTest : MockProjectTestCase() {
 
         assertThat(service.execute("", SPECIAL_FILENAME_FOR_DEBUGGING, false)).isEmpty()
         assertThat(service.execute("", SPECIAL_FILENAME_AI_SNIPPED, false)).isEmpty()
+    }
+
+    @Test
+    fun `finds downloaded plugins in subfolders`() {
+        val pluginFolder = tempDir.resolve(".idea/detektPlugins")
+        val subfolder = pluginFolder.resolve("com/example/1.0.0")
+        java.nio.file.Files.createDirectories(subfolder)
+        val jarFile = subfolder.resolve("plugin.jar")
+        java.nio.file.Files.createFile(jarFile)
+
+        val service = ConfiguredService(project)
+        val paths = service.pluginPaths()
+
+        assertThat(paths).contains(jarFile)
     }
 }

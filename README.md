@@ -10,7 +10,7 @@ Integrates _detekt_, a static code analysis tool for the Kotlin programming lang
 
 ![detekt in action](./img/detekt.png "detekt in action")
 
-The plugin can be downloaded from the [Jetbrains plugin repository](https://plugins.jetbrains.com/plugin/10761-detekt).
+The plugin can be downloaded from the [JetBrains plugin repository](https://plugins.jetbrains.com/plugin/10761-detekt).
 
 ## Enabling the plugin
 
@@ -29,6 +29,15 @@ The plugin can be downloaded from the [Jetbrains plugin repository](https://plug
 
 That's it. Detekt issues will be annotated on-the-fly while coding.
 
+## Third-Party Plugins
+
+You can extend Detekt with third-party rule sets directly from the configuration panel. Add plugins as local JAR files
+or search Maven Central for published rule sets. The plugin handles dependency resolution and management automatically.
+Do not commit the `.idea/detektPlugins/` folder (it is in `.gitignore`); see [DETEKT_PLUGINS.md](DETEKT_PLUGINS.md) for
+details.
+
+For technical details about the plugin mechanism, see [DETEKT_PLUGINS.md](DETEKT_PLUGINS.md).
+
 ## Autocorrection
 
 You may optionally click `Refactor` -> `AutoCorrect by detekt rules` to auto correct detekt violations if possible.
@@ -45,7 +54,9 @@ is used.
 gradlew buildPlugin
 ```
 
-To test your development, use task `runIde` which will automatically run an Intellij instance to test your new version of detekt plugin.
+To test your development, use task `runIde` which will automatically run an Intellij instance to test your new version
+of the detekt plugin.
+
 ```bash
 # linux & macOS
 ./gradlew runIde
@@ -53,4 +64,4 @@ To test your development, use task `runIde` which will automatically run an Inte
 gradlew runIde
 ```
 
-Also install the current `Detekt IntelliJ Plugin` version  to verify you do not introduce new issues.
+Also install the current `Detekt IntelliJ Plugin` version to verify you do not introduce new issues.

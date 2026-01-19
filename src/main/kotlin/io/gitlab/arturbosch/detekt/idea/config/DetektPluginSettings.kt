@@ -1,5 +1,6 @@
 package io.gitlab.arturbosch.detekt.idea.config
 
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.BaseState
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.SimplePersistentStateComponent
@@ -8,6 +9,8 @@ import com.intellij.openapi.components.Storage
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
+import io.gitlab.arturbosch.detekt.idea.util.DetektPlugin
+import io.gitlab.arturbosch.detekt.idea.util.PluginDependencyService
 
 @Service(Service.Level.PROJECT)
 @State(name = "DetektPluginSettings", storages = [Storage("detekt.xml")])
@@ -72,6 +75,12 @@ class DetektPluginSettings(
             state.pluginJars = value.toMutableList()
         }
 
+    var plugins: List<DetektPlugin>
+        get() = state.plugins
+        set(value) {
+            state.plugins = value.toMutableList()
+        }
+
     var debug: Boolean
         get() = state.detektDebugMode
         set(value) {
@@ -87,6 +96,12 @@ class DetektPluginSettings(
     override fun loadState(state: State) {
         val migrated = loadOrMigrateIfNeeded(state)
         super.loadState(migrated)
+        val app = ApplicationManager.getApplication()
+        if (app != null && !app.isUnitTestMode) {
+            // May run close in time to DetektConfig.apply(); PluginDependencyService serializes both via a lock
+            // so only one reconciliation runs at a time and on-disk state stays consistent.
+            project.service<PluginDependencyService>().reconcilePlugins(migrated.plugins)
+        }
     }
 
     private fun loadOrMigrateIfNeeded(state: State): State {
@@ -117,7 +132,9 @@ class DetektPluginSettings(
 
         var baselinePath by string()
         var pluginJars by list<String>()
+        var plugins by list<DetektPlugin>()
 
+        @Suppress("CommentSpacing")
         //////////////////////////////////
         //// Deprecated v2 properties ////
         //////////////////////////////////
@@ -131,6 +148,6 @@ class DetektPluginSettings(
     enum class EnableForProjectPromptResult {
         NotSet,
         Declined,
-        Accepted
+        Accepted,
     }
 }

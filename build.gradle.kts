@@ -25,12 +25,12 @@ dependencies {
         }
     }
 
-    implementation(libs.detekt.api)
-    implementation(libs.detekt.tooling)
+    implementation(libs.detekt.api) { exclude(group = "org.jetbrains.kotlinx") }
+    implementation(libs.detekt.tooling) { exclude(group = "org.jetbrains.kotlinx") }
 
-    runtimeOnly(libs.detekt.core)
-    runtimeOnly(libs.detekt.rules)
-    runtimeOnly(libs.detekt.formatting)
+    runtimeOnly(libs.detekt.core) { exclude(group = "org.jetbrains.kotlinx") }
+    runtimeOnly(libs.detekt.rules) { exclude(group = "org.jetbrains.kotlinx") }
+    runtimeOnly(libs.detekt.formatting) { exclude(group = "org.jetbrains.kotlinx") }
 
     testImplementation(libs.detekt.testUtils)
     testImplementation(libs.assertj.core)
@@ -40,11 +40,12 @@ dependencies {
     testRuntimeOnly(libs.junit4)
 
     intellijPlatform {
-        intellijIdeaCommunity("2022.3")
+        intellijIdeaCommunity("2024.2")
 
         bundledPlugin("com.intellij.java")
         bundledPlugin("org.intellij.intelliLang")
         bundledPlugin("org.jetbrains.kotlin")
+        bundledPlugin("org.jetbrains.idea.maven")
 
         testFramework(TestFrameworkType.Platform)
 
@@ -53,7 +54,7 @@ dependencies {
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
 }
 
 tasks.withType<Test>().configureEach {
@@ -72,7 +73,12 @@ tasks.publishPlugin {
     token.set((findProperty("intellijPublishToken") as? String).orEmpty())
     // https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html#specifying-a-release-channel
     // "-beta" is used for pre-releases and https://plugins.jetbrains.com/plugins/beta/list as plugin repository.
-    channels.set(listOf(project.version.toString().split('-').getOrElse(1) { "default" }.split('.').first()))
+    val channelName = project.version.toString()
+        .split('-')
+        .getOrElse(1) { "default" }
+        .split('.')
+        .first()
+    channels.set(listOf(channelName))
 }
 
 intellijPlatform {
@@ -85,7 +91,9 @@ intellijPlatform {
     }
 
     pluginVerification {
-        ides { recommended() }
+        ides {
+            recommended()
+        }
     }
 }
 
