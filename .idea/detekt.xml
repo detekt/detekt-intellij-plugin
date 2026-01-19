@@ -7,6 +7,11 @@
         <option value="$PROJECT_DIR$/config/detekt.yaml" />
       </set>
     </option>
+    <option name="configurationFiles">
+      <list>
+        <option value="$PROJECT_DIR$/config/detekt.yaml" />
+      </list>
+    </option>
     <option name="enableDetekt" value="true" />
     <option name="enableForProjectResult" value="Accepted" />
     <option name="enableFormatting" value="true" />

@@ -5,14 +5,17 @@ import com.intellij.mock.MockPsiFile
 import com.intellij.mock.MockVirtualFile
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.components.service
 import com.intellij.openapi.fileTypes.FileTypeManager
 import com.intellij.openapi.util.Disposer
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
+import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
 import org.jetbrains.kotlin.idea.KotlinLanguage
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Path
 import kotlin.io.path.readText
 
@@ -22,9 +25,14 @@ open class KotlinParsingTestCase : MockProjectTestCase() {
     private lateinit var rootDisposable: Disposable
 
     @BeforeAll
-    override fun setUp() {
+    fun setUpProject(@TempDir tempDir: Path) {
         rootDisposable = Disposable { }
-        project = heavyMockProject(rootDisposable)
+        project = heavyMockProject(rootDisposable, tempDir.toString())
+    }
+
+    override fun setupProjectAndConfig() {
+        val config = project.service<DetektPluginSettings>()
+        config.loadState(DetektPluginSettings.State())
     }
 
     @AfterAll
@@ -34,7 +42,7 @@ open class KotlinParsingTestCase : MockProjectTestCase() {
         ApplicationManager.setApplication(
             MockApplication(rootDisposable),
             { FileTypeManager.getInstance() },
-            rootDisposable
+            rootDisposable,
         )
     }
 
