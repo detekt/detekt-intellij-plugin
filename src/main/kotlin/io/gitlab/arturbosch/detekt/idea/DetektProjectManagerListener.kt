@@ -12,6 +12,7 @@ import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings.EnableForPro
 
 class DetektProjectManagerListener : ProjectManagerListener {
 
+    @Deprecated("")
     override fun projectOpened(project: Project) {
         val settings = project.service<DetektPluginSettings>()
 
