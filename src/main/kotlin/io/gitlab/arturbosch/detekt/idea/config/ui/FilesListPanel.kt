@@ -10,21 +10,23 @@ import com.intellij.openapi.vcs.changes.ui.VirtualFileListCellRenderer
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.ToolbarDecorator
 import com.intellij.ui.components.JBList
+import java.awt.GraphicsEnvironment
 import javax.swing.DefaultListModel
 import javax.swing.JPanel
 import javax.swing.ListSelectionModel
 
-@Suppress("UnstableApiUsage") // For NlsContexts annotations
 internal class FilesListPanel(
     private val listModel: ListModel,
     private val project: Project,
-    @DialogTitle private val fileChooserTitle: String,
+    @get:DialogTitle private val fileChooserTitle: String,
     @Label private val fileChooserDescription: String,
-    private val descriptorProvider: () -> FileChooserDescriptor
+    private val descriptorProvider: () -> FileChooserDescriptor,
 ) {
 
     private val list = JBList(listModel).apply {
-        dragEnabled = true
+        if (!GraphicsEnvironment.isHeadless()) {
+            dragEnabled = true
+        }
         selectionModel.selectionMode = ListSelectionModel.MULTIPLE_INTERVAL_SELECTION
         cellRenderer = VirtualFileListCellRenderer(project)
     }

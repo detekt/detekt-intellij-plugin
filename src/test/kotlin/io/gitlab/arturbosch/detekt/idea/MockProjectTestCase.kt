@@ -3,9 +3,10 @@ package io.gitlab.arturbosch.detekt.idea
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.io.TempDir
+import java.nio.file.Path
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 open class MockProjectTestCase {
@@ -18,14 +19,12 @@ open class MockProjectTestCase {
 
     protected lateinit var project: Project
 
+    @TempDir lateinit var tempDir: Path
+
     @BeforeEach
-    open fun clearConfig() {
+    open fun setupProjectAndConfig() {
+        project = mockProject(tempDir.toString())
         val config = project.service<DetektPluginSettings>()
         config.loadState(DetektPluginSettings.State())
-    }
-
-    @BeforeAll
-    open fun setUp() {
-        project = mockProject()
     }
 }
