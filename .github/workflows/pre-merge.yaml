@@ -20,15 +20,15 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
 
       - name: Setup Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v5
         with:
           distribution: 'zulu'
           java-version: ${{ matrix.jdk }}
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
 
       - name: Build detekt idea plugin
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: build --no-daemon
+        run: ./gradlew build --no-daemon --continue

@@ -14,23 +14,29 @@ import com.intellij.psi.impl.PsiManagerImpl
 import io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings
 import io.gitlab.arturbosch.detekt.idea.config.DetektSettingsMigration
 
-fun mockProject(): MockProject =
+fun mockProject(basePath: String? = null): MockProject =
     object : MockProject(null, {}) {
         override fun isDefault(): Boolean = true
+        override fun getBasePath(): String? = basePath
     }.apply {
         registerService(DetektPluginSettings::class.java)
         registerService(DetektSettingsMigration::class.java)
+        registerService(
+            io.gitlab.arturbosch.detekt.idea.util.PluginDependencyService::class.java,
+            io.gitlab.arturbosch.detekt.idea.util.PluginDependencyService(this),
+        )
     }
 
-fun heavyMockProject(rootDisposable: Disposable): MockProject = mockProject().apply {
-    val env = CoreApplicationEnvironment(rootDisposable, true)
-    val application = env.application
-    val typeManager = MockFileTypeManager()
-    application.registerService(FileTypeRegistry::class.java, typeManager)
-    application.registerService(FileTypeManager::class.java, typeManager)
-    ApplicationManager.setApplication(application, { FileTypeManager.getInstance() }, rootDisposable)
+fun heavyMockProject(rootDisposable: Disposable, basePath: String? = null): MockProject =
+    mockProject(basePath).apply {
+        val env = CoreApplicationEnvironment(rootDisposable, true)
+        val application = env.application
+        val typeManager = MockFileTypeManager()
+        application.registerService(FileTypeRegistry::class.java, typeManager)
+        application.registerService(FileTypeManager::class.java, typeManager)
+        ApplicationManager.setApplication(application, { FileTypeManager.getInstance() }, rootDisposable)
 
-    val manager = PsiManagerImpl(this)
-    registerService(PsiManager::class.java, manager)
-    registerService(PsiFileFactory::class.java, PsiFileFactoryImpl(manager))
-}
+        val manager = PsiManagerImpl(this)
+        registerService(PsiManager::class.java, manager)
+        registerService(PsiFileFactory::class.java, PsiFileFactoryImpl(manager))
+    }

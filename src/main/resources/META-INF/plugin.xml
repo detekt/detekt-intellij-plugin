@@ -11,8 +11,11 @@
     ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
+    <depends>org.jetbrains.kotlin</depends>
+    <depends>org.jetbrains.idea.maven</depends>
 
-    <idea-version since-build="223.7571.182"/>
+    <idea-version since-build="242.20224.300"/>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Turn off error reporting for now due to https://github.com/detekt/detekt-intellij-plugin/issues/271 -->
@@ -21,6 +24,7 @@
 
         <projectService serviceImplementation="io.gitlab.arturbosch.detekt.idea.config.DetektPluginSettings"/>
         <projectService serviceImplementation="io.gitlab.arturbosch.detekt.idea.config.DetektSettingsMigration"/>
+        <projectService serviceImplementation="io.gitlab.arturbosch.detekt.idea.util.PluginDependencyService"/>
 
         <!--suppress PluginXmlI18n -->
         <projectConfigurable groupId="tools"
@@ -35,6 +39,10 @@
                     icon="DetektIcons.DocsToolWindow"/>
 
         <iconMapper mappingFile="DetektIconMappings.json"/>
+    </extensions>
+
+    <extensions defaultExtensionNs="org.jetbrains.kotlin">
+        <supportsKotlinPluginMode supportsK2="true"/>
     </extensions>
 
     <applicationListeners>
