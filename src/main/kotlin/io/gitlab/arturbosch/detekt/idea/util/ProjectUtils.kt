@@ -25,7 +25,7 @@ fun Project.settings(): DetektPluginSettings = service<DetektPluginSettings>()
 
 fun Project.isDetektEnabled(): Boolean = settings().enableDetekt
 
-fun Project.isFormattingEnabled(): Boolean = settings().enableDetekt
+fun Project.isFormattingEnabled(): Boolean = settings().run { enableDetekt && enableFormatting }
 
 fun absolutePath(project: Project, path: String): String {
     if (path.isBlank() || File(path).isAbsolute) return path
